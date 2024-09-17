@@ -6,3 +6,4 @@ class product:
         self.hersteller_id = hersteller_id
     def showobject(self):
         return f"{self.product_id}, {self.product_name}"
+    

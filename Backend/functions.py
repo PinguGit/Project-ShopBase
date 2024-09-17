@@ -10,12 +10,26 @@ def db_connect():
         database="shopsystem"
     )
 
+
+
+def create_product():
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query = ""
+
 def get_produkte():
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
     query = "SELECT * FROM Produkte"
-
     cursor.execute(query)
-
     result = cursor.fetchall()
     return result
+
+def get_hersteller():
+    ""
+
+def get_kunden():
+    ""
+
+def get_verkaeufer():
+    ""
