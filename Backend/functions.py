@@ -10,10 +10,10 @@ def db_connect():
         database="shopsystem"
     )
 
-def create_product():
+def create_product(product_name, ):
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = "ALTER TABLE "
+    query = "INSERT INTO produkte table ('produkt_name', 'preis') VALUES '{}')"
 
 
 def get_produkte():
@@ -31,7 +31,4 @@ def get_kunden():
     ""
 
 def get_verkaeufer():
-    ""
-
-def edit_product():
     ""
