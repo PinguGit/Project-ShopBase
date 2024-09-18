@@ -33,3 +33,6 @@ def get_kunden():
 
 def get_verkaeufer():
     ""
+
+def edit_product():
+    ""
