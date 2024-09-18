@@ -1,6 +1,5 @@
 from flask import Flask
 import mysql.connector
-import numpy as np 
 import classes
 import functions
 

@@ -10,12 +10,11 @@ def db_connect():
         database="shopsystem"
     )
 
-
-
 def create_product():
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = ""
+    query = "ALTER TABLE "
+
 
 def get_produkte():
     conn = db_connect()
