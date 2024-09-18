@@ -5,7 +5,7 @@ class product:
         self.price = price
         self.manufacturer_id = manufacturer_id
     def showobject(self):
-        return f"{self.product_id}, {self.product_name}, {self.manufacturer_id}"
+        return f"{self.product_id}, {self.product}, {self.manufacturer_id}"
     
 
 class manufacturer:
@@ -14,7 +14,7 @@ class manufacturer:
         self.manufacturer = manufacturer
         self.country_id = country_id
     def showobject(self):
-        return f"{self.manufacturer_id}, {self.manufacturer_name}, {self.country_id}"
+        return f"{self.manufacturer_id}, {self.manufacturer}, {self.country_id}"
     
 class country:
     def __init__(self, country_id, country):
