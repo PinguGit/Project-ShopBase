@@ -43,20 +43,44 @@ def edit_product(product_id, product_name = None, price = None):
     result = cursor.fetchall()
     return result
 
-
-def get_produkte():
+def get_product():
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM Produkte"
+    query = "SELECT * FROM product"
     cursor.execute(query)
     result = cursor.fetchall()
     return result
 
-def get_hersteller():
+def get_manufacturer():
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM manufacturer"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result
+
+def get_customer():
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM kunde"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result
+
+def get_vendor():
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM vendor"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result
+
+def edit_customer():
     ""
 
-def get_kunden():
+def edit_vendor():
     ""
 
-def get_verkaeufer():
+def delete():
     ""
+
