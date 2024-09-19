@@ -52,7 +52,7 @@ def edit_product(product_id, product_name = None, price = None):
     return(f"Changed {product_id}")
 
 def delete_by_obejct(obj):
-    print(obj.type)
+    return(type(obj).__name__)
 
     
 

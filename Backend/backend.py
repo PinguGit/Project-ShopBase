@@ -16,7 +16,7 @@ for n in products:
 
 print(product_objects)
 
-
+print(functions.delete_by_obejct(product_objects.get("Wasser")))
 
 if __name__ == '__main__':
     app.run(debug=True)
