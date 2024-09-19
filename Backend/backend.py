@@ -5,9 +5,9 @@ import functions
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-functions.get_produkte
+functions.get_product
 
-products = functions.get_produkte()
+products = functions.get_product()
 product_objects = {}
 
 for n in products:
@@ -15,6 +15,8 @@ for n in products:
     product_objects[n['produkt_name']] = obj
 
 print(product_objects)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

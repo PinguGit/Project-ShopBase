@@ -43,13 +43,19 @@ def edit_product(product_id, product_name = None, price = None):
         print("Keine Änderungen")
         return
     
-    query = "UPDATE produkte SET " + ", " .join(fields) + " WHERE produkt_id = %s"
+    query = "UPDATE product SET " + ", " .join(fields) + " WHERE produkt_id = %s"
     
     #add product id to use
     values.append(product_id)
     cursor.execute(query, values)
     conn.commit() 
     return(f"Changed {product_id}")
+
+def delete_by_obejct(obj):
+    print(obj.type)
+
+    
+
 
 def get_product():
     conn = db_connect()
