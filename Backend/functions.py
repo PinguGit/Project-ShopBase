@@ -19,12 +19,18 @@ def create_product(product_name, price):
     conn.close
     return result
 
+
+#Function to edit a product using the id, possible to change the name and price
 def edit_product(product_id, product_name = None, price = None):
+    if product_name is not None or isinstance(product_name, str):
+        raise ValueError("Product name must be a string!")
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-
+    #dynamic array to only change given arguments
     fields = []
     values = []
+
+    #add %s to fields
     if product_name:
         fields.append("produkt_name= %s")
         values.append(product_name)
@@ -37,11 +43,13 @@ def edit_product(product_id, product_name = None, price = None):
         print("Keine Änderungen")
         return
     
-    query = "UPDATE produkte SET " + ", " .join(fields) + "WHERE produkt_id = %s"
+    query = "UPDATE produkte SET " + ", " .join(fields) + " WHERE produkt_id = %s"
+    
+    #add product id to use
     values.append(product_id)
     cursor.execute(query, values)
-    result = cursor.fetchall()
-    return result
+    conn.commit() 
+    return(f"Changed {product_id}")
 
 def get_product():
     conn = db_connect()
