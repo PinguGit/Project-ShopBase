@@ -6,7 +6,7 @@ class product:
         self.manufacturer_id = manufacturer_id
     def showobject(self):
         return f"{self.product_id}, {self.product}, {self.manufacturer_id}"
-    
+     
 
 class manufacturer:
     def __init__(self, manufacturer_id, manufacturer, country_id):
