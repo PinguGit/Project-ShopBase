@@ -12,7 +12,7 @@ def get_product():
 def get_manufacturer():
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM manufacturer"
+    query = "SELECT * FROM hersteller"
     cursor.execute(query)
     result = cursor.fetchall()
     conn.close()

@@ -3,13 +3,8 @@ import mysql.connector
 
 def db_connect():
     return mysql.connector.connect(        
-        host="172.16.182.145",
+        host="172.16.182.146",
         user="power_user",
         password="adrian_stinkt",
         database="shopsystem"
     )
-
-
-def delete():
-    ""
-
