@@ -38,7 +38,7 @@ class location:
     def showobject(self):
         return f"{self.location_id}, {self.zip}, {self.location}"
     
-class Vendor:
+class vendor:
     def __init__(self, vendor_id, name, street, houseNumber, email, ort_id, laender_id, password_id):
         self.vendor_id = vendor_id
         self.name = name
@@ -53,7 +53,7 @@ class Vendor:
         return f"{self.vendor_id}, {self.name}, {self.street}, {self.houseNumber}, {self.email}, {self.ort_id}, {self.laender_id}, {self.password_id}"
 
 
-class Customer(Vendor):
+class customer(vendor):
     def __init__(self, vendor_id, name, street, houseNumber, email, ort_id, laender_id, password_id, forename, birthday):
         super().__init__(vendor_id, name, street, houseNumber, email, ort_id, laender_id, password_id)
         self.customer_id = vendor_id  # kunde_id ist nur ein Alias für vendor_id
