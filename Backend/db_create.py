@@ -1,4 +1,5 @@
 from functions import db_connect
+from flask import Flask
 
 def create_user(user_type, user_id, name, street, houseNumber, email, ort_id, laender_id, password_id, forename=None, birthday=None):
     conn = db_connect()
@@ -7,7 +8,7 @@ def create_user(user_type, user_id, name, street, houseNumber, email, ort_id, la
     if user_type == "vendor":
         # SQL Query to insert into the vendor table
         query = """
-            INSERT INTO vendor (vendor_id, name, street, houseNumber, email, ort_id, laender_id, password_id)
+            INSERT INTO vendor (verkauefer_id, name, strasse, hausnummer, email, ort_id, laender_id, password_id)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(query, (user_id, name, street, houseNumber, email, ort_id, laender_id, password_id))
@@ -15,7 +16,7 @@ def create_user(user_type, user_id, name, street, houseNumber, email, ort_id, la
     elif user_type == "customer":
         # SQL Query to insert into the customer table
         query = """
-            INSERT INTO customer (customer_id, forename, birthday, name, street, houseNumber, email, ort_id, laender_id, password_id)
+            INSERT INTO customer (kunden_id, vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id, geburtsdatum,)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(query, (user_id, forename, birthday, name, street, houseNumber, email, ort_id, laender_id, password_id))
@@ -26,6 +27,11 @@ def create_user(user_type, user_id, name, street, houseNumber, email, ort_id, la
     conn.commit()  
     conn.close()
 
-# Example usage
-create_user('vendor', 1, 'Vendor Name', 'Street', '42', 'vendor@example.com', 1001, 1, 1234)
-create_user('customer', 2, 'Customer Name', 'Street', '43', 'customer@example.com', 1002, 2, 1235, 'John', '1990-01-01')
+def create_product(product_name, price):
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query = "INSERT INTO produkte table ('produkt_name', 'preis') VALUES (%s, %s))"
+    cursor.execute(query, (product_name, price))
+    result = cursor.fetchall
+    conn.close()
+    return result

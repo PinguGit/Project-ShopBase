@@ -2,12 +2,14 @@ from flask import Flask
 import mysql.connector
 import classes
 import functions
+import db_get
+import db_delete
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-functions.get_product
+db_get.get_product
 
-products = functions.get_product()
+products = db_get.get_product()
 product_objects = {}
 
 for n in products:
