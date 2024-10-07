@@ -1,6 +1,6 @@
 from flask import Flask
 import mysql.connector
-from Backend import classes
+import classes
 from functions import db_connect
 
 def getProducts(listOfDictionarys):

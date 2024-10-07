@@ -1,4 +1,4 @@
-from Backend.db_get import get_all_objects, get_object_by_id
+from db_get import get_all_objects, get_object_by_id
 from flask import Flask, jsonify
 import getCommand
 from flask_cors import CORS
