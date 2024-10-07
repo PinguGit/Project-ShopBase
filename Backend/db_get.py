@@ -52,16 +52,17 @@ def get_customer_orders(kunden_id):
     result = cursor.fetchall()
     conn.close()
     
- # Create a dictionary of order objects
+ # Create a list of order dictionarys
     orders_dict = {}
     for row in result:
-        order_obj = order(
-            productName=row['produkt_name'],
-            price=row['einzelpreis'],
-            manufacturerName=row['hersteller_name'],
-            totalPrice=row['gesamtpreis']
-        )
-        orders_dict[row['bestell_id']] = order_obj
+        order_id = row['bestell_id']
+        orders_dict[order_id] = {
+            'anzahl': row['anzahl'],
+            'gesamtpreis': row['gesamtpreis'],
+            'produkt_name': row['produkt_name'],
+            'einzelpreis': row['einzelpreis'],
+            'hersteller_name': row['hersteller_name']
+        }
     
     return orders_dict
 
