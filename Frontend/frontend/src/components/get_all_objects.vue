@@ -1,7 +1,6 @@
 <template>
     <div id="get_all_objects">
       <h1>Objekte</h1>
-      <p v-bind=fetchallobjects()></p>
       <ul>
         <li v-for="(object, index) in objects" :key="index">{{ object.name }}</li>
       </ul>
@@ -14,7 +13,8 @@
     data() {
       return {
         objects: [], // Array, um die abgerufenen Objekte zu speichern
-        tableName: 'products', // Beispiel-Tabellenname, kann dynamisch geändert werden
+        tableName: 'products',
+        adress: 'http://localhost:5000' // Beispiel-Tabellenname, kann dynamisch geändert werden
       };
     },
     mounted() {
@@ -22,7 +22,7 @@
     },
     methods: {
       fetchallobjects(tablename) {
-        fetch(`/api/get_all_products/${tablename}`)
+        fetch(this.adress+`/api/get_all_products/${tablename}`)
           .then(response => response.json()) // Konvertiere die Antwort in JSON
           .then(data => {
             this.objects = data; // Speichere die abgerufenen Objekte im Array
