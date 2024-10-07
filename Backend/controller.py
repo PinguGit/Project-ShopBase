@@ -19,10 +19,6 @@ def getAllObjects(table):
     objects = getType(table, list, 1)
     return jsonify(objects)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
 def getType(table, dictionary, check):
     match table:
         case "product":
