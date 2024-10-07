@@ -1,4 +1,4 @@
-from Backend.classes import order
+from classes import order
 from functions import db_connect
 
 def get_object_by_id(table_name, object_id):
