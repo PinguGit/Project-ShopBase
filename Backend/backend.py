@@ -8,16 +8,16 @@ import db_create
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-db_get.get_product
+db_get.get_all_objects()
 
-products = db_get.get_product()
+products = db_get.get_all_objects('products')
 product_objects = {}
 
 for n in products:
     obj_products = classes.product(n['produkt_id'], n['produkt_name'], n['preis'], n['hersteller_id'])    
     product_objects[n['produkt_id']] = obj_products
 
-manufactures = db_get.get_manufacturer()
+manufactures = db_get.get_all_objects()
 manufactures_objects_dic = {}
 
 for n in manufactures:

@@ -1,36 +1,20 @@
 from functions import db_connect
 
-def get_product():
+def get_object_by_id(table_name, object_id):
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM product"
-    cursor.execute(query)
-    result = cursor.fetchall()
+    query = f"SELECT * FROM {table_name} WHERE id = %s"
+    cursor.execute(query, (object_id,))
+    result = cursor.fetchone()
     conn.close()
     return result
 
-def get_manufacturer():
+#returns a list of dictionarys.
+#every dictionary is a row of the table.
+def get_all_objects(table_name):
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM hersteller"
-    cursor.execute(query)
-    result = cursor.fetchall()
-    conn.close()
-    return result
-
-def get_customer():
-    conn = db_connect()
-    cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM kunde"
-    cursor.execute(query)
-    result = cursor.fetchall()
-    conn.close()
-    return result
-
-def get_vendor():
-    conn = db_connect()
-    cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM vendor"
+    query = f"SELECT * FROM {table_name}"
     cursor.execute(query)
     result = cursor.fetchall()
     conn.close()
