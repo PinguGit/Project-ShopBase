@@ -63,5 +63,15 @@ class customer(vendor):
     def showObject(self):
         return f"{self.customer_id}, {self.forename}, {self.birthday}, {self.name}, {self.street}, {self.houseNumber}, {self.email}, {self.ort_id}, {self.laender_id}, {self.password_id}"
 
+class order:
+    def __init__(self, productName, price, manufacturerName, totalPrice):
+        super().__init__(productName, price, manufacturerName, totalPrice)
+        self.productName = productName
+        self.price = price
+        self.manufacturerName = manufacturerName
+        self.totalPrice = totalPrice
+
+    def showObject(self):
+        return f"{self.productName}, {self.price}, {self.manufacturerName}, {self.totalPrice}"
 
     
