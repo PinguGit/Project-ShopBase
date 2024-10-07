@@ -9,7 +9,9 @@
     </head>
     <body>
         <div class="container">
-            <div class="logo">Logo</div>
+            <div class="logo">
+                <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="200px">
+            </div>
             <div class="search-bar">
                 <input type="text" placeholder="Search Bar">
             </div>
