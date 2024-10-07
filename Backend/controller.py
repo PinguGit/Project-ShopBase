@@ -1,14 +1,9 @@
 from Backend.db_get import get_all_objects, get_object_by_id
 from flask import Flask, jsonify
-<<<<<<< HEAD
 import getCommand
 from flask_cors import CORS
 from flask import Flask, jsonify
 #lecksi
-=======
-from flask_cors import CORS
-
->>>>>>> 44b73a8 (m)
 app = Flask(__name__)
 CORS(app)
 
