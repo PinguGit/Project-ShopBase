@@ -7,19 +7,19 @@ def getType(table, dictionary):
         case "hersteller":
             return getCommand.getManufacturers(dictionary)
         case "laender":
-            return
+            return 'Grenzen müssen Menschen weichen'
         case "kundenbestellungen":
-            return
+            return 'fick dich'
         case "bestellung":
-            return
+            return 'gibt nen anderen endpunkt hierführ du seniler Oppa'
         case "verkauefer":
-            return
+            return getCommand.getVendors(dictionary)
         case "passwort":
-            return
+            return 'hättest du wohl gerne'
         case "orte":
-            return
+            return 'geht dich nix an'
         case "kunde":
             return getCommand.getCustomers(dictionary)
         case "verkauefer_produkte":
-            return
+            return 'raff dich'
         

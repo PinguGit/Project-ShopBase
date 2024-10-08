@@ -48,3 +48,22 @@ def getManufacturers(listOfDictionarys):
             'land': country_name if country_name else None
         }
     return manufacturers_dict
+
+def getVendors(listOfDictionarys):
+    vendors_dict = {}
+    for row in listOfDictionarys:
+        vendor_id = row['verkaeufer_id']
+        location_info = getLocationById(row['ort_id'])
+        country_name = getCountryById(row['laender_id'])
+        
+        vendors_dict[vendor_id] = {
+            'name': row['name'],
+            'strasse': row['strasse'],
+            'hausnummer': row['hausnummer'],
+            'email': row['email'],
+            'ort': location_info['ort_name'] if location_info else None,
+            'plz': location_info['plz'] if location_info else None,
+            'land': country_name if country_name else None
+        }
+    
+    return vendors_dict
