@@ -1,23 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <get_all_objects />
   <div id="app">
-    <product_page />
+    <!-- Navigation -->
+    <nav>
+      <router-link to="/">Product Page</router-link>
+      <router-link to="/api_test">API Test Page</router-link>
+    </nav>
+
+    <!-- Router View für dynamische Komponenten basierend auf der Route -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import get_all_objects from './components/get_all_objects.vue';
-import product_page from './components/product_page.vue';
-//import HelloWorld from './components/HelloWorld.vue'
+// Falls du get_all_objects direkt einbinden möchtest:
+// import get_all_objects from './components/get_all_objects.vue';
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
-    get_all_objects,
-    product_page
+    // Falls du get_all_objects direkt verwenden möchtest:
+    // get_all_objects,
   }
 }
 </script>
@@ -30,5 +32,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+nav {
+  margin-bottom: 20px;
+}
+
+router-link {
+  margin-right: 10px;
 }
 </style>
