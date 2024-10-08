@@ -35,12 +35,8 @@
             
                     <!-- Filter by Price -->
                     <label for="price">Price:</label>
-                    <select id="price-filter" v-model="filters.price">
-                        <option value="all">All Prices</option>
-                        <option value="below">Below 50</option>
-                        <option value="between">Between 50 and 100</option>
-                        <option value="above">Above 100</option>
-                    </select>
+                    <input type="number" id="price-filter" v-model="filters.price">
+
                     
                     <!-- Filter by Stock -->
                     <label for="stock">Stock:</label>
@@ -89,7 +85,7 @@ export default {
             products: [],
             filters: {
                 productName: '',
-                price: 'all',
+                price: '',
                 stock: 'all',
                 seller: '',
                 deliveryDate: ''
@@ -100,26 +96,19 @@ export default {
     methods: {
         handleObjectsLoaded(objects) {
             this.products = objects.product; // Speichere die abgerufenen Produkte
-            //this.filteredProducts = objects; // Initialisiere die gefilterten Produkte
-            //this.filterProducts(); // Optional: Filter anwenden
+            this.filterProducts(); // Optional: Filter anwenden
         },
-        /*filterProducts() {
-            this.filteredProducts = this.products.filter(product => {
-                const matchesProductName = product.name.toLowerCase().includes(this.filters.productName.toLowerCase());
-                const matchesPrice = this.filters.price === 'all' ||
-                    (this.filters.price === 'below' && product.price < 50) ||
-                    (this.filters.price === 'between' && product.price >= 50 && product.price <= 100) ||
-                    (this.filters.price === 'above' && product.price > 100);
-                const matchesStock = this.filters.stock === 'all' ||
-                    (this.filters.stock === 'below' && product.stock < 50) ||
-                    (this.filters.stock === 'between' && product.stock >= 50 && product.stock <= 100) ||
-                    (this.filters.stock === 'above' && product.stock > 100);
-                const matchesSeller = !this.filters.seller || product.seller.toLowerCase().includes(this.filters.seller.toLowerCase());
-                const matchesDeliveryDate = !this.filters.deliveryDate || product.deliveryDate === this.filters.deliveryDate;
-                console.log(this.filteredProducts)
-                return matchesProductName && matchesPrice && matchesStock && matchesSeller && matchesDeliveryDate;
-            });
-        }*/
+        filterProducts() {
+            if (Array.isArray(this.products)) {
+                this.filteredProducts = [];
+            }
+            console.log(this.products)
+            for (const product of this.products) {
+                if ((product.produkt_name.match(/productName.*/)) && (product.preis < this.price)) {
+                    this.filteredProducts.push(product);
+                }
+            }       
+        }
     }
 };
 </script>
