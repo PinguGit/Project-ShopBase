@@ -1,9 +1,11 @@
 from db_get import get_all_objects, get_object_by_id
 import db_get
 from flask import Flask, jsonify
+
 import getCommand
 from flask_cors import CORS
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
