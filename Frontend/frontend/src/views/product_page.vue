@@ -11,7 +11,8 @@
         <!-- get_all_objects Komponente wird hier eingebunden -->
         <get_all_objects @objectsLoaded="handleObjectsLoaded" />
 
-        <p> {{ objects }}</p>
+        <!-- <p> {{ objects }}</p> -->
+
         <div class="container">
             <div class="logo">
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
@@ -159,7 +160,7 @@ export default {
                     (this.filters.stock === 'above' && product.stock > 100);
                 const matchesSeller = !this.filters.seller || product.seller.toLowerCase().includes(this.filters.seller.toLowerCase());
                 const matchesDeliveryDate = !this.filters.deliveryDate || product.deliveryDate === this.filters.deliveryDate;
-
+                console.log(this.filteredProducts)
                 return matchesProductName && matchesPrice && matchesStock && matchesSeller && matchesDeliveryDate;
             });
         }

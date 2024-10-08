@@ -1,9 +1,5 @@
 <template>
     <div id="get_all_objects">
-      <h1>Objekte</h1>
-      <ul>
-        <li v-for="(object, index) in objects" :key="index">{{ object }}</li>
-      </ul>
     </div>
   </template>
   
