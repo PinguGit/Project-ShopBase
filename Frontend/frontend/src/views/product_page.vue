@@ -8,6 +8,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
+        <!-- get_all_objects Komponente wird hier eingebunden -->
+        <get_all_objects @objectsLoaded="handleObjectsLoaded" />
+
+        <p> {{ objects }}</p>
         <div class="container">
             <div class="logo">
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
@@ -116,8 +120,13 @@
 </template>
   
 <script>
+import get_all_objects from '@/components/get_all_objects.vue';
+
 export default {
     name: 'ProductPage',
+    components: {
+        get_all_objects 
+    },
     data() {
         return {
             products: [],
@@ -132,15 +141,10 @@ export default {
         };
     },
     methods: {
-        async fetchProducts() {
-            try {
-                const response = await fetch('YOUR_API_ENDPOINT'); // Replace with your API endpoint
-                const data = await response.json();
-                this.products = data; // Assuming the response is an array of products
-                this.filteredProducts = this.products; // Initialize filteredProducts with all products
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
+        handleObjectsLoaded(objects) {
+        this.products = objects; // Speichere die abgerufenen Produkte
+        this.filteredProducts = objects; // Initialisiere die gefilterten Produkte
+        this.filterProducts(); // Optional: Filter anwenden
         },
         filterProducts() {
             this.filteredProducts = this.products.filter(product => {
@@ -159,9 +163,6 @@ export default {
                 return matchesProductName && matchesPrice && matchesStock && matchesSeller && matchesDeliveryDate;
             });
         }
-    },
-    created() {
-        this.fetchProducts(); // Fetch products when component is created
     }
 };
 </script>
