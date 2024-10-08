@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 import getCommand
 from flask_cors import CORS
 from flask import Flask, jsonify
-#lecksi
+
 app = Flask(__name__)
 CORS(app)
 
