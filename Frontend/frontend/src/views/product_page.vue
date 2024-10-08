@@ -95,7 +95,7 @@ export default {
     },
     methods: {
         handleObjectsLoaded(objects) {
-            this.products = objects.product; // Speichere die abgerufenen Produkte
+            this.products = Object.values(objects.product); // Speichere die abgerufenen Produkte
             this.filterProducts(); // Optional: Filter anwenden
         },
         filterProducts() {
