@@ -10,7 +10,7 @@
     <body>
         <div class="container">
             <div class="logo">
-                <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="200px">
+                <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
             </div>
             <div class="search-bar">
                 <input type="text" placeholder="Search Bar">
@@ -196,6 +196,7 @@ body {
     align-items: center;
     background-color: #f0f0f0;
     border: 1px solid black;
+    background: #2c313d;
 }
 
 .search-bar {
