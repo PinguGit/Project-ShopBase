@@ -23,7 +23,7 @@ def getOrdersById(customerId):
 @app.route('/api/get_all_objects/<table>', methods=['GET'])
 def getAllObjects(table):
     dictionary = db_get.getAllObjects(table)
-    json = controllerCommand.getType(table, dictionary, 1)
+    json = controllerCommand.getType(table, dictionary)
     return jsonify(json)
    
 if __name__ == '__main__':

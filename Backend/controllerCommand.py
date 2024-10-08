@@ -1,14 +1,10 @@
-from Backend import getCommand
+import getCommand
 
-def getType(table, dictionary, check):
+def getType(table, dictionary):
     match table:
         case "product":
-            if check == 0:
-                return
             return getCommand.getProducts(dictionary)
         case "hersteller":
-            if check == 0:
-                return
             return getCommand.getManufacturers(dictionary)
         case "laender":
             return
@@ -23,8 +19,7 @@ def getType(table, dictionary, check):
         case "orte":
             return
         case "kunde":
-            if check == 0:
-                return
             return getCommand.getCustomers(dictionary)
         case "verkauefer_produkte":
             return
+        

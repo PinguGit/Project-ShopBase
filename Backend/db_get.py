@@ -1,14 +1,32 @@
-from classes import order
 from functions import db_connect
 
+id_mapping = {
+    'product': 'produkt_id',
+    'hersteller': 'hersteller_id',
+    'bestellung': 'bestell_id',
+    'kunde': 'kunden_id',
+    'verkaeufer': 'verkaeufer_id',
+    'laender': 'laender_id',
+    'orte': 'ort_id'
+}
+
 def getObjectById(table_name, object_id):
+
+    id_field = id_mapping.get(table_name)
+    if not id_field:
+        raise ValueError(f"Unbekannte Tabelle: {table_name}")
+    
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    query = f"SELECT * FROM {table_name} WHERE id = %s"
+    query = f"SELECT * FROM {table_name} WHERE {id_field} = %s"
     cursor.execute(query, (object_id,))
     result = cursor.fetchone()
     conn.close()
-    return result
+
+    object_dict = {
+        result[id_field]: result
+    }
+    return object_dict
 
 def getCountryById(laender_id):
     conn = db_connect()
@@ -61,7 +79,7 @@ def getCustomerOrders(kunden_id):
     result = cursor.fetchall()
     conn.close()
     
- # Create a list of order dictionarys
+ # Create a list dictionary order dictionarys
     orders_dict = {}
     for row in result:
         order_id = row['bestell_id']
