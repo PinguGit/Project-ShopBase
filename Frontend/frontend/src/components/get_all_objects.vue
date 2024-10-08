@@ -2,7 +2,7 @@
     <div id="get_all_objects">
       <h1>Objekte</h1>
       <ul>
-        <li v-for="(object, index) in objects" :key="index">{{ objects[0] }}</li>
+        <li v-for="(object, index) in objects" :key="index">{{ object }}</li>
       </ul>
     </div>
   </template>
