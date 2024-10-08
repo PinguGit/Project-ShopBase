@@ -1,6 +1,6 @@
 from flask import Flask
 import mysql.connector
-from Backend.db_get import get_Country_by_Id, getCountryById, getLocationById, getManufacturerById
+from db_get import getCountryById, getLocationById, getManufacturerById
 import classes
 from functions import db_connect
 

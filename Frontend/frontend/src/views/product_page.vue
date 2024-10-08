@@ -67,52 +67,8 @@
             <!-- Product List -->
             <div class="product-list">
                 <!-- Product Box -->
-                <div v-for="product in filteredProducts" :key="product.id" class="product-box">
-                    <div class="image-section">
-                        <div class="image">Picture</div>
-                    </div>
-                    <div class="info-section">
-                        <h3>{{ product.name }}</h3>
-                        <div class="price-section">
-                            <span class="price">{{ product.price }}</span>
-                        </div>
-                        <span class="seller">{{ product.seller }}</span>
-                        <span class="delivery-date">{{ product.deliveryDate }}</span>
-                        <div class="stock">
-                            <p>In Stock:</p>
-                            <span class="stock-num">{{ product.stock }}</span> <!-- Stock value -->
-                        </div>
-                        <div class="actions">
-                            <button class="add-to-basket">Add to basket
-                                <i class="fa-solid fa-cart-plus"></i>
-                            </button>
-                            <button class="buy-now">Buy instantly</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div v-for="product in filteredProducts" :key="product.id" class="product-box">
-                    <div class="image-section">
-                        <div class="image">Picture</div>
-                    </div>
-                    <div class="info-section">
-                        <h3>{{ product.name }}</h3>
-                        <div class="price-section">
-                            <span class="price">{{ product.price }}</span>
-                        </div>
-                        <span class="seller">{{ product.seller }}</span>
-                        <span class="delivery-date">{{ product.deliveryDate }}</span>
-                        <div class="stock">
-                            <p>In Stock:</p>
-                            <span class="stock-num">{{ product.stock }}</span> <!-- Stock value -->
-                        </div>
-                        <div class="actions">
-                            <button class="add-to-basket">Add to basket
-                                <i class="fa-solid fa-cart-plus"></i>
-                            </button>
-                            <button class="buy-now">Buy instantly</button>
-                        </div>
-                    </div>
+                <div v-for="product in products" :key="product.produkt_name" class="product-box">
+                    <p>{{ product.produkt_name }} {{ product.preis }}</p>
                 </div>
             </div>
         </div>
@@ -143,11 +99,11 @@ export default {
     },
     methods: {
         handleObjectsLoaded(objects) {
-        this.products = objects; // Speichere die abgerufenen Produkte
-        this.filteredProducts = objects; // Initialisiere die gefilterten Produkte
-        this.filterProducts(); // Optional: Filter anwenden
+            this.products = objects.product; // Speichere die abgerufenen Produkte
+            //this.filteredProducts = objects; // Initialisiere die gefilterten Produkte
+            //this.filterProducts(); // Optional: Filter anwenden
         },
-        filterProducts() {
+        /*filterProducts() {
             this.filteredProducts = this.products.filter(product => {
                 const matchesProductName = product.name.toLowerCase().includes(this.filters.productName.toLowerCase());
                 const matchesPrice = this.filters.price === 'all' ||
@@ -163,7 +119,7 @@ export default {
                 console.log(this.filteredProducts)
                 return matchesProductName && matchesPrice && matchesStock && matchesSeller && matchesDeliveryDate;
             });
-        }
+        }*/
     }
 };
 </script>
