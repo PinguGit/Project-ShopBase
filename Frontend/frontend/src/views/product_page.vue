@@ -205,7 +205,6 @@ body {
     margin-top: 10px;
 }
 
-<style>
 .container {
     display: grid;
     grid-template-columns: 200px 1fr 150px 150px;
@@ -306,14 +305,6 @@ h3 {
 .stock {
     grid-column: 4 / 5;
     grid-row: 2 / 4;
-}
-
-.actions {
-    display: flex;
-    gap: 50px;
-    grid-row: 2 / 4;
-    grid-column: 5 / 7;
-    justify-content: center;
 }
 
 button {
