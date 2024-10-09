@@ -10,12 +10,21 @@
     <body>
         <div class="register-container">
             <h2>Register</h2>
+
+            <div>
+                <input type="radio" id="private" value="private" v-model="customerType" @change="toggleCustomerType" class="custom-radio">
+                <label for="private">Privatkunde</label>
+
+                <input type="radio" id="business" value="business" v-model="customerType" @change="toggleCustomerType" class="custom-radio">
+                <label for="business">Geschäftskunde</label>
+            </div>
+
             <form>
                 <div class="input-container">
                     <i class="fas fa-user"></i>
-                    <input type="text" style="margin-left: 4px;" placeholder="Vorname" required>
+                    <input type="text" style="margin-left: 4px;" :placeholder="customerType === 'business' ? 'Geschäftsname' : 'Vorname'" required>
                 </div>
-                <div class="input-container">
+                <div v-if="customerType !== 'business'" class="input-container">
                     <i class="fas fa-user"></i>
                     <input type="text" style="margin-left: 4px;" placeholder="Nachname" required>
                 </div>
@@ -276,115 +285,108 @@ export default {
         { id: 191, name: "Yemen" },
         { id: 192, name: "Zambia" },
         { id: 193, name: "Zimbabwe" }
-        ]
+        ],
+      customerType: '' // Hier wird der Typ des Kunden gespeichert
     };
   },
   methods: {
-    registerUser() {
-      // Hier kannst du den ausgewählten Länder-ID abfragen
-      console.log("Selected Country ID:", this.form.countryId);
-      // Hier kannst du dann den gesamten Registrierungsprozess durchführen
+    register() {
+      // Hier wird die Logik für die Registrierung implementiert
+      console.log("Registrierung erfolgt mit den folgenden Daten:", this.form, this.customerType);
+      // Weitere Logik zur Verarbeitung der Registrierung
+    },
+    validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     }
   }
 };
 </script>
 
 <style scoped>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f0f0f0;
-    }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
 
-    .register-container {
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 400px;
-        text-align: center;
-    }
+        .register-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
 
-    h2 {
-        margin-bottom: 20px;
-    }
+        h2 {
+            margin-bottom: 20px;
+        }
 
-    .input-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-    }
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-    .input-container i {
-        margin-right: 10px;
-        color: #007bff;
-    }
+        .input-container i {
+            margin-right: 10px;
+            color: #007bff;
+        }
 
-    input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
-        width: 100%;
-        padding: 10px;
-        margin: 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 20px;
-    }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
 
-    button:hover {
-        background-color: #218838;
-    }
+        button:hover {
+            background-color: #218838;
+        }
 
-    select {
-        width: 100%;
-        padding: 10px;
-        margin: 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    .input-container select {
-        padding-right: 30px; /* Adds padding to make room for the arrow */
-    }
+        .input-container select {
+            padding-right: 30px;
+        }
 
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .form-container {
-        display: flex;
-        flex-direction: column;
-    }
+        .form-row {
+            display: grid;
+            grid-template-columns: 62.5% 35%;
+            gap: 10px;
+        }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: 62.5% 35%;
-        gap: 10px;
-    }
-
-    .form-row label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .street, .house-number {
-        display: flex;
-        flex-direction: column;
-    }
-
-    input {
-        padding: 8px;
-        font-size: 14px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
+        .hidden {
+            display: none;
+        }
 </style>
