@@ -50,14 +50,16 @@
                         <tr>
                             <th>Produkt Name</th>
                             <th>Preis</th>
-                            <th>Hersteller</th>
+                            <th>Hersteller und Land</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="product in this.filteredProducts" :key="product.produkt_name">
                             <td>{{ product.produkt_name }}</td>
                             <td>{{ product.preis }}</td>
-                            <td>{{ product.hersteller }}</td>
+                            <td>{{ product.hersteller }} {{ product.herstellerland }}</td>
+                            <td><button @click=addtoshoppingcart(product)> In den Warenkorb </button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -86,7 +88,8 @@ export default {
                 seller: '',
                 deliveryDate: ''
             },
-            filteredProducts: []
+            filteredProducts: [],
+            activ_products_shoppingcart: [],
         };
     },
 
@@ -108,22 +111,25 @@ export default {
             if (Array.isArray(this.products)) {
                 this.filteredProducts = [];
             }
-        
-
-
-            // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
+                // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
             this.filteredProducts = this.products.filter(product => {
                 const namematch = product.produkt_name.toLowerCase().includes(this.filters.productName.toLowerCase());
                 const pricematch = this.filters.price === '' || this.product.preis <= this.filters.price;
                 const sellermatch = product.hersteller.toLowerCase().includes(this.filters.seller.toLowerCase());
-
                 return namematch && pricematch && sellermatch;
             }
 
             )
             console.log("Filterd products")
             console.log(this.filteredProducts)
-            }       
+            },
+        
+        addtoshoppingcart(product) {
+            this.activ_products_shoppingcart.push(product);
+            console.log('shoppingcart');
+            console.log(this.activ_products_shoppingcart)
+        },
+        
         }
     }
 </script>
@@ -205,17 +211,6 @@ body {
     margin-top: 10px;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 200px 1fr 150px 150px;
-    grid-template-rows: 100px 1fr;
-    grid-template-areas:
-        "logo search-bar basket profile"
-        "filter product-list product-list product-list";
-    gap: 10px;
-    height: 100vh;
-}
-
 .product-list {
     grid-area: product-list;
     padding: 10px;
@@ -226,11 +221,11 @@ body {
 
 .product-table {
     width: 100%;
+    border:1px  solid black;
     border-collapse: collapse;
 }
 
 .product-table th, .product-table td {
-    border: 1px solid black;
     padding: 10px;
     text-align: center;
 }
@@ -242,6 +237,7 @@ body {
 
 .product-table tr:nth-child(even) {
     background-color: #f0f0f0;
+    border:1px  solid black;
 }
 
 .product-table tr:nth-child(odd) {

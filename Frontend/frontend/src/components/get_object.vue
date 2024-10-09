@@ -5,6 +5,7 @@
   
   <script>
  export default {
+  name: 'get_all_object',
   data() {
     return {
       objects: {}, 
