@@ -205,7 +205,6 @@ body {
     margin-top: 10px;
 }
 
-<style>
 .container {
     display: grid;
     grid-template-columns: 200px 1fr 150px 150px;
@@ -247,90 +246,6 @@ body {
 
 .product-table tr:nth-child(odd) {
     background-color: #ffffff;
-}
-
-
-.image-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    margin-right: 20px;
-}
-
-.image {
-    width: 100px;
-    height: 100px;
-    background-color: #ccc;
-    text-align: center;
-    line-height: 100px;
-}
-
-.info-section {
-    display: grid;
-    grid-column-start: 2;
-    grid-column-end: 7;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    height: 100%;
-}
-
-h3 {
-    font-size: 18px;
-    grid-column: 1 / -1;
-}
-
-.price-section {
-    display: flex;
-    align-items: center;
-    grid-row: 2 / 4;
-}
-
-.price {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.seller, .delivery-date {
-    font-size: 14px;
-}
-
-.seller {
-    grid-column: 2 / 4; 
-}
-
-.delivery-date {
-    grid-column: 2 / 4;
-}
-
-.stock {
-    grid-column: 4 / 5;
-    grid-row: 2 / 4;
-}
-
-.actions {
-    display: flex;
-    gap: 50px;
-    grid-row: 2 / 4;
-    grid-column: 5 / 7;
-    justify-content: center;
-}
-
-button {
-    padding: 10px;
-    width: 200px;
-    border: none;
-    cursor: pointer;
-}
-
-.add-to-basket {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.buy-now {
-    background-color: #f44336;
-    color: white;
 }
 
 </style>
