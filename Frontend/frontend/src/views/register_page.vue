@@ -19,7 +19,7 @@
 
                 <div class="radio-item">
                     <input type="radio" id="business" value="business" v-model="customerType" @change="toggleCustomerType" style="margin-bottom: 5px;">
-                    <label for="business">Geschäftskunde</label>
+                    <label for="business">Händler</label>
                 </div>
             </div>
 
@@ -400,7 +400,7 @@ select {
     display: flex;
     flex-direction: row;
     margin-bottom: 5px;
-    margin-left: 35px;
+    margin-left: 60px;
 }
 
 /* Radio Button Item */
