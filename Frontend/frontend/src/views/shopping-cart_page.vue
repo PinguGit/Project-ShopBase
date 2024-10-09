@@ -4,15 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Product Page</title>
+        <title>Shopping Cart</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
-        <!-- get_all_objects Komponente wird hier eingebunden -->
-        <get_all_objects @objectsLoaded="handleObjectsLoaded" />
-
-        <!-- <p> {{ objects }}</p> -->
-
         <div class="container">
             <div class="logo">
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
@@ -23,49 +18,20 @@
             <div class="profile">
                 <i class="fa-solid fa-user"> Benutzer</i>
             </div>
-            <div class="basket" href="">
-                <router-link to="/shopping-cart"><i class="fas fa-shopping-cart"> Shopping Cart</i></router-link>
+            <div class="basket">
+                <i class="fas fa-shopping-cart"> Shopping Cart</i>
             </div>
-            <div class="filter">
-                <h4>Filter Products</h4>
-                <form id="filter-form">
-                    <!-- Filter by Product Name -->
-                    <label for="product-name">Product Name:</label>
-                    <input type="text" id="product-name" v-model="filters.productName" placeholder="Enter product name">
-            
-                    <!-- Filter by Price -->
-                    <label for="price">Price:</label>
-                    <input type="number" id="price-filter" v-model="filters.price">
 
-                    
-                    <!-- Filter by Stock -->
-                    <label for="stock">Stock:</label>
-                    <select id="stock-filter" v-model="filters.stock">
-                        <option value="all">All Stock</option>
-                        <option value="below">Below 50</option>
-                        <option value="between">Between 50 and 100</option>
-                        <option value="above">Above 100</option>
-                    </select>
-            
-                    <!-- Filter by Seller -->
-                    <label for="seller">Seller:</label>
-                    <input type="text" id="seller" v-model="filters.seller" placeholder="Enter seller">
-            
-                    <!-- Filter by Delivery Date -->
-                    <label for="delivery-date">Delivery Date (yyyy-mm-dd):</label>
-                    <input type="date" id="delivery-date" v-model="filters.deliveryDate">
-            
-                    <button type="button" @click="filterProducts">Apply Filter</button>
-                </form>
-            </div>
-            
-
-            <!-- Product List -->
-            <div class="product-list">
-                <!-- Product Box -->
-                <div v-for="product in products" :key="product.produkt_name" class="product-box">
-                    <p>{{ product.produkt_name }} {{ product.preis }}</p>
+            <div class="article-container">
+                <p>Einkaufswagen</p>
+                <div class="articles">
+                    <!-- Artikel hier hinzufügen (löschfunktion hinzufügen [menge maybe einstellen können?])  -->
                 </div>
+            </div>
+
+            <div class="payment">
+                <p>Zwischensumme <!--hier dann den {{ ... }}--></p>
+                <button class="payment-continue">Zur Kasse gehen</button>
             </div>
         </div>
     </body>
@@ -73,44 +39,7 @@
 </template>
   
 <script>
-import get_all_objects from '@/components/get_all_objects.vue';
 
-export default {
-    name: 'ProductPage',
-    components: {
-        get_all_objects 
-    },
-    data() {
-        return {
-            products: [],
-            filters: {
-                productName: '',
-                price: '',
-                stock: 'all',
-                seller: '',
-                deliveryDate: ''
-            },
-            filteredProducts: []
-        };
-    },
-    methods: {
-        handleObjectsLoaded(objects) {
-            this.products = Object.values(objects.product); // Speichere die abgerufenen Produkte
-            this.filterProducts(); // Optional: Filter anwenden
-        },
-        filterProducts() {
-            if (Array.isArray(this.products)) {
-                this.filteredProducts = [];
-            }
-            console.log(this.products)
-            for (const product of this.products) {
-                if ((product.produkt_name.match(/productName.*/)) && (product.preis < this.price)) {
-                    this.filteredProducts.push(product);
-                }
-            }       
-        }
-    }
-};
 </script>
 
 <style scoped>
