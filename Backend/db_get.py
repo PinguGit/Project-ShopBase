@@ -111,3 +111,87 @@ def getManufacturerById(manufacturerId):
     conn.close()
     return result if result else None
 
+def getVendorProducts(vendorId):
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    
+    query = """
+        SELECT 
+            p.produkt_id,
+            p.produkt_name,
+            p.preis,
+            h.hersteller_name,
+            l.land AS hersteller_land
+        FROM 
+            verkaeufer_produkte vp
+        JOIN 
+            product p ON vp.produkt_id = p.produkt_id
+        JOIN 
+            hersteller h ON p.hersteller_id = h.hersteller_id
+        JOIN 
+            laender l ON h.laender_id = l.laender_id
+        WHERE 
+            vp.verkaeufer_id = %s
+    """
+    
+    cursor.execute(query, (vendorId,))
+    result = cursor.fetchall()
+    conn.close()
+
+    # Create a Dictionary of Products
+    products_dict = {}
+    for row in result:
+        product_id = row['produkt_id']
+        products_dict[product_id] = {
+            'produkt_name': row['produkt_name'],
+            'preis': row['preis'],
+            'hersteller_name': row['hersteller_name'],
+            'hersteller_land': row['hersteller_land']
+        }
+    
+    return products_dict
+
+def getVendorOrders(vendorId):
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    
+    query = """
+        SELECT 
+            b.bestell_id,
+            b.anzahl,
+            b.gesamtpreis,
+            p.produkt_name,
+            p.preis AS einzelpreis,
+            h.hersteller_name
+        FROM 
+            bestellung b
+        JOIN 
+            verkaeufer_produkte vp ON b.verkaeufer_produkt_id = vp.verkaeufer_produkt_id
+        JOIN 
+            product p ON vp.produkt_id = p.produkt_id
+        JOIN 
+            hersteller h ON p.hersteller_id = h.hersteller_id
+        WHERE 
+            vp.verkaeufer_id = %s
+    """
+    
+    cursor.execute(query, (vendorId,))
+    result = cursor.fetchall()
+    conn.close()
+
+    # Erstellen eines Dictionaries der Bestellungen
+    orders_dict = {}
+    for row in result:
+        order_id = row['bestell_id']
+        orders_dict[order_id] = {
+            'anzahl': row['anzahl'],
+            'gesamtpreis': row['gesamtpreis'],
+            'produkt_name': row['produkt_name'],
+            'einzelpreis': row['einzelpreis'],
+            'hersteller_name': row['hersteller_name']
+        }
+    
+    return orders_dict
+
+
+
