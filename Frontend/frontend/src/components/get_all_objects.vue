@@ -8,7 +8,7 @@
   data() {
     return {
       objects: {}, 
-      tableNames: ['kunde', 'orte', 'laender', 'hersteller', 'bestellung', 'passwort', 'product', 'verkaeufer'], 
+      tableNames: ['kunde', 'hersteller', 'product', 'verkaeufer'], 
       host: 'http://127.0.0.1:5000/',
     };
   },

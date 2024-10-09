@@ -36,26 +36,11 @@
                     <!-- Filter by Price -->
                     <label for="price">Price:</label>
                     <input type="number" id="price-filter" v-model="filters.price">
-
-                    
-                    <!-- Filter by Stock -->
-                    <label for="stock">Stock:</label>
-                    <select id="stock-filter" v-model="filters.stock">
-                        <option value="all">All Stock</option>
-                        <option value="below">Below 50</option>
-                        <option value="between">Between 50 and 100</option>
-                        <option value="above">Above 100</option>
-                    </select>
             
                     <!-- Filter by Seller -->
                     <label for="seller">Seller:</label>
                     <input type="text" id="seller" v-model="filters.seller" placeholder="Enter seller">
             
-                    <!-- Filter by Delivery Date -->
-                    <label for="delivery-date">Delivery Date (yyyy-mm-dd):</label>
-                    <input type="date" id="delivery-date" v-model="filters.deliveryDate">
-            
-                    <button type="button" @click="filterProducts">Apply Filter</button>
                 </form>
             </div>
             
@@ -63,7 +48,7 @@
             <!-- Product List -->
             <div class="product-list">
                 <!-- Product Box -->
-                <div v-for="product in products" :key="product.produkt_name" class="product-box">
+                <div v-for="product in this.filteredProducts" :key="product.produkt_name" class="product-box">
                     <p>{{ product.produkt_name }} {{ product.preis }}</p>
                 </div>
             </div>
@@ -93,6 +78,15 @@ export default {
             filteredProducts: []
         };
     },
+
+    watch: {
+        filters: {
+            handler() {
+                this.filterProducts();
+            },
+            deep: true
+        }
+    },
     methods: {
         handleObjectsLoaded(objects) {
             this.products = Object.values(objects.product); // Speichere die abgerufenen Produkte
@@ -102,15 +96,24 @@ export default {
             if (Array.isArray(this.products)) {
                 this.filteredProducts = [];
             }
-            console.log(this.products)
-            for (const product of this.products) {
-                if ((product.produkt_name.match(/productName.*/)) && (product.preis < this.price)) {
-                    this.filteredProducts.push(product);
-                }
+            //console.log(this.products)
+
+
+            // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
+            this.filteredProducts = this.products.filter(product => {
+                const namematch = product.produkt_name.toLowerCase().includes(this.filters.productName.toLowerCase());
+                const pricematch = this.filters.price === '' || this.product.preis <= this.filters.price;
+                const sellermatch = product.hersteller.toLowerCase().includes(this.filters.seller.toLowerCase());
+
+                return namematch && pricematch && sellermatch;
+            }
+
+            )
+            console.log("Filterd products")
+            console.log(this.filteredProducts)
             }       
         }
     }
-};
 </script>
 
 <style scoped>

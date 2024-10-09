@@ -2,8 +2,7 @@
   <div id="app">
     <!-- Navigation -->
     <nav>
-      <router-link to="/">Product Page</router-link>
-      <router-link to="/api_test">API Test Page</router-link>
+
     </nav>
 
     <!-- Router View für dynamische Komponenten basierend auf der Route -->
