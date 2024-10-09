@@ -7,12 +7,12 @@ def getType(table, dictionary):
         case "hersteller":
             return getCommand.getManufacturers(dictionary)
         case "laender":
-            return 'Grenzen müssen Menschen weichen'
+            return 'Grenzen muessen Menschen weichen'
         case "kundenbestellungen":
             return 'fick dich'
         case "bestellung":
-            return 'gibt nen anderen endpunkt hierführ du seniler Oppa'
-        case "verkauefer":
+            return 'gibt nen anderen endpunkt du seniler Oppa'
+        case "verkaeufer":
             return getCommand.getVendors(dictionary)
         case "passwort":
             return 'hättest du wohl gerne'
