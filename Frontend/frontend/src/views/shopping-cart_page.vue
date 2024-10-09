@@ -4,15 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Product Page</title>
+        <title>Shopping Cart</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
-        <!-- get_all_objects Komponente wird hier eingebunden -->
-        <get_all_objects @objectsLoaded="handleObjectsLoaded" />
-
-        <!-- <p> {{ objects }}</p> -->
-
         <div class="container">
             <div class="logo">
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
@@ -23,34 +18,20 @@
             <div class="profile">
                 <i class="fa-solid fa-user"> Benutzer</i>
             </div>
-            <div class="basket" href="">
-                <router-link to="/shopping-cart"><i class="fas fa-shopping-cart"> Shopping Cart</i></router-link>
+            <div class="basket">
+                <i class="fas fa-shopping-cart"> Shopping Cart</i>
             </div>
-            <div class="filter">
-                <h4>Filter Products</h4>
-                <form id="filter-form">
-                    <!-- Filter by Product Name -->
-                    <label for="product-name">Product Name:</label>
-                    <input type="text" id="product-name" v-model="filters.productName" placeholder="Enter product name">
-            
-                    <!-- Filter by Price -->
-                    <label for="price">Price:</label>
-                    <input type="number" id="price-filter" v-model="filters.price">
-            
-                    <!-- Filter by Seller -->
-                    <label for="seller">Seller:</label>
-                    <input type="text" id="seller" v-model="filters.seller" placeholder="Enter seller">
-            
-                </form>
-            </div>
-            
 
-            <!-- Product List -->
-            <div class="product-list">
-                <!-- Product Box -->
-                <div v-for="product in this.filteredProducts" :key="product.produkt_name" class="product-box">
-                    <p>{{ product.produkt_name }} {{ product.preis }}</p>
+            <div class="article-container">
+                <p>Einkaufswagen</p>
+                <div class="articles">
+                    <!-- Artikel hier hinzufügen (löschfunktion hinzufügen [menge maybe einstellen können?])  -->
                 </div>
+            </div>
+
+            <div class="payment">
+                <p>Zwischensumme <!--hier dann den {{ ... }}--></p>
+                <button class="payment-continue">Zur Kasse gehen</button>
             </div>
         </div>
     </body>
@@ -58,62 +39,7 @@
 </template>
   
 <script>
-import get_all_objects from '@/components/get_all_objects.vue';
 
-export default {
-    name: 'ProductPage',
-    components: {
-        get_all_objects 
-    },
-    data() {
-        return {
-            products: [],
-            filters: {
-                productName: '',
-                price: '',
-                stock: 'all',
-                seller: '',
-                deliveryDate: ''
-            },
-            filteredProducts: []
-        };
-    },
-
-    watch: {
-        filters: {
-            handler() {
-                this.filterProducts();
-            },
-            deep: true
-        }
-    },
-    methods: {
-        handleObjectsLoaded(objects) {
-            this.products = Object.values(objects.product); // Speichere die abgerufenen Produkte
-            this.filterProducts(); // Optional: Filter anwenden
-        },
-        filterProducts() {
-            if (Array.isArray(this.products)) {
-                this.filteredProducts = [];
-            }
-            //console.log(this.products)
-
-
-            // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
-            this.filteredProducts = this.products.filter(product => {
-                const namematch = product.produkt_name.toLowerCase().includes(this.filters.productName.toLowerCase());
-                const pricematch = this.filters.price === '' || this.product.preis <= this.filters.price;
-                const sellermatch = product.hersteller.toLowerCase().includes(this.filters.seller.toLowerCase());
-
-                return namematch && pricematch && sellermatch;
-            }
-
-            )
-            console.log("Filterd products")
-            console.log(this.filteredProducts)
-            }       
-        }
-    }
 </script>
 
 <style scoped>

@@ -4,33 +4,36 @@
   </template>
   
   <script>
-  export default {
-    name: 'get_all_objects',
-    data() {
-      return {
-        objects: [], // Array, um die abgerufenen Objekte zu speichern
-        tableName: 'product',  // Beispiel-Tabellenname, kann dynamisch geändert werden
-        host: 'http://127.0.0.1:5000/',
-        
-    
+ export default {
+  data() {
+    return {
+      objects: {}, 
+      tableNames: ['kunde', 'hersteller', 'product', 'verkaeufer'], 
+      host: 'http://127.0.0.1:5000/',
     };
-    },
-    mounted() {
-      this.fetchallobjects(this.tableName); // Beim Laden der Komponente werden die Objekte abgerufen
-    },
-    methods: {
-      fetchallobjects(tableName) {
-        fetch(`${this.host}api/get_all_objects/${tableName}`)
-          .then(response => response.json()) // Konvertiere die Antwort in JSON
-          .then(data => {
-            this.objects = data; // Speichere die abgerufenen Objekte im Array
-          })
-          .catch(error => {
-            console.error("Fehler beim Abrufen der Objekte:", error);
-          });
-      },
-    },
-  };
+  },
+  mounted() {
+    this.fetchallobjects(); 
+  },
+  methods: {
+    async fetchallobjects() {
+
+      for (const tableName of this.tableNames) {
+        try {
+          const response = await fetch(`${this.host}api/get_all_objects/${tableName}`);
+          const data = await response.json(); 
+
+          this.objects[tableName] = data
+
+        } catch (error) {
+          console.error(`Fehler beim Abrufen der Daten für Tabelle ${tableName}:`, error);
+        }
+      }
+    this.$emit('objectsLoaded', this.objects); // Emitiere die geladenen Objekte
+    console.log(this.objects)
+    }
+  }
+};
   </script>
   
   <style scoped>
