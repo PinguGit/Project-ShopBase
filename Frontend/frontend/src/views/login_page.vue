@@ -15,7 +15,7 @@
                     <i class="fas fa-user"></i>
                     <input type="text" placeholder="E-Mail" required>
                 </div>
-                <div>
+                <div class="password-class">
                     <i class="fas fa-lock"></i>
                     <input type="password" placeholder="Password" required>
                 </div>
@@ -56,7 +56,11 @@
     }
 
     h2 {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+    }
+
+    .password-class {
+        margin-bottom: 10px;
     }
 
     input[type="text"], input[type="password"] {
