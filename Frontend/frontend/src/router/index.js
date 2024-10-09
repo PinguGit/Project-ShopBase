@@ -6,6 +6,7 @@ import Shopping_cart from '@/views/shopping-cart_page.vue';
 import Login_page from '@/views/login_page.vue';
 import Register_page from '@/views/register_page.vue';
 import ApiPage from '@/components/Apipage.vue';
+import Get_Object from '@/components/get_object.vue';
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
         path: 'orders',  // Verschachtelte Route für /api_test/orders
         name: 'GetAllOrders',
         component: Get_all_orders
+      },
+      {
+        path: 'object',
+        name: 'GetObject',
+        component: Get_Object
       }
     ]
   },

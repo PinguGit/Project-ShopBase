@@ -18,7 +18,7 @@
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search Bar">
+                <input type="text" placeholder="Search for products" v-model="filters.productName">
             </div>
             <div class="profile">
                 <i class="fa-solid fa-user"> Benutzer</i>
@@ -30,8 +30,6 @@
                 <h4>Filter Products</h4>
                 <form id="filter-form">
                     <!-- Filter by Product Name -->
-                    <label for="product-name">Product Name:</label>
-                    <input type="text" id="product-name" v-model="filters.productName" placeholder="Enter product name">
             
                     <!-- Filter by Price -->
                     <label for="price">Price:</label>
@@ -43,15 +41,28 @@
             
                 </form>
             </div>
-            
-
+        
             <!-- Product List -->
+
             <div class="product-list">
-                <!-- Product Box -->
-                <div v-for="product in this.filteredProducts" :key="product.produkt_name" class="product-box">
-                    <p>{{ product.produkt_name }} {{ product.preis }}</p>
-                </div>
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Produkt Name</th>
+                            <th>Preis</th>
+                            <th>Hersteller</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="product in this.filteredProducts" :key="product.produkt_name">
+                            <td>{{ product.produkt_name }}</td>
+                            <td>{{ product.preis }}</td>
+                            <td>{{ product.hersteller }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </body>
     </html>
@@ -89,14 +100,15 @@ export default {
     },
     methods: {
         handleObjectsLoaded(objects) {
-            this.products = Object.values(objects.product); // Speichere die abgerufenen Produkte
-            this.filterProducts(); // Optional: Filter anwenden
+            this.products = Object.values(objects.product); 
+            this.filterProducts(); 
         },
+
         filterProducts() {
             if (Array.isArray(this.products)) {
                 this.filteredProducts = [];
             }
-            //console.log(this.products)
+        
 
 
             // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
@@ -193,6 +205,18 @@ body {
     margin-top: 10px;
 }
 
+<style>
+.container {
+    display: grid;
+    grid-template-columns: 200px 1fr 150px 150px;
+    grid-template-rows: 100px 1fr;
+    grid-template-areas:
+        "logo search-bar basket profile"
+        "filter product-list product-list product-list";
+    gap: 10px;
+    height: 100vh;
+}
+
 .product-list {
     grid-area: product-list;
     padding: 10px;
@@ -201,18 +225,30 @@ body {
     gap: 20px;
 }
 
-/* Product Boxes */
-.product-box {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-flow: column;
-    align-items: center;
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table th, .product-table td {
     border: 1px solid black;
     padding: 10px;
-    background-color: #f0f0f0;
-    width: 100%;
-    justify-content: space-between;
+    text-align: center;
 }
+
+.product-table th { 
+    background-color: #2c313d;
+    color: white;
+}
+
+.product-table tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.product-table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
 
 .image-section {
     display: flex;
