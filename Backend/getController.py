@@ -24,7 +24,7 @@ def getOrdersById(customerId):
 
 #returns all products of a vendor
 @app.route('/api/get_products/<vendorId>', methods=['GET'])
-def getOrdersById(vendorId):
+def getVendorProducts(vendorId):
     dictionary = db_get.getVendorProducts(vendorId)
     return jsonify(dictionary)
 
