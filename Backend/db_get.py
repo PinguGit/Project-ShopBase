@@ -193,5 +193,33 @@ def getVendorOrders(vendorId):
     
     return orders_dict
 
+def getVendorByProductId(product_id):
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    
+    query = """
+        SELECT 
+            vp.verkaeufer_id,
+            v.name
+        FROM 
+            verkaeufer_produkte vp
+        JOIN 
+            verkaeufer v ON vp.verkaeufer_id = v.verkaeufer_id
+        WHERE 
+            vp.produkt_id = %s
+    """
+    
+    cursor.execute(query, (product_id,))
+    result = cursor.fetchall()
+    conn.close()
 
+    vendors_list = []
+    for row in result:
+        vendor_details = {
+            'verkaeufer_id': row['verkaeufer_id'],
+            'name': row['name']
+        }
+        vendors_list.append(vendor_details)
+    
+    return vendors_list
 
