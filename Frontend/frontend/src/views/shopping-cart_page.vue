@@ -32,25 +32,29 @@
 
             <div class="cart-container">
                 <!-- Artikelbereich -->
-                <div class="cart-item">
-                    <div class="item-image">
-                        <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
-                    </div>
-                    <div class="item-details">
-                        <p class="item-title">Performance Pants Herren Schwarz (Größe 27W/32L)</p>
-                        <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
-                        <p class="item-availability">Auf Lager</p>
-                        <p class="item-size">Größe: 27W / 32L</p>
-                        <p class="item-color">Farbe: Schwarz</p>
-                        <div class="item-actions">
-                            <label for="quantity">Menge: </label>
-                            <input id="quantity" type="number" value="1" min="1">
-                            <button>Löschen</button>
+                <div class="cart-content">
+                    <div class="cart-item">
+                        <div class="item-image">
+                            <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
+                        </div>
+                        <div class="item-details">
+                            <p class="item-title">Performance Pants Herren Schwarz (Größe 27W/32L)</p>
+                            <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
+                            <p class="item-availability">Auf Lager</p>
+                            <p class="item-size">Größe: 27W / 32L</p>
+                            <p class="item-color">Farbe: Schwarz</p>
+                            <div class="item-actions">
+                                <label for="quantity">Menge: </label>
+                                <input id="quantity" type="number" value="1" min="1">
+                                <button>Löschen</button>
+                            </div>
+                        </div>
+                        <div class="item-price">
+                            <p>55,00 €</p>
                         </div>
                     </div>
-                    <div class="item-price">
-                        <p>55,00 €</p>
-                    </div>
+
+                    <!-- hier weitere elemente dann so dies das ananas-->
                 </div>
 
                 <!-- Zahlungsbereich -->
@@ -173,6 +177,8 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
+    display: flex; /* Flexbox hinzufügen */
+    gap: 20px; /* Abstand zwischen Artikelbereich und Zahlungsbereich */
     width: 100%;
 }
 
@@ -188,7 +194,7 @@ body {
 
 .cart-content {
     display: grid;
-    grid-template-columns: 3fr 1fr; /* Artikel und Preisbereich */
+    grid-template-columns: 1fr 1fr; /* Artikel und Preisbereich */
     gap: 20px;
 }
 
@@ -196,7 +202,9 @@ body {
     display: flex; /* Flex-Layout für Artikel */
     gap: 15px; /* Abstand zwischen Bild und Details */
     border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
+    border-top: 1px solid #dee2e6;
     padding: 10px 0; /* Vertikaler Abstand */
+    height: 200px;
 }
 
 .item-image img {
@@ -259,7 +267,7 @@ body {
     padding: 20px;
     border-radius: 5px;
     border: 1px solid #e0e0e0;
-    margin-top: 20px; /* Abstand zum Warenkorb */
+    width: 300px; /* Feste Breite für den Zahlungsbereich */
 }
 
 .payment-section p {
@@ -270,8 +278,8 @@ body {
 .checkout-button {
     width: 100%;
     padding: 10px;
-    background-color: #ffcc00;
-    color: #343a40;
+    background-color: #007bff;
+    color: #ffffff;
     border: none;
     font-size: 16px;
     font-weight: bold;
@@ -281,7 +289,7 @@ body {
 }
 
 .checkout-button:hover {
-    background-color: #e6b800;
+    background-color: #0053ac;
 }
 
 
