@@ -10,21 +10,24 @@
     <body>
         <div class="login-container">
             <h2>Login</h2>
-            <form>
-                <div>
+            <form @submit.prevent="loginUser">
+                <div id="email">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="E-Mail" required>
+                    <input type="text" v-model="email" placeholder="E-Mail" required>
                 </div>
-                <div class="password-class">
+                <div class="password-class" id="password">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" v-model="password" placeholder="Password" required>
                 </div>
-                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
                 <router-link to="/register-page">
                     <button type="button" class="register-btn">
                         <i class="fas fa-user"></i> Register
                     </button>
                 </router-link>
+                <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
             </form>
         </div>
     </body>
@@ -32,7 +35,49 @@
 </template>
   
 <script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      errorMessage: '' // Fehlermeldung hinzufügen
+    };
+  },
+  methods: {
+    async loginUser() {
+      console.log("Login Button clicked"); // Log zum Testen
+      const loginData = {
+        email: this.email,
+        entered_password: this.password,
+      };
 
+      try {
+        console.log("Sending request to server..."); // Log vor dem fetch-Aufruf
+        const response = await fetch('http://localhost:5000/api/loginUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginData)
+        });
+
+        const data = await response.json();
+        console.log("Response received:", data); // Log der Serverantwort
+
+        if (data.success) {
+          console.log('Login successful');
+          this.$router.push('/user-page');
+        } else {
+          console.log('Invalid credentials');
+          this.errorMessage = 'Invalid credentials. Please try again.';
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        this.errorMessage = 'An error occurred. Please try again later.';
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -99,5 +144,10 @@
 
     .login-container i {
         margin-right: 8px;
+    }
+
+    .error {
+        color: red;
+        margin-top: 10px;
     }
 </style>
