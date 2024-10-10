@@ -22,7 +22,7 @@
         </div>
     
         <!-- Form Submission Handler -->
-        <form>
+        <form @submit.prevent="register">
             <div class="input-container">
             <i class="fas fa-user"></i>
             <input type="text" v-model="form.firstName" :placeholder="customerType === 'business' ? 'Geschäftsname' : 'Vorname'" required>
@@ -43,18 +43,22 @@
                 </div>
             </div>
             </div>
+            
             <div class="input-container">
             <i class="fa-regular fa-building"></i>
             <input type="text" v-model="form.city" placeholder="Stadt" required>
             </div>
+
             <div class="input-container">
             <i class="fa-solid fa-location-dot"></i>
             <input type="text" v-model="form.zipCode" placeholder="PLZ" required>
             </div>
+
             <div class="input-container">
             <i class="fas fa-envelope"></i>
             <input type="email" v-model="form.email" placeholder="Email" required>
             </div>
+
             <div class="input-container">
             <i class="fas fa-globe"></i>
             <select v-model="form.countryId" required>
@@ -62,10 +66,12 @@
                 <option v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
             </select>
             </div>
+
             <div class="input-container">
             <i class="fas fa-lock"></i>
             <input type="password" v-model="form.password" placeholder="Passwort" required>
             </div>
+
             <div class="input-container">
             <i class="fas fa-calendar-alt"></i>
             <input type="date" v-model="form.birthDate" placeholder="Geburtsdatum" required>
@@ -79,7 +85,8 @@
             <p class="back-to-login">Zurück zum Login</p>
             </router-link>
             
-            <post_register_user @registration-success="handleRegistrationSuccess" />
+            <!-- Set reference to the function to call it in methods -->
+            <post_register_user ref="postRegisterComponent" :form="form"/>
         </form>
         </div>
     </body>
@@ -104,7 +111,8 @@
           zipCode: '',
           countryId: '',
           password: '',
-          birthDate: ''
+          birthDate: '',
+          city: '',
         },
         countries: [
         { id: 1, name: "Germany" },
@@ -305,9 +313,10 @@
       };
     },
     methods: {
-      register() {
-        this.$refs.postRegisterComponent.post_register_user(this.form);
-      }
+    register() {
+     
+      this.$refs.postRegisterComponent.post_register_user();
+    },
     }
   };
   </script>

@@ -11,11 +11,13 @@
 
     name: "post_user",
     
+    host: 'http://127.0.0.1:5000/',
+    
     methods: {
 
       async post_register_user() {
         try {
-          const response = await fetch(`${this.host}api/registerUser`, {
+          const response = await fetch(`${this.host}/api/registerUser`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -28,6 +30,10 @@
           }
   
           const data = await response.json();
+
+
+          // Return Result of API back to parent who called
+          this.$emit('response', data)
           console.log("Successfully registered", data);
   
         } catch (error) {
