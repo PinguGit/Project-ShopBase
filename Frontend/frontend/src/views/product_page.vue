@@ -18,7 +18,7 @@
                 <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search for products" v-model="filters.productName">
+                <input type="text" placeholder="Suche nach Produkten..." v-model="filters.productName">
             </div>
 
             <router-link style="text-decoration: none; color: black;" to="/login-page">
@@ -150,7 +150,9 @@ export default {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* Light background for contrast */
+    color: #343a40; /* Dark text for readability */
 }
 
 .container {
@@ -160,8 +162,9 @@ body {
     grid-template-areas:
         "logo search-bar basket profile"
         "filter product-list product-list product-list";
-    gap: 10px;
+    gap: 15px;
     height: 100vh;
+    padding: 20px;
 }
 
 .logo {
@@ -169,9 +172,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-    background: #2c313d;
+    background-color: #495057; /* Dark background */
+    border-radius: 50%;
+    padding: 10px;
 }
 
 .search-bar {
@@ -185,70 +188,127 @@ body {
     width: 90%;
     padding: 10px;
     font-size: 16px;
+    border-radius: 25px; /* More rounded corners */
+    border: 1px solid #6c757d;
+    background-color: #fff;
+    color: #495057;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.basket {
-    grid-area: basket;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-}
-
-.profile {
-    grid-area: profile;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid black;
+.search-bar input:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
 }
 
 .basket, .profile {
-    font-size: 12px;
-    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding: 10px;
     height: 80px;
+}
+
+.basket:hover, .profile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.basket i, .profile i {
+    color: #007bff;
+    font-size: 16px;
+}
+
+.basket, .profile {
+    font-size: 14px;
+    color: #343a40;
 }
 
 .filter {
     grid-area: filter;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-    padding: 10px;
-    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.filter h4 {
+    margin-bottom: 15px;
+    color: #007bff;
+}
+
+.filter input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
 }
 
 .product-list {
     grid-area: product-list;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .product-table {
     width: 100%;
-    border:1px  solid black;
     border-collapse: collapse;
 }
 
 .product-table th, .product-table td {
-    padding: 10px;
+    padding: 15px;
     text-align: center;
+    border-bottom: 1px solid #dee2e6;
 }
 
-.product-table th { 
-    background-color: #2c313d;
-    color: white;
+.product-table th {
+    background-color: #343a40;
+    color: #fff;
+    font-weight: bold;
+}
+
+.product-table td {
+    color: #495057;
 }
 
 .product-table tr:nth-child(even) {
-    background-color: #f0f0f0;
-    border:1px  solid black;
+    background-color: #f8f9fa;
 }
 
 .product-table tr:nth-child(odd) {
     background-color: #ffffff;
 }
+
+.product-table button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product-table button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional hover and focus effects */
+.search-bar input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
 </style>
