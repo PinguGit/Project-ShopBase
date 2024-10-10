@@ -20,12 +20,19 @@
             <div class="search-bar">
                 <input type="text" placeholder="Search for products" v-model="filters.productName">
             </div>
-            <div class="profile">
-                <i class="fa-solid fa-user"> Benutzer</i>
-            </div>
-            <div class="basket" href="">
-                <router-link to="/shopping-cart"><i class="fas fa-shopping-cart"> Shopping Cart</i></router-link>
-            </div>
+
+            <router-link style="text-decoration: none; color: black;" to="/login-page">
+                <div class="profile">
+                    <i class="fa-solid fa-user"> Profil</i>
+                </div>
+            </router-link>
+
+            <router-link style="text-decoration: none; color: black;" to="/shopping-cart">
+                <div class="basket">
+                    <i class="fas fa-shopping-cart"> Warenkorb</i>
+                </div>
+            </router-link>
+
             <div class="filter">
                 <h4>Filter Products</h4>
                 <form id="filter-form">
@@ -201,6 +208,7 @@ body {
 .basket, .profile {
     font-size: 12px;
     margin: 10px;
+    height: 80px;
 }
 
 .filter {
