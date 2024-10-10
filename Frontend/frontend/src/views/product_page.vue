@@ -14,9 +14,11 @@
         <!-- <p> {{ objects }}</p> -->
 
         <div class="container">
-            <div class="logo">
-                <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
-            </div>
+            <router-link to="/">
+                <div class="logo">
+                    <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
+                </div>
+            </router-link>
             <div class="search-bar">
                 <input type="text" placeholder="Suche nach Produkten..." v-model="filters.productName">
             </div>
@@ -164,7 +166,7 @@ body {
         "filter product-list product-list product-list";
     gap: 15px;
     height: 100vh;
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
 }
 
 .logo {
@@ -175,6 +177,8 @@ body {
     background-color: #495057; /* Dark background */
     border-radius: 50%;
     padding: 10px;
+    width: 200px;
+    height: 100px;
 }
 
 .search-bar {
@@ -213,7 +217,8 @@ body {
     transition: transform 0.3s ease;
     cursor: pointer;
     padding: 10px;
-    height: 80px;
+    height: 60px;
+    margin-top: 15px;
 }
 
 .basket:hover, .profile:hover {
@@ -223,7 +228,7 @@ body {
 
 .basket i, .profile i {
     color: #007bff;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .basket, .profile {
