@@ -26,7 +26,12 @@
                     <button type="button" class="register-btn">
                         <i class="fas fa-user"></i> Register
                     </button>
+                </router-link>                
+                
+                <router-link style="text-decoration: none;" to="/">
+                    <p class="back">zurück</p>
                 </router-link>
+
                 <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
             </form>
         </div>
@@ -149,5 +154,11 @@ export default {
     .error {
         color: red;
         margin-top: 10px;
+    }
+
+    .back {
+        font-size: 10px;
+        color: gray;
+        text-align: left;
     }
 </style>
