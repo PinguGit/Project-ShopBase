@@ -30,16 +30,34 @@
                 </div>
             </router-link>
 
-            <div class="article-container">
-                <p>Einkaufswagen</p>
-                <div class="articles">
-                    <!-- Artikel hier hinzufügen (löschfunktion hinzufügen [menge maybe einstellen können?])  -->
+            <div class="cart-container">
+                <!-- Artikelbereich -->
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
+                    </div>
+                    <div class="item-details">
+                        <p class="item-title">Performance Pants Herren Schwarz (Größe 27W/32L)</p>
+                        <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
+                        <p class="item-availability">Auf Lager</p>
+                        <p class="item-size">Größe: 27W / 32L</p>
+                        <p class="item-color">Farbe: Schwarz</p>
+                        <div class="item-actions">
+                            <label for="quantity">Menge: </label>
+                            <input id="quantity" type="number" value="1" min="1">
+                            <button>Löschen</button>
+                        </div>
+                    </div>
+                    <div class="item-price">
+                        <p>55,00 €</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="payment">
-                <p>Zwischensumme <!--hier dann den {{ ... }}--></p>
-                <button class="payment-continue">Zur Kasse gehen</button>
+                <!-- Zahlungsbereich -->
+                <div class="payment-section">
+                    <p>Zwischensumme (1 Artikel): <strong>55,00 €</strong></p>
+                    <button class="checkout-button">Zur Kasse gehen</button>
+                </div>
             </div>
         </div>
     </body>
@@ -70,7 +88,7 @@ body {
     grid-template-rows: 100px 1fr;
     grid-template-areas:
         "logo search-bar basket profile"
-        "filter product-list product-list product-list";
+        "cart-container cart-container cart-container cart-container";
     gap: 15px;
     height: 100vh;
     padding: 10px 20px 20px 20px;
@@ -143,85 +161,128 @@ body {
     color: #343a40;
 }
 
-.filter {
-    grid-area: filter;
-    background-color: #fff;
-    border-radius: 10px;
-    border: 1px solid #6c757d;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-}
-
-.filter h4 {
-    margin-bottom: 15px;
-    color: #007bff;
-}
-
-.filter input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    background-color: #f8f9fa;
-}
-
-.product-list {
-    grid-area: product-list;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.product-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.product-table th, .product-table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.product-table th {
-    background-color: #343a40;
-    color: #fff;
-    font-weight: bold;
-}
-
-.product-table td {
-    color: #495057;
-}
-
-.product-table tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-.product-table tr:nth-child(odd) {
-    background-color: #ffffff;
-}
-
-.product-table button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.product-table button:hover {
-    background-color: #0056b3;
-}
-
 /* Additional hover and focus effects */
 .search-bar input:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.cart-container {
+    grid-area: cart-container; /* Richtig gestellt von cart-contain zu cart-container */
+    margin: 0 auto; /* Zentriert den Container */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+}
+
+.cart-header {
+    margin-bottom: 20px; /* Abstand zum nächsten Element */
+}
+
+.cart-header h2 {
+    font-size: 24px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Artikel und Preisbereich */
+    gap: 20px;
+}
+
+.cart-item {
+    display: flex; /* Flex-Layout für Artikel */
+    gap: 15px; /* Abstand zwischen Bild und Details */
+    border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
+    padding: 10px 0; /* Vertikaler Abstand */
+}
+
+.item-image img {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.item-details {
+    flex-grow: 1; /* Füllt den verfügbaren Platz */
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-subtitle {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.item-availability {
+    color: #28a745;
+    margin: 10px 0;
+}
+
+.item-size,
+.item-color {
+    font-size: 14px;
+}
+
+.item-actions {
+    margin-top: 10px;
+}
+
+.item-actions input {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.item-actions button {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+}
+
+.item-price {
+    display: flex;
+    align-items: flex-start;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.payment-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px; /* Abstand zum Warenkorb */
+}
+
+.payment-section p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.checkout-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffcc00;
+    color: #343a40;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #e6b800;
+}
 
 
 </style>
