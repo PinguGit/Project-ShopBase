@@ -5,7 +5,7 @@
         <title>Product Page</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
-    <body>
+    <body id=register_page>
         <div class="register-container">
         <h2>Register</h2>
     
@@ -61,6 +61,8 @@
 
             <div class="input-container">
             <i class="fas fa-globe"></i>
+
+            
             <select v-model="form.countryId" required>
                 <option value="" disabled selected>Land auswählen</option>
                 <option v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
@@ -313,16 +315,22 @@
       };
     },
     methods: {
+<<<<<<< HEAD
     register() {
      
       this.$refs.postRegisterComponent.post_register_user();
     },
+=======
+      register() {
+        this.$refs.post_register_user.post_register_user(this.form);
+      }
+>>>>>>> a255099 (css class)
     }
   };
   </script>
 
 <style>
-body {
+#register_page {
     display: flex;
     justify-content: center;
     align-items: center;
