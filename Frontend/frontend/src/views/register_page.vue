@@ -320,7 +320,15 @@
       this.$refs.postRegisterComponent.post_register_user();
     },
     handleResponse() {
-        
+        if (response.success === true) {
+            alert("Login successfull")
+        }
+        else if (response.success && response.sucess.error) {
+            alert("User already exists")
+        }
+        else {
+            alert("Failure by regestration")
+        }
     }
     }
   };
