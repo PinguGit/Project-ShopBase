@@ -31,7 +31,7 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
 
     # return id
     if result:
-        location_primary = result['ort_id']
+         location_primary = result[0]
     # create a new location
     else:
         insert_query = "INSERT INTO orte (plz, ort_name) VALUES (%s, %s)"
@@ -79,6 +79,7 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         return (f"Fehler bei der Registrierung: {str(e)}")
     
     finally:
+        cursor.close()
         conn.close()
 
 # user login
