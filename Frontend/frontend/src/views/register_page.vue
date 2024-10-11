@@ -319,9 +319,11 @@
      
       this.$refs.postRegisterComponent.post_register_user();
     },
-    handleResponse() {
+    handleResponse(response) {
         if (response.success === true) {
             alert("Login successfull")
+            // link to login page
+            this.$router.push('/login-page');
         }
         else if (response.success && response.sucess.error) {
             alert("User already exists")
