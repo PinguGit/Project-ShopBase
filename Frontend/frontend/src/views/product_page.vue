@@ -54,24 +54,16 @@
             <!-- Product List -->
 
             <div class="product-list">
-                <table class="product-table">
-                    <thead>
-                        <tr>
-                            <th>Produkt Name</th>
-                            <th>Preis</th>
-                            <th>Hersteller und Land</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="product in this.filteredProducts" :key="product.produkt_name">
-                            <td>{{ product.produkt_name }}</td>
-                            <td>{{ product.preis }}</td>
-                            <td>{{ product.hersteller }} {{ product.herstellerland }}</td>
-                            <td><button @click=addtoshoppingcart(product)> In den Warenkorb </button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="product" v-for="product in this.filteredProducts" :key="product.produkt_name">
+                    <div class="product-image">
+                        <img src="../assets/logo.png" alt="Produkt Bild">
+                    </div>
+                    <h3 class="product-title">{{ product.produkt_name }}</h3>
+                    <p class="product-price">Preis: {{ product.preis }}€</p>
+                    <p class="product-vendor">Verkäufer: {{ product.verkaeufer[0].verkaeufer_name }}</p>
+                    <p class="product-producer">Hersteller: {{ product.hersteller }}</p>
+                    <button class="add-to-cart" @click="addtoshoppingcart(product)"> In den Warenkorb hinzufügen</button>
+                </div>
             </div>
 
         </div>
@@ -259,61 +251,92 @@ body {
     background-color: #f8f9fa;
 }
 
-.product-list {
-    grid-area: product-list;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.product-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.product-table th, .product-table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.product-table th {
-    background-color: #343a40;
-    color: #fff;
-    font-weight: bold;
-}
-
-.product-table td {
-    color: #495057;
-}
-
-.product-table tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-.product-table tr:nth-child(odd) {
-    background-color: #ffffff;
-}
-
-.product-table button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.product-table button:hover {
-    background-color: #0056b3;
-}
-
-/* Additional hover and focus effects */
 .search-bar input:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.product {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    display: flex;  /* Flexbox verwenden */
+    justify-content: center;  /* Zentriert horizontal */
+    align-items: center;  /* Zentriert vertikal */
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.product-title {
+    grid-column: 2 / 4;
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+.product-price {
+    grid-column: 2 / 3;
+    font-size: 1rem;
+    color: #007bff;
+}
+
+.product-producer {
+    grid-column: 3 / 4;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.add-to-cart {
+    grid-column: 4 / 5;
+    grid-row: 1 / -1;
+    display: flex;  /* Flexbox verwenden */
+    justify-content: center;  /* Zentriert horizontal */
+    align-items: center;  /* Zentriert vertikal */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    justify-self: center;
+}
+
+.add-to-cart:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
 
 
 </style>
