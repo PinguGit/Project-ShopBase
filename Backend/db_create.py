@@ -31,7 +31,7 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         password_id = cursor.lastrowid
 
         if isCustomer == 'private':
-            cursor.execute("SELECT id FROM kunde WHERE email = %s", (email,))
+            cursor.execute("SELECT kunden_id FROM kunde WHERE email = %s", (email,))
             existing_user = cursor.fetchone()
 
             if existing_user:
@@ -45,7 +45,7 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate))
         else:
-            cursor.execute("SELECT id FROM verkauefer WHERE email = %s", (email,))
+            cursor.execute("SELECT verkaeufer_id FROM verkauefer WHERE email = %s", (email,))
             existing_user = cursor.fetchone()
 
             if existing_user:
