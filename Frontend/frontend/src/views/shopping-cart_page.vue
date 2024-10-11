@@ -196,6 +196,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Artikel und Preisbereich */
     gap: 20px;
+    width: 100%;
 }
 
 .cart-item {
@@ -205,12 +206,25 @@ body {
     border-top: 1px solid #dee2e6;
     padding: 10px 0; /* Vertikaler Abstand */
     height: 200px;
+    grid-column: 1 / -1;
+}
+
+.item-image {
+    display: flex;
+    justify-content: center; /* Horizontales Zentrieren */
+    align-items: center; /* Vertikales Zentrieren */
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-left: 20px;
+    width: 200px;
 }
 
 .item-image img {
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Bildverhältnis beibehalten */
 }
+
 
 .item-details {
     flex-grow: 1; /* Füllt den verfügbaren Platz */
