@@ -59,8 +59,9 @@
                         <img src="../assets/logo.png" alt="Produkt Bild">
                     </div>
                     <h3 class="product-title">{{ product.produkt_name }}</h3>
-                    <p class="product-price">{{ product.preis }}</p>
-                    <p class="product-producer">{{ product.hersteller }}</p>
+                    <p class="product-price">Preis: {{ product.preis }}€</p>
+                    <p class="product-vendor">Verkäufer: {{ product.verkaeufer[0].verkaeufer_name }}</p>
+                    <p class="product-producer">Hersteller: {{ product.hersteller }}</p>
                     <button class="add-to-cart" @click="addtoshoppingcart(product)"> In den Warenkorb hinzufügen</button>
                 </div>
             </div>
