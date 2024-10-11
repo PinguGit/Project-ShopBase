@@ -31,10 +31,12 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         password_id = cursor.lastrowid
 
         if isCustomer == 'private':
+            if None in (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate):
+                return 'Fehler: Einer der Werte ist None'
             # save customer data
             cursor.execute("""
                 INSERT INTO kunde (vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id, geburtsdatum) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate))
         else:
             # save vendor data
