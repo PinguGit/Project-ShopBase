@@ -325,7 +325,7 @@
             // link to login page
             this.$router.push('/login-page');
         }
-        else if (response.success && response.sucess.error) {
+        else if (response.sucess.error === "Email already exists") {
             alert("User already exists")
         }
         else {
