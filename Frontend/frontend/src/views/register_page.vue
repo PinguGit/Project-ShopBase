@@ -14,9 +14,9 @@
             <input type="radio" id="private" value="private" v-model="customerType" style="margin-bottom: 5px;">
             <label for="private">Privatkunde</label>
             </div>
-    
+            
             <div class="radio-item">
-            <input type="radio" id="business" value="business" v-model="customerType" style="margin-bottom: 5px;">
+            <input type="radio" id="business" value="business" v-model="form.customerType" style="margin-bottom: 5px;">
             <label for="business">Händler</label>
             </div>
         </div>
@@ -25,9 +25,9 @@
         <form @submit.prevent="register">
             <div class="input-container">
             <i class="fas fa-user"></i>
-            <input type="text" v-model="form.firstName" :placeholder="customerType === 'business' ? 'Geschäftsname' : 'Vorname'" required>
+            <input type="text" v-model="form.firstName" :placeholder="form.customerType === 'business' ? 'Geschäftsname' : 'Vorname'" required>
             </div>
-            <div v-if="customerType !== 'business'" class="input-container">
+            <div v-if="form.customerType !== 'business'" class="input-container">
             <i class="fas fa-user"></i>
             <input type="text" v-model="form.lastName" placeholder="Nachname" required>
             </div>
@@ -115,6 +115,7 @@
           password: '',
           birthDate: '',
           city: '',
+          customerType: ''
         },
         countries: [
         { id: 1, name: "Germany" },
@@ -311,20 +312,13 @@
         { id: 192, name: "Zambia" },
         { id: 193, name: "Zimbabwe" }
         ],
-        customerType: '' // Storing customer type (private or business)
       };
     },
     methods: {
-<<<<<<< HEAD
     register() {
      
       this.$refs.postRegisterComponent.post_register_user();
     },
-=======
-      register() {
-        this.$refs.post_register_user.post_register_user(this.form);
-      }
->>>>>>> a255099 (css class)
     }
   };
   </script>
