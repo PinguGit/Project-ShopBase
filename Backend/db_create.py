@@ -30,7 +30,7 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         cursor.execute("INSERT INTO passwort (password) VALUES (%s)", (hashed_password.decode('utf-8'),))
         password_id = cursor.lastrowid
 
-        if isCustomer:
+        if isCustomer == 'private':
             # save customer data
             cursor.execute("""
                 INSERT INTO kunde (vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id, geburtsdatum) 
@@ -60,7 +60,7 @@ def login_user(email, entered_password, isCustomer):
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
 
-    if isCustomer:
+    if isCustomer == 'private':
     # get user data if customer
         query = """
             SELECT k.kunden_id, p.password 
