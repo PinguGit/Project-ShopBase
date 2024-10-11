@@ -18,9 +18,10 @@ def registerUser():
     location_id = data.get('location_id')
     location = data.get('location')
     laender_id = data.get('laender_id')
+    birthdate = data.get('birthdate')
     isCustomer = data.get('isCustomer')
 
-    result = db_create.register_user(forename, lastname, street, housenumber, email, password, location_id, location, laender_id, isCustomer)
+    result = db_create.register_user(forename, lastname, street, housenumber, email, password, location_id, location, laender_id, isCustomer, birthdate)
     return jsonify({'success': result})
 
 # returns true or false whether it successfully verifies a user

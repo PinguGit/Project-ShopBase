@@ -15,7 +15,7 @@ def create_product(product_name, price):
     return result
 
 # create a new user
-def register_user(forename, lastname, street, housenumber, email, password, location_id, location, laender_id, isCustomer):
+def register_user(forename, lastname, street, housenumber, email, password, location_id, location, laender_id, isCustomer, birthdate):
     
     # password hashing
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -33,9 +33,9 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         if isCustomer:
             # save customer data
             cursor.execute("""
-                INSERT INTO kunde (vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id) 
+                INSERT INTO kunde (vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id, geburtsdatum) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id))
+            """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate))
         else:
             # save vendor data
             cursor.execute("""
@@ -70,7 +70,7 @@ def login_user(email, entered_password, isCustomer):
         """
     else:
         query = """
-            SELECT v.verkaeufer_id, p.password 
+            SELECT v.verkaeufer_id, p.password
             FROM verkaeufer v 
             JOIN passwort p ON v.password_id = p.password_id 
             WHERE v.email = %s
@@ -89,7 +89,7 @@ def login_user(email, entered_password, isCustomer):
     # verify password
     if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
         print("Login erfolgreich!")
-        return True
+        return result
     else:
         print("Falsches Passwort.")
         return False
