@@ -11,7 +11,7 @@
     
         <div class="custom-radio">
             <div class="radio-item">
-            <input type="radio" id="private" value="private" v-model="customerType" style="margin-bottom: 5px;">
+            <input type="radio" id="private" value="private" v-model="form.customerType" style="margin-bottom: 5px;">
             <label for="private">Privatkunde</label>
             </div>
             
