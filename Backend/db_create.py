@@ -19,11 +19,24 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
     
     # password hashing
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    # get primarykey of location and insert new location
-    location_primary = get_or_create_location(location_id, location)
-    
+
     conn = db_connect()
     cursor = conn.cursor()
+
+    # get primarykey of location and insert new location
+    # check if location_id exists
+    query = "SELECT ort_id FROM orte WHERE plz = %s"
+    cursor.execute(query, (location_id,))
+    result = cursor.fetchone()
+
+    # return id
+    if result:
+        location_primary = result['ort_id']
+    # create a new location
+    else:
+        insert_query = "INSERT INTO orte (plz, ort_name) VALUES (%s, %s)"
+        cursor.execute(insert_query, (location_id, location))
+        location_primary = cursor.lastrowid
 
     try:
         # save the password
