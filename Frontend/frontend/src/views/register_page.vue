@@ -88,7 +88,7 @@
             </router-link>
             
             <!-- Set reference to the function to call it in methods -->
-            <post_register_user ref="postRegisterComponent" :form="form"/>
+            <post_register_user ref="postRegisterComponent" :form="form" @response="handleResponse"/>
         </form>
         </div>
     </body>
@@ -111,7 +111,7 @@
           houseNumber: '',
           email: '',
           zipCode: '',
-          countryId: '',
+          countryId: '2',
           password: '',
           birthDate: '',
           city: '',
@@ -319,6 +319,9 @@
      
       this.$refs.postRegisterComponent.post_register_user();
     },
+    handleResponse() {
+        
+    }
     }
   };
   </script>
