@@ -57,6 +57,13 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
                 INSERT INTO kunde (vorname, nachname, strasse, hausnummer, email, ort_id, laender_id, password_id, geburtsdatum) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate))
+
+            # get the ID of the newly created row
+            customer_id = cursor.lastrowid
+            conn.commit()
+            # return the ID of the created customer
+            return {'success': True, 'kunden_id': customer_id}
+        
         else:
             cursor.execute("SELECT verkaeufer_id FROM verkaeufer WHERE email = %s", (email,))
             existing_user = cursor.fetchone()
@@ -70,9 +77,11 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (forename, street, housenumber, email, location_primary, laender_id, password_id)) 
 
-        conn.commit()
-
-        return True
+            # get the ID of the newly created row
+            vendor_id = cursor.lastrowid
+            conn.commit()
+            # return the ID of the created vendor
+            return {'success': True, 'verkaeufer_id': vendor_id}
 
     except Exception as e:
         conn.rollback()
