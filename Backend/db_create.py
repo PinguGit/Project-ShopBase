@@ -31,6 +31,12 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
         password_id = cursor.lastrowid
 
         if isCustomer == 'private':
+            cursor.execute("SELECT id FROM kunde WHERE email = %s", (email,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                return {'error': 'Email already exists'}
+            
             if None in (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate):
                 return 'Fehler: Einer der Werte ist None'
             # save customer data
@@ -39,10 +45,16 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (forename, lastname, street, housenumber, email, location_primary, laender_id, password_id, birthdate))
         else:
+            cursor.execute("SELECT id FROM verkauefer WHERE email = %s", (email,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                return {'error': 'Email already exists'}
+            
             # save vendor data
             cursor.execute("""
                 INSERT INTO verkaeufer (name, strasse, hausnummer, email, ort_id, laender_id, password_id) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (forename, street, housenumber, email, location_primary, laender_id, password_id)) 
 
         conn.commit()
