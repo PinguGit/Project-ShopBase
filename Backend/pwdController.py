@@ -1,12 +1,14 @@
 from flask_cors import CORS
-from flask import Flask, jsonify, request
+from flask import Blueprint, Flask, jsonify, request
 import db_create
 
 app = Flask(__name__)
 CORS(app)
 
+pwd_blueprint = Blueprint('pwd_blueprint', __name__)
+
 # returns true or false whether it successfully creates a user
-@app.route('/api/registerUser', methods=['POST'])
+@pwd_blueprint.route('/registerUser', methods=['POST'])
 def registerUser():
     data = request.json
     forename = data.get('firstName')
@@ -25,7 +27,7 @@ def registerUser():
     return jsonify({'success': result})
 
 # returns true or false whether it successfully verifies a user
-@app.route('/api/loginUser', methods=['POST'])
+@pwd_blueprint.route('/loginUser', methods=['POST'])
 def loginUser():
     data = request.json
     email = data.get('email')
