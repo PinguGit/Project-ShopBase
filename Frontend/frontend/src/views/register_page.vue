@@ -328,7 +328,7 @@
         else if (response.success.error === "Email already exists") {
             alert("User already exists")
         }
-        else {
+        else if(response.success.error === true){
             alert("Failure by regestration")
         }
     }

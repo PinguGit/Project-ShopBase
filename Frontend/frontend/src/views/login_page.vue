@@ -54,6 +54,7 @@ export default {
       const loginData = {
         email: this.email,
         entered_password: this.password,
+        isCustomer: true,
       };
 
       try {
