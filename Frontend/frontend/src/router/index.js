@@ -5,7 +5,7 @@ import Product_page from '@/views/product_page.vue';
 import Shopping_cart from '@/views/shopping-cart_page.vue';
 import Login_page from '@/views/login_page.vue';
 import Register_page from '@/views/register_page.vue';
-import Checkout from '@/views/checkout.vue';
+import Checkout_page from '@/views/checkout_page.vue';
 import ApiPage from '@/components/Apipage.vue';
 import Get_Object from '@/components/get_object.vue';
 
@@ -52,9 +52,9 @@ const routes = [
     component: Register_page
   },
   {
-    path: '/checkout',
-    name: 'checkout',
-    component: Checkout
+    path: '/checkout-page',
+    name: 'checkout-page',
+    component: Checkout_page
   }
 ];
 
