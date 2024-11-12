@@ -93,7 +93,7 @@ body {
 }
 .container {
     display: grid;
-    grid-template-columns: 200px 1fr 1fr 150px;
+    grid-template-columns: 200px 1fr 150px 150px;
     grid-template-rows: 100px 1fr;
     grid-template-areas:
         "logo text-checkout text-checkout basket"

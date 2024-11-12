@@ -14,8 +14,9 @@
                     <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
                 </div>
             </router-link>
+
             <div class="search-bar">
-                <input type="text" placeholder="Suche nach Produkten..." v-model="filters.productName">
+                <input type="text" placeholder="Suche nach Produkten...">
             </div>
 
             <router-link style="text-decoration: none; color: black;" to="/login-page">
@@ -29,24 +30,8 @@
                     <i class="fas fa-shopping-cart"> Warenkorb</i>
                 </div>
             </router-link>
-
-            <div class="filter">
-                <h4>Filter Products</h4>
-                <form id="filter-form">
-                    <!-- Filter by Product Name -->
-            
-                    <!-- Filter by Price -->
-                    <label for="price">Price:</label>
-                    <input type="number" id="price-filter" v-model="filters.price">
-            
-                    <!-- Filter by Seller -->
-                    <label for="seller">Seller:</label>
-                    <input type="text" id="seller" v-model="filters.seller" placeholder="Enter seller">
-            
-                </form>
-            </div>
         
-            <!-- User shit dann -->
+            
 
         </div>
     </body>
@@ -57,4 +42,236 @@
 </script>
 
 <style scoped>
+/* Importieren Sie Ihr CSS oder fügen Sie es direkt ein */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* Light background for contrast */
+    color: #343a40; /* Dark text for readability */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 200px 1fr 150px 150px;
+    grid-template-rows: 100px 1fr;
+    grid-template-areas:
+        "logo search-bar basket profile"
+        "cart-container cart-container cart-container cart-container";
+    gap: 15px;
+    height: 100vh;
+    padding: 10px 20px 20px 20px;
+}
+
+.logo {
+    grid-area: logo;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #495057; /* Dark background */
+    border-radius: 50%;
+    padding: 10px;
+    width: 200px;
+    height: 100px;
+}
+
+.search-bar {
+    grid-area: search-bar;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 25px; /* More rounded corners */
+    border: 1px solid #6c757d;
+    background-color: #fff;
+    color: #495057;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.basket, .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding: 10px;
+    height: 60px;
+    margin-top: 15px;
+}
+
+.basket:hover, .profile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.basket i, .profile i {
+    color: #007bff;
+    font-size: 12px;
+}
+
+.basket, .profile {
+    font-size: 14px;
+    color: #343a40;
+}
+
+/* Additional hover and focus effects */
+.search-bar input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cart-container {
+    grid-area: cart-container; /* Richtig gestellt von cart-contain zu cart-container */
+    margin: 0 auto; /* Zentriert den Container */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex; /* Flexbox hinzufügen */
+    gap: 20px; /* Abstand zwischen Artikelbereich und Zahlungsbereich */
+    width: 100%;
+}
+
+.cart-header {
+    margin-bottom: 20px; /* Abstand zum nächsten Element */
+}
+
+.cart-header h2 {
+    font-size: 24px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Artikel und Preisbereich */
+    gap: 20px;
+    width: 100%;
+}
+
+.cart-item {
+    display: flex; /* Flex-Layout für Artikel */
+    gap: 15px; /* Abstand zwischen Bild und Details */
+    border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
+    border-top: 1px solid #dee2e6;
+    padding: 10px 0; /* Vertikaler Abstand */
+    height: 200px;
+    grid-column: 1 / -1;
+}
+
+.item-image {
+    display: flex;
+    justify-content: center; /* Horizontales Zentrieren */
+    align-items: center; /* Vertikales Zentrieren */
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-left: 20px;
+    width: 200px;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Bildverhältnis beibehalten */
+}
+
+
+.item-details {
+    flex-grow: 1; /* Füllt den verfügbaren Platz */
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-subtitle {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.item-availability {
+    color: #28a745;
+    margin: 10px 0;
+}
+
+.item-size,
+.item-color {
+    font-size: 14px;
+}
+
+.item-actions {
+    margin-top: 10px;
+}
+
+.item-actions input {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.item-actions button {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+}
+
+.item-price {
+    display: flex;
+    align-items: flex-start;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.payment-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    width: 300px; /* Feste Breite für den Zahlungsbereich */
+}
+
+.payment-section p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.checkout-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #0053ac;
+}
 </style>

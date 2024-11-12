@@ -60,7 +60,7 @@
                 <!-- Zahlungsbereich -->
                 <div class="payment-section">
                     <p>Zwischensumme (1 Artikel): <strong>55,00 €</strong></p>
-                    <router-link to="/checkout">
+                    <router-link to="/checkout-page">
                     <button class="checkout-button">Zur Kasse gehen</button>
                     </router-link>
                 </div>

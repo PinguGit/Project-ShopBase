@@ -6,6 +6,7 @@ import Shopping_cart from '@/views/shopping-cart_page.vue';
 import Login_page from '@/views/login_page.vue';
 import Register_page from '@/views/register_page.vue';
 import Checkout_page from '@/views/checkout_page.vue';
+import User_page from '@/views/user_page.vue';
 import ApiPage from '@/components/Apipage.vue';
 import Get_Object from '@/components/get_object.vue';
 
@@ -55,6 +56,11 @@ const routes = [
     path: '/checkout-page',
     name: 'checkout-page',
     component: Checkout_page
+  },
+  {
+    path: '/user-page',
+    name: 'user-page',
+    component: User_page
   }
 ];
 
