@@ -93,6 +93,11 @@ export default {
             activ_products_shoppingcart: [],
         };
     },
+    provide(){
+        return {
+            activ_products_shoppingcart: this.activ_products_shoppingcart
+        };
+    },
 
     watch: {
         filters: {
@@ -115,7 +120,7 @@ export default {
                 // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
             this.filteredProducts = this.products.filter(product => {
                 const namematch = product.produkt_name.toLowerCase().includes(this.filters.productName.toLowerCase());
-                const pricematch = this.filters.price === '' || this.product.preis <= this.filters.price;
+                const pricematch = this.filters.price === '' || product.preis <= this.filters.price;
                 const sellermatch = product.hersteller.toLowerCase().includes(this.filters.seller.toLowerCase());
                 return namematch && pricematch && sellermatch;
             }

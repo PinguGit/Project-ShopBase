@@ -32,9 +32,9 @@ def loginUser():
     data = request.json
     email = data.get('email')
     entered_password = data.get('entered_password')
-    isCustomer = data.get('isCustomer')
+    customer_type = data.get('customerType') 
 
-    result = db_create.login_user(email, entered_password, isCustomer)
+    result = db_create.login_user(email, entered_password, customer_type)
     return jsonify({'success': result})
 
 if __name__ == '__main__':
