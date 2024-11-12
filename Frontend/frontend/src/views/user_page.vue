@@ -31,7 +31,26 @@
                 </div>
             </router-link>
         
-            
+            <div class="orders">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bestellnr.</th>
+                            <th>Verkäufer</th>
+                            <th>Produkt</th>
+                            <th>Hersteller</th>
+                            <th>Preis</th>
+                            <th>Anzahl</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Hier dann die Daten dynamisch einbinden -->
+                    </tbody>
+                </table>
+
+                <p class="price">Gesamtpreis: ...</p>
+                <p class="vendor">Verkäufer: ...</p>
+            </div>
 
         </div>
     </body>
@@ -61,7 +80,7 @@ body {
     grid-template-rows: 100px 1fr;
     grid-template-areas:
         "logo search-bar basket profile"
-        "cart-container cart-container cart-container cart-container";
+        "tables tables tables tables";
     gap: 15px;
     height: 100vh;
     padding: 10px 20px 20px 20px;
@@ -139,139 +158,32 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.cart-container {
-    grid-area: cart-container; /* Richtig gestellt von cart-contain zu cart-container */
-    margin: 0 auto; /* Zentriert den Container */
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 20px;
-    display: flex; /* Flexbox hinzufügen */
-    gap: 20px; /* Abstand zwischen Artikelbereich und Zahlungsbereich */
+table {
     width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
 }
-
-.cart-header {
-    margin-bottom: 20px; /* Abstand zum nächsten Element */
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #292929;
 }
-
-.cart-header h2 {
-    font-size: 24px;
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 10px;
+th {
+    background-color: #4CAF50;
+    color: white;
 }
-
-.cart-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Artikel und Preisbereich */
-    gap: 20px;
-    width: 100%;
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
-
-.cart-item {
-    display: flex; /* Flex-Layout für Artikel */
-    gap: 15px; /* Abstand zwischen Bild und Details */
-    border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
-    border-top: 1px solid #dee2e6;
-    padding: 10px 0; /* Vertikaler Abstand */
-    height: 200px;
-    grid-column: 1 / -1;
+tr:hover {
+    background-color: #ddd;
 }
-
-.item-image {
-    display: flex;
-    justify-content: center; /* Horizontales Zentrieren */
-    align-items: center; /* Vertikales Zentrieren */
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    margin-left: 20px;
-    width: 200px;
-}
-
-.item-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* Bildverhältnis beibehalten */
-}
-
-
-.item-details {
-    flex-grow: 1; /* Füllt den verfügbaren Platz */
-}
-
-.item-title {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.item-subtitle {
-    font-size: 14px;
-    color: #6c757d;
-}
-
-.item-availability {
-    color: #28a745;
-    margin: 10px 0;
-}
-
-.item-size,
-.item-color {
-    font-size: 14px;
-}
-
-.item-actions {
-    margin-top: 10px;
-}
-
-.item-actions input {
-    width: 50px;
-    padding: 5px;
-    margin-right: 10px;
-    border-radius: 5px;
-    border: 1px solid #dee2e6;
-}
-
-.item-actions button {
-    background-color: transparent;
-    color: #007bff;
-    border: none;
-    cursor: pointer;
-}
-
-.item-price {
-    display: flex;
-    align-items: flex-start;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.payment-section {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid #e0e0e0;
-    width: 300px; /* Feste Breite für den Zahlungsbereich */
-}
-
-.payment-section p {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.checkout-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
+td {
     font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
 }
-
-.checkout-button:hover {
-    background-color: #0053ac;
+thead {
+    font-size: 18px;
 }
 </style>
