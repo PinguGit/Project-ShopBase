@@ -73,71 +73,55 @@
   
 <script>
 import get_all_objects from '@/components/get_all_objects.vue';
+import { useCartStore } from '@/stores/cart';
+import { ref, reactive, computed } from 'vue';
 
 export default {
     name: 'ProductPage',
     components: {
         get_all_objects 
     },
-    data() {
-        return {
-            products: [],
-            filters: {
-                productName: '',
-                price: '',
-                stock: 'all',
-                seller: '',
-                deliveryDate: ''
-            },
-            filteredProducts: [],
-            activ_products_shoppingcart: [],
-        };
-    },
-    provide(){
-        return {
-            activ_products_shoppingcart: this.activ_products_shoppingcart
-        };
-    },
+    setup() {
+        // Pinia Store für den Warenkorb
+        const cartStore = useCartStore();
 
-    watch: {
-        filters: {
-            handler() {
-                this.filterProducts();
-            },
-            deep: true
-        }
-    },
-    methods: {
-        handleObjectsLoaded(objects) {
-            this.products = Object.values(objects.product); 
-            this.filterProducts(); 
-        },
+        // Reaktive Daten für Produkte und Filter
+        const products = ref([]);  // Dies speichert die Produktliste von `get_all_objects`
+        const filters = reactive({
+            productName: '',
+            price: '',
+            seller: ''
+        });
 
-        filterProducts() {
-            if (Array.isArray(this.products)) {
-                this.filteredProducts = [];
-            }
-                // filter function from js script if function (after =>) if all consts return true product gets appended to filterdproducts
-            this.filteredProducts = this.products.filter(product => {
-                const namematch = product.produkt_name.toLowerCase().includes(this.filters.productName.toLowerCase());
-                const pricematch = this.filters.price === '' || product.preis <= this.filters.price;
-                const sellermatch = product.hersteller.toLowerCase().includes(this.filters.seller.toLowerCase());
+        // Funktion für gefilterte Produkte
+        const filteredProducts = computed(() => {
+            return products.value.filter(product => {
+                const namematch = product.produkt_name.toLowerCase().includes(filters.productName.toLowerCase());
+                const pricematch = filters.price === '' || product.preis <= filters.price;
+                const sellermatch = product.hersteller.toLowerCase().includes(filters.seller.toLowerCase());
                 return namematch && pricematch && sellermatch;
-            }
+            });
+        });
 
-            )
-            console.log("Filterd products")
-            console.log(this.filteredProducts)
-            },
-        
-        addtoshoppingcart(product) {
-            this.activ_products_shoppingcart.push(product);
-            console.log('shoppingcart');
-            console.log(this.activ_products_shoppingcart)
-        },
-        
+        // Funktion zum Hinzufügen eines Produkts zum Warenkorb
+        function addtoshoppingcart(product) {
+            cartStore.addToCart(product);
+            console.log('Aktueller Warenkorb:', cartStore.activ_products_shoppingcart);
         }
+
+        // Funktion, die beim Laden der Produktdaten aufgerufen wird
+        function handleObjectsLoaded(objects) {
+            products.value = Object.values(objects.product); 
+        }
+
+        return {
+            filters,
+            filteredProducts,
+            addtoshoppingcart,
+            handleObjectsLoaded
+        };
     }
+};
 </script>
 
 <style scoped>

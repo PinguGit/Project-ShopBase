@@ -32,7 +32,7 @@ def loginUser():
     data = request.json
     email = data.get('email')
     entered_password = data.get('entered_password')
-    customer_type = data.get('customerType') 
+    customer_type = data.get('customer_type') 
 
     result = db_create.login_user(email, entered_password, customer_type)
     return jsonify({'success': result})

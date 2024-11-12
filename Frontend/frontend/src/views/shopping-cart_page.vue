@@ -49,11 +49,14 @@
                                 <button>Löschen</button>
                             </div>
                         </div>
+                        <div>
+                            <p> {{ carditems }} </p>
+                        </div>
                         <div class="item-price">
                             <p>55,00 €</p>
                         </div>
                     </div>
-
+                    <p>{{ cartItems[0] }}</p>
                     <!-- hier weitere elemente dann so dies das ananas-->
                 </div>
 
@@ -71,7 +74,26 @@
 </template>
   
 <script>
+import { useCartStore } from '@/stores/cart';
+import { computed } from 'vue';
 
+export default {
+    name: 'ShoppingCart',
+    setup() {
+        const cartStore = useCartStore();
+
+        const cartItems = computed(() => cartStore.activ_products_shoppingcart);
+
+        function removeFromCart(index) {
+            cartStore.removeFromCart(index); // Entferne Produkt aus dem Store
+        }
+
+        return {
+            cartItems,
+            removeFromCart
+        };
+    }
+};
 </script>
 
 <style scoped>
