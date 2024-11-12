@@ -33,39 +33,37 @@
             <div class="cart-container">
                 <!-- Artikelbereich -->
                 <div class="cart-content">
-                    <div class="cart-item">
-                        <div class="item-image">
-                            <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
-                        </div>
-                        <div class="item-details">
-                            <p class="item-title">Performance Pants Herren Schwarz (Größe 27W/32L)</p>
-                            <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
-                            <p class="item-availability">Auf Lager</p>
-                            <p class="item-size">Größe: 27W / 32L</p>
-                            <p class="item-color">Farbe: Schwarz</p>
-                            <div class="item-actions">
-                                <label for="quantity">Menge: </label>
-                                <input id="quantity" type="number" value="1" min="1">
-                                <button>Löschen</button>
+                    <div v-for="(item, index) in cartItems" :key="index">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
+                            </div>
+                            <div class="item-details">
+                                <p class="item-title">{{ item.produkt_name}}</p>
+                                <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
+                                <p class="item-availability">Auf Lager</p>
+                                <p class="item-size">Größe: 27W / 32L</p>
+                                <p class="item-color">Farbe: Schwarz</p>
+                                <div class="item-actions">
+                                    <label for="quantity">Menge: </label>
+                                    <input id="quantity" type="number" value="1" min="1">
+                                    <button>Löschen</button>
+                                </div>
+                            </div>
+                            <div class="item-price">
+                                <p>{{ item.preis }}</p>
                             </div>
                         </div>
-                        <div>
-                            <p> {{ carditems }} </p>
-                        </div>
-                        <div class="item-price">
-                            <p>55,00 €</p>
-                        </div>
                     </div>
-                    <p>{{ cartItems[0] }}</p>
-                    <!-- hier weitere elemente dann so dies das ananas-->
-                </div>
-
-                <!-- Zahlungsbereich -->
-                <div class="payment-section">
-                    <p>Zwischensumme (1 Artikel): <strong>55,00 €</strong></p>
-                    <router-link to="/checkout-page">
-                    <button class="checkout-button">Zur Kasse gehen</button>
-                    </router-link>
+                
+                    <!-- Zahlungsbereich -->
+                    <div class="payment-section">
+                        <p>Zwischensumme {{  cartItems.length }} Artikel: 
+                            <strong>{{  cartItems.reduce((total, item) => total + item.preis, 0) }}</strong></p>
+                        <router-link to="/checkout-page">
+                        <button class="checkout-button">Zur Kasse gehen</button>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -196,6 +194,11 @@ body {
 
 .cart-container {
     grid-area: cart-container; /* Richtig gestellt von cart-contain zu cart-container */
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "article buy";
     margin: 0 auto; /* Zentriert den Container */
     background-color: #fff;
     border: 1px solid #e0e0e0;
@@ -216,21 +219,14 @@ body {
     padding-bottom: 10px;
 }
 
-.cart-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Artikel und Preisbereich */
-    gap: 20px;
-    width: 100%;
-}
-
 .cart-item {
+    grid-area: article;
     display: flex; /* Flex-Layout für Artikel */
     gap: 15px; /* Abstand zwischen Bild und Details */
     border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
     border-top: 1px solid #dee2e6;
     padding: 10px 0; /* Vertikaler Abstand */
     height: 200px;
-    grid-column: 1 / -1;
 }
 
 .item-image {
@@ -301,11 +297,12 @@ body {
 }
 
 .payment-section {
+    grid-area: buy;
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 5px;
     border: 1px solid #e0e0e0;
-    width: 300px; /* Feste Breite für den Zahlungsbereich */
+    width: 280px; /* Feste Breite für den Zahlungsbereich */
 }
 
 .payment-section p {
