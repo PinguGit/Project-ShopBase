@@ -19,6 +19,17 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" v-model="password" placeholder="Password" required>
                 </div>
+                    <div class="custom-radio">
+                        <div class="radio-item">
+                        <input type="radio" id="private" value="private" v-model="customerType" style="margin-bottom: 5px;">
+                        <label for="private">Privatkunde</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                        <input type="radio" id="business" value="business" v-model="customerType" style="margin-bottom: 5px;">
+                        <label for="business">Händler</label>
+                        </div>
+                    </div>
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
@@ -45,6 +56,7 @@ export default {
     return {
       email: '',
       password: '',
+      customerType: '',
       errorMessage: '' // Fehlermeldung hinzufügen
     };
   },
@@ -54,6 +66,7 @@ export default {
       const loginData = {
         email: this.email,
         entered_password: this.password,
+        customer_type: this.customerType,
       };
 
       try {
@@ -86,79 +99,91 @@ export default {
 </script>
 
 <style scoped>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f0f0f0;
-    }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
 
-    .login-container {
-        display: inline-block;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        text-align: center;
-    }
+.login-container {
+    display: inline-block;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
 
-    h2 {
-        margin-bottom: 10px;
-    }
+h2 {
+    margin-bottom: 10px;
+}
 
-    .password-class {
-        margin-bottom: 10px;
-    }
+.password-class {
+    margin-bottom: 10px;
+}
 
-    input[type="text"], input[type="password"] {
-        width: 80%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+input[type="text"], input[type="password"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-    .login-btn, .register-btn {
-        width: 100%;
-        padding: 10px;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.custom-radio {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
 
-    .login-btn:hover {
-        background-color: #0056b3;
-    }
+.radio-item {
+    display: flex;
+    align-items: center;
+}
 
-    .login-btn {
-        background-color: #007bff;
-        margin: 5px 0;
-    }
+.login-btn, .register-btn {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-    .register-btn {
-        background-color: #28a745;
-    }
+.login-btn:hover {
+    background-color: #0056b3;
+}
 
-    .register-btn:hover {
-        background-color: #218838;
-    }
+.login-btn {
+    background-color: #007bff;
+    margin: 5px 0;
+}
 
-    .login-container i {
-        margin-right: 8px;
-    }
+.register-btn {
+    background-color: #28a745;
+}
 
-    .error {
-        color: red;
-        margin-top: 10px;
-    }
+.register-btn:hover {
+    background-color: #218838;
+}
 
-    .back {
-        font-size: 10px;
-        color: gray;
-        text-align: left;
-    }
+.login-container i {
+    margin-right: 8px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+.back {
+    font-size: 10px;
+    color: gray;
+    text-align: left;
+}
 </style>
