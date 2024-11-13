@@ -33,7 +33,10 @@
 
 
           // Return Result of API back to parent who called
+          console.log("dataobjekt")
+          console.log(data)
           this.$emit('response', data)
+          
           console.log("Successfully signed in", data);
   
         } catch (error) {

@@ -117,24 +117,28 @@ def login_user(email, entered_password, isCustomer):
     result = cursor.fetchone()
     conn.close()
 
-    # check if user exists
+
+# Check if user exists
     if not result:
         print("Benutzer nicht gefunden.")
-        return False
+        return None
 
     stored_hashed_password = result['password']
 
-    # verify password
+    # Verify password
     if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
         if isCustomer == 'private' and 'kunden_id' in result:
             print("Login successful as customer.")
-            return result  # Return the customer data
+            return {'success': True, 'kunden_id': result['kunden_id']}
         elif isCustomer == 'business' and 'verkaeufer_id' in result:
             print("Login successful as vendor.")
-            return result  # Return the vendor data
+            return {'success': True, 'verkaeufer_id': result['verkaeufer_id']}
         else:
             print("Login failed: mismatched user type.")
-            return False
+            return {'success': False, 'error': 'Mismatched user type'}
+    else:
+        print("Falsches Passwort.")
+        return {'success': False, 'error': 'Incorrect password'}
 
 def get_or_create_location(location_id, location):
     conn = db_connect()

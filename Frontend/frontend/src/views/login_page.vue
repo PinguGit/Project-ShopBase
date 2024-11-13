@@ -73,16 +73,20 @@ export default {
         this.$refs.post_login.post_login_user();
     },
     handleResponse(response) {
+        console.log("response")
         console.log(response)
-        if (response.success && response.success.success === true) {
+        if (response.success.success) {
+            console.log("if1")
             alert("Login successfull")
             // link to login page
             this.$router.push('/login-page');
         }
         else if (response.success.error === "Email already exists") {
+            console.log("if2")
             alert("User already exists")
         }
         else if(response.success.error === true){
+            console.log("if3")
             alert("Failure by regestration")
         }
     }

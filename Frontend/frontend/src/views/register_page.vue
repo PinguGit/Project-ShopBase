@@ -88,7 +88,7 @@
             </router-link>
             
             <!-- Set reference to the function to call it in methods -->
-            <post_register_user ref="postRegisterComponent" :form="form" @response="handleResponse"/>
+            <post_register_user ref="postRegisterComponent" :form="form" @response="handleResponse()"/>
         </form>
         </div>
     </body>
