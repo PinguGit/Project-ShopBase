@@ -85,7 +85,6 @@ export default {
         function removeFromCart(index) {
             cartStore.removeFromCart(index); // Entferne Produkt aus dem Store
         }
-
         return {
             cartItems,
             removeFromCart

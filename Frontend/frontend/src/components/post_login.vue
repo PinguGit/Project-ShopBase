@@ -34,10 +34,10 @@
 
           // Return Result of API back to parent who called
           this.$emit('response', data)
-          console.log("Successfully registered", data);
+          console.log("Successfully signed in", data);
   
         } catch (error) {
-          console.error('Error during registration:', error);
+          console.error('Error during login:', error);
         }
       }
     }
