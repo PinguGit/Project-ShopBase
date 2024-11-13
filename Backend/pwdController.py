@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 pwd_blueprint = Blueprint('pwd_blueprint', __name__)
-
+CORS(pwd_blueprint)
 # returns true or false whether it successfully creates a user
 @pwd_blueprint.route('/registerUser', methods=['POST'])
 def registerUser():
