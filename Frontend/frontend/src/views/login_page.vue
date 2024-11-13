@@ -21,12 +21,12 @@
                 </div>
                     <div class="custom-radio">
                         <div class="radio-item">
-                        <input type="radio" id="private" value="private" v-model="form_login.customerType" style="margin-bottom: 5px;">
+                        <input type="radio" id="private" value="private" v-model="form_login.customer_type" style="margin-bottom: 5px;">
                         <label for="private">Privatkunde</label>
                         </div>
                         
                         <div class="radio-item">
-                        <input type="radio" id="business" value="business" v-model="form_login.customerType" style="margin-bottom: 5px;">
+                        <input type="radio" id="business" value="business" v-model="form_login.customer_type" style="margin-bottom: 5px;">
                         <label for="business">Händler</label>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ export default {
         form_login: {
       email: '',
       entered_password: '',
-      customerType: '',
+      customer_type: '',
 
       }
     };
@@ -73,7 +73,8 @@ export default {
         this.$refs.post_login.post_login_user();
     },
     handleResponse(response) {
-        if (response.success === true) {
+        console.log(response)
+        if (response.success && response.success.success === true) {
             alert("Login successfull")
             // link to login page
             this.$router.push('/login-page');

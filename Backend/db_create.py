@@ -106,7 +106,7 @@ def login_user(email, entered_password, isCustomer):
             JOIN passwort p ON k.password_id = p.password_id 
             WHERE k.email = %s
         """
-    else:
+    elif isCustomer == 'business':
         query = """
             SELECT v.verkaeufer_id, p.password
             FROM verkaeufer v 
@@ -126,11 +126,15 @@ def login_user(email, entered_password, isCustomer):
 
     # verify password
     if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
-        print("Login erfolgreich!")
-        return result
-    else:
-        print("Falsches Passwort.")
-        return False
+        if isCustomer == 'private' and 'kunden_id' in result:
+            print("Login successful as customer.")
+            return result  # Return the customer data
+        elif isCustomer == 'business' and 'verkaeufer_id' in result:
+            print("Login successful as vendor.")
+            return result  # Return the vendor data
+        else:
+            print("Login failed: mismatched user type.")
+            return False
 
 def get_or_create_location(location_id, location):
     conn = db_connect()
