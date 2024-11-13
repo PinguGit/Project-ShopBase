@@ -10,23 +10,23 @@
     <body>
         <div class="login-container">
             <h2>Login</h2>
-            <form @submit.prevent="loginUser">
+            <form @submit.prevent="login">
                 <div id="email">
                     <i class="fas fa-user"></i>
-                    <input type="text" v-model="email" placeholder="E-Mail" required>
+                    <input type="text" v-model="form_login.email" placeholder="E-Mail" required>
                 </div>
                 <div class="password-class" id="password">
                     <i class="fas fa-lock"></i>
-                    <input type="password" v-model="password" placeholder="Password" required>
+                    <input type="password" v-model="form_login.entered_password" placeholder="Password" required>
                 </div>
                     <div class="custom-radio">
                         <div class="radio-item">
-                        <input type="radio" id="private" value="private" v-model="customerType" style="margin-bottom: 5px;">
+                        <input type="radio" id="private" value="private" v-model="form_login.customerType" style="margin-bottom: 5px;">
                         <label for="private">Privatkunde</label>
                         </div>
                         
                         <div class="radio-item">
-                        <input type="radio" id="business" value="business" v-model="customerType" style="margin-bottom: 5px;">
+                        <input type="radio" id="business" value="business" v-model="form_login.customerType" style="margin-bottom: 5px;">
                         <label for="business">Händler</label>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                 <router-link style="text-decoration: none;" to="/">
                     <p class="back">zurück</p>
                 </router-link>
-
+                <post_login ref="post_login" :form_login="form_login" @response="handleResponse"/>
                 <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
             </form>
         </div>
@@ -51,51 +51,42 @@
 </template>
   
 <script>
+import post_login from '@/components/post_login.vue';
+
 export default {
+    name: "LoginPage",
+    components: {
+        post_login
+    },
   data() {
     return {
+        form_login: {
       email: '',
-      password: '',
+      entered_password: '',
       customerType: '',
-      errorMessage: '' // Fehlermeldung hinzufügen
+
+      }
     };
   },
   methods: {
-    async loginUser() {
-      console.log("Login Button clicked"); // Log zum Testen
-      const loginData = {
-        email: this.email,
-        entered_password: this.password,
-        customerType: this.customerType,
-      };
-
-      try {
-        console.log("Sending request to server..."); // Log vor dem fetch-Aufruf
-        const response = await fetch('http://localhost:5000/api/loginUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(loginData)
-        });
-
-        const data = await response.json();
-        console.log("Response received:", data); // Log der Serverantwort
-
-        if (data.success) {
-          console.log('Login successful');
-          this.$router.push('/user-page');
-        } else {
-          console.log('Invalid credentials');
-          this.errorMessage = 'Invalid credentials. Please try again.';
+    login() {
+        this.$refs.post_login.post_login_user();
+    },
+    handleResponse(response) {
+        if (response.success === true) {
+            alert("Login successfull")
+            // link to login page
+            this.$router.push('/login-page');
         }
-      } catch (error) {
-        console.error('Error during login:', error);
-        this.errorMessage = 'An error occurred. Please try again later.';
-      }
+        else if (response.success.error === "Email already exists") {
+            alert("User already exists")
+        }
+        else if(response.success.error === true){
+            alert("Failure by regestration")
+        }
+    }
     }
   }
-};
 </script>
 
 <style scoped>

@@ -94,10 +94,10 @@ def register_user(forename, lastname, street, housenumber, email, password, loca
 
 # user login
 def login_user(email, entered_password, isCustomer):
-
+   
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-
+    print(isCustomer, email)
     if isCustomer == 'private':
     # get user data if customer
         query = """
