@@ -42,24 +42,25 @@
                             <label for="cash-on-delivery">Nachnahme</label>
                         </div>
                     </div>
-                    <div class="cart-item">
-                        <div class="item-image">
-                            <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
-                        </div>
-                        <div class="item-details">
-                            <p class="item-title">Performance Pants Herren Schwarz (Größe 27W/32L)</p>
-                            <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
-                            <p class="item-availability">Auf Lager</p>
-                            <p class="item-size">Größe: 27W / 32L</p>
-                            <p class="item-color">Farbe: Schwarz</p>
-                            <div class="item-actions">
-                                <label for="quantity">Menge: </label>
-                                <input id="quantity" type="number" value="1" min="1">
-                                <button>Löschen</button>
+                    <div v-for="(item, index) in groupedCartItems" :key="index">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
                             </div>
-                        </div>
-                        <div class="item-price">
-                            <p>55,00 €</p>
+                            <div class="item-details">
+                                <p class="item-title">{{ item.produkt_name}}</p>
+                                <p class="item-availability">Auf Lager</p>
+                                <p class="item-size">Größe: 27W / 32L</p>
+                                <p class="item-color">Farbe: Schwarz</p>
+                                <div class="item-actions">
+                                    <label for="quantity">Menge: </label>
+                                    <p> {{ item.anzahl }}</p>
+                                    <button @click="removeFromCart(item)" style="width: 50px;">Löschen</button>
+                                </div>
+                            </div>
+                            <div class="item-price">
+                                <p>{{ (item.preis * item.anzahl).toFixed(2) }} €</p>
+                            </div>
                         </div>
                     </div>
 
@@ -69,14 +70,92 @@
                 <!-- Zahlungsbereich -->
                 <div class="payment-section">
                     <button class="buy-button">Jetzt kaufen</button>
-                    <p>Zwischensumme (1 Artikel): <strong>55,00 €</strong></p>
-                    <p>Gesamtbetrag: <strong>Geld</strong></p>
+                    <p>Zwischensumme {{ totalItems }} Arikel: <strong>{{ totalAmount.toFixed(2) }} €</strong></p>
+                    <p>Versandkosten: <strong>0.00 €</strong></p>
+                    <p>Gesamtbetrag: <strong>{{ totalAmount.toFixed(2) }} €</strong></p>
                 </div>
             </div>
         </div>
     </body>
     </html>
 </template>
+
+<script>
+import { useCartStore } from '@/stores/cart';
+import { computed } from 'vue';
+
+export default {
+    name: 'ShoppingCart',
+    setup() {
+        const cartStore = useCartStore();
+
+        // Greife auf die aktiven Produkte im Warenkorb zu
+        const cartItems = computed(() => cartStore.activ_products_shoppingcart);
+
+
+        // Gruppiere die Produkte und zähke die Menge pro Produkt
+        const groupedCartItems = computed(() => {
+            const uniqueItems = [];
+            cartItems.value.forEach((item) => {
+                const existingItem = uniqueItems.find(
+                    (uniqueItem) => uniqueItem.produkt_name === item.produkt_name
+                );
+                if (existingItem) {
+                    existingItem.quantity += item.anzahl || 1;
+                } else {
+                    uniqueItems.push({ ...item, quantity: item.anzahl || 1});
+                }
+            });
+            return uniqueItems;
+        });
+
+        // Berechne die Gesamtanzahl der Artikel im Warenkorb
+        const totalItems = computed(() => {
+            return groupedCartItems.value.reduce((total, item) => total + item.anzahl, 0);
+        });
+
+        // Berechne den Gesamtpreis aller Artikel im Warenkorb
+        const totalAmount = computed(() => {
+            return groupedCartItems.value.reduce((total, item) => total + item.preis * item.anzahl, 0);
+        });
+
+        // Entferne einen Artikel aus dem Warenkorb,
+        function removeFromCart(item) {
+            const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
+            if (index > -1){
+                cartStore.removeFromCart(index); // Entferne Produkt aus dem Store   
+            }
+        }
+
+        // Aktualisiere die Menge im Warenkorb, wenn Benutzer die ändert
+        function updateQuantity(item) {
+            const NewQuantity = Math.max(item.anzahl, 1);
+            const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
+            if (index > -1){
+                cartStore.updateItemQuantity(index, NewQuantity);
+            }
+        }
+
+
+        // grid-template-row Berechnung anhand der Anzahl im groupedCartItems
+        const gridStyle = computed(() => {
+            const rows = groupedCartItems.value.length > 0 ? `repeat(${groupedCartItems.value.length}, 200px)` : '200px';
+            return {
+                'grid-template-rows': rows
+            };
+        });
+
+        return {
+            groupedCartItems,
+            totalItems,
+            totalAmount,
+            removeFromCart,
+            gridStyle,
+            updateQuantity
+        };
+    }
+};
+</script>
 
 <style>
 * {
@@ -181,6 +260,10 @@ body {
 .payment-option {
     margin-bottom: 10px;
 }
+
+.payment-section {
+    line-height: 1.5rem;
+}
 /* Cart Items */
 .cart-item {
     display: flex;
@@ -205,7 +288,10 @@ body {
     margin: 5px 0;
 }
 .item-actions {
-    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 .item-actions input {
     width: 50px;

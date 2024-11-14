@@ -27,7 +27,7 @@ export const useCartStore = defineStore('cart', {
         updateItemQuantity(index, quantity) {
         // Sicherstellen, dass das Produkt existiert und die Menge >= 1 ist
         if (this.activ_products_shoppingcart[index]) {
-            this.activ_products_shoppingcart[index].quantity = Math.max(quantity, 1); // Menge nicht kleiner als 1
+            this.activ_products_shoppingcart[index].anzahl = Math.max(quantity, 1); // Menge nicht kleiner als 1
         }
       }
     }
