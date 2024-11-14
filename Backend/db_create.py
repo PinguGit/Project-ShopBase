@@ -128,10 +128,10 @@ def login_user(email, entered_password, isCustomer):
     if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
         if isCustomer == 'private' and 'kunden_id' in result:
             print("Login successful as customer.")
-            return result  # Return the customer data
+            return {"success": True,"data": result}  # Return the customer data
         elif isCustomer == 'business' and 'verkaeufer_id' in result:
             print("Login successful as vendor.")
-            return result  # Return the vendor data
+            return {"success": True,"data": result} # Return the vendor data
         else:
             print("Login failed: mismatched user type.")
             return False

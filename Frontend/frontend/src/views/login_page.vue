@@ -75,9 +75,14 @@ export default {
     handleResponse(response) {
         console.log(response)
         if (response.success && response.success.success === true) {
-            alert("Login successfull")
+            const verkaeufer_id = response.success.data.verkaeufer_id
+            console.log(verkaeufer_id)
+            // api callen und user name etc abfragen 
+            // dann alles in cookie statt localstorage
+            sessionStorage.setItem("verkaeufer_id", verkaeufer_id)
+            
             // link to login page
-            this.$router.push('/login-page');
+            this.$router.push('/user-page');
         }
         else if (response.success.error === "Email already exists") {
             alert("User already exists")
