@@ -26,6 +26,7 @@ def getProducts(listOfDictionarys):
         
         # Produktinformationen im Dictionary speichern
         products_dict[product_id] = {
+            'produkt_id': product_id,
             'produkt_name': row['produkt_name'],
             'preis': row['preis'],
             'hersteller': manufacturer_info['hersteller_name'] if manufacturer_info else None,
