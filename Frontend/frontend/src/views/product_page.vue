@@ -11,8 +11,6 @@
         <!-- get_all_objects Komponente wird hier eingebunden -->
         <get_all_objects @objectsLoaded="handleObjectsLoaded" />
 
-        <!-- <p> {{ objects }}</p> -->
-
         <div class="container">
             <router-link to="/">
                 <div class="logo">

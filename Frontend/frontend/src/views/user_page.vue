@@ -8,6 +8,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
+        <get_orders_by_customerid @objectsLoaded="handleObjectsLoaded" />
+        <!-- get_all_objects Komponente wird hier eingebunden -->
         <div class="container">
             <router-link to="/">
                 <div class="logo">
@@ -32,7 +34,7 @@
             </router-link>
         
             <div class="orders">
-                <table>
+                <table v-if="objects.length > 0">
                     <thead>
                         <tr>
                             <th>Bestellnr.</th>
@@ -44,9 +46,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Hier dann die Daten dynamisch einbinden -->
+                        <tr v-for="order in objects" :key="order.bestell_id">
+                            <td>{{ order.bestell_id }}</td>
+                            <td>{{ order.verkaeufer ? order.verkaeufer.name : 'Unbekannt' }}</td>
+                            <td>{{ order.produkt ? order.produkt.name : 'Unbekannt' }}</td>
+                            <td>{{ order.produkt ? order.produkt.hersteller : 'Unbekannt' }}</td>
+                            <td>{{ order.gesamtpreis }}</td>
+                            <td>{{ order.anzahl }}</td>
+                        </tr>
                     </tbody>
                 </table>
+                <div v-else>Noch keine Bestellungen gefunden.</div>
 
                 <p class="price">Gesamtpreis: ...</p>
                 <p class="vendor">Verkäufer: ...</p>
@@ -58,7 +68,78 @@
 </template>
   
 <script>
+// Importiere die get_orders_by_customerid-Komponente
+import get_orders_by_customerid from '@/components/get_orders_by_customerid.vue';
+
+export default {
+  components: {
+    get_orders_by_customerid
+  },
+  data() {
+    return {
+      objects: [],
+      orders: [], // Hier werden die Bestellungen gespeichert
+      verkaeufer: {}, // Verkäuferdaten
+      produkte: {}, // Produktdaten
+    };
+  },
+  mounted() {
+    console.log('Komponente gemountet, simuliere das Laden von Objekten');
+
+    // Beispielhafte manuelle Simulation von geladenen Daten
+    this.handleObjectsLoaded({
+      orders: [
+        { bestell_id: 1, verkaeufer_id: 101, produkt_id: 201, anzahl: 3, gesamtpreis: 100 },
+        { bestell_id: 2, verkaeufer_id: 102, produkt_id: 202, anzahl: 1, gesamtpreis: 50 }
+      ],
+      verkaeufer: [
+        { verkaeufer_id: 101, name: 'Verkäufer 1' },
+        { verkaeufer_id: 102, name: 'Verkäufer 2' }
+      ],
+      produkte: [
+        { produkt_id: 201, name: 'Produkt A', hersteller: 'Hersteller A' },
+        { produkt_id: 202, name: 'Produkt B', hersteller: 'Hersteller B' }
+      ]
+    });
+},
+  methods: {
+    handleObjectsLoaded(objects) {
+      // Überprüfe, was du von der Komponente zurückbekommst
+      console.log('Objekte empfangen:', objects);
+
+      // Empfange die geladenen Objekte und ordne sie den entsprechenden Variablen zu
+      this.orders = objects.orders || []; // Bestell-Daten
+      this.verkaeufer = objects.verkaeufer || []; // Verkäufer-Daten
+      this.produkte = objects.produkte || []; // Produkt-Daten
+
+      // Logge die geladenen Daten
+      console.log('Bestellungen:', this.orders);
+      console.log('Verkäufer:', this.verkaeufer);
+      console.log('Produkte:', this.produkte);
+
+      // Optional: Verarbeitung der Bestellungen
+      this.processOrders();
+    },
+    processOrders() {
+      // Gehe durch die Bestellungen und verknüpfe die entsprechenden Verkäufer und Produkte
+      console.log('Verarbeite Bestellungen...');
+      this.orders.forEach(order => {
+        const verkaeuferId = order.verkaeufer_id;
+        const produktId = order.produkt_id;
+
+        // Finde den Verkäufer und das Produkt basierend auf den IDs
+        order.verkaeufer = this.verkaeufer.find(v => v.verkaeufer_id === verkaeuferId) || {};
+        order.produkt = this.produkte.find(p => p.produkt_id === produktId) || {};
+
+        // Logge, wie das Order-Objekt nach der Verarbeitung aussieht
+        console.log('Verarbeitete Bestellung:', order);
+      });
+    }
+  }
+};
 </script>
+
+
 
 <style scoped>
 /* Importieren Sie Ihr CSS oder fügen Sie es direkt ein */

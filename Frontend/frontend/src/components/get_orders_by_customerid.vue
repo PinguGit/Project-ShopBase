@@ -1,9 +1,6 @@
 <template>
     <div id="get_all_orders">
-        <p> test </p>
     </div>
-
-
 </template>
 
 <script>
