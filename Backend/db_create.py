@@ -1,3 +1,4 @@
+import datetime
 import mysql
 from functions import db_connect
 from flask import Flask
@@ -215,4 +216,20 @@ def create_bestellungen(kunden_id, products):
         conn.close()
 
 
+def save_session_token(email, token):
 
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    
+    expiration = datetime.now() + datetime.timedelta(hours=1)
+    
+    cursor.execute(
+        """
+        INSERT INTO sessions (email, token, expiration) 
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE token = %s, expiration = %s
+        """,
+        (email, token, expiration, token, expiration)
+    )
+    conn.commit()
+    conn.close()

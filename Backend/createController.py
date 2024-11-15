@@ -2,8 +2,7 @@ from db_create import create_bestellungen
 from db_get import getAllObjects, getObjectById
 import db_get
 from flask import Blueprint, Flask, jsonify, request
-import getControllerCommand
-import getCommand
+import auth_utils
 from flask_cors import CORS
 from flask import Flask, jsonify
 
@@ -15,6 +14,7 @@ create_blueprint = Blueprint('create_blueprint', __name__)
 
 #returns a specific object from any table
 @create_blueprint.route('/create_bestellung/<kunden_id>', methods=['PUT'])
+@auth_utils.token_required
 def createBestellung(kunden_id):
     data = request.json
     products = data.get('products', [])

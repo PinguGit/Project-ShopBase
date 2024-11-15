@@ -1,4 +1,5 @@
 from functions import db_connect
+import sqlite3
 
 id_mapping = {
     'product': 'produkt_id',
@@ -222,4 +223,12 @@ def getVendorByProductId(product_id):
         vendors_list.append(vendor_details)
     
     return vendors_list
+
+def verify_session_token(token):
+    conn = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM sessions WHERE token = %s", (token,))
+    session = cursor.fetchone()
+    conn.close()
+    return session is not None
 

@@ -1,3 +1,4 @@
+import uuid
 from flask_cors import CORS
 from flask import Blueprint, Flask, jsonify, request
 import db_create
@@ -35,7 +36,13 @@ def loginUser():
     customer_type = data.get('customer_type') 
 
     result = db_create.login_user(email, entered_password, customer_type)
-    return jsonify({'success': result})
+    
+    if result:
+        session_token = str(uuid.uuid4())
+        db_create.save_session_token(email, session_token)
+        return jsonify({'success': True, 'token': session_token})
+    else:
+        return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)
