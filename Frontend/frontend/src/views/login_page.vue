@@ -19,17 +19,17 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" v-model="form_login.entered_password" placeholder="Password" required>
                 </div>
-                    <div class="custom-radio">
-                        <div class="radio-item">
-                        <input type="radio" id="private" value="private" v-model="form_login.customer_type" style="margin-bottom: 5px;">
-                        <label for="private">Privatkunde</label>
-                        </div>
-                        
-                        <div class="radio-item">
-                        <input type="radio" id="business" value="business" v-model="form_login.customer_type" style="margin-bottom: 5px;">
-                        <label for="business">Händler</label>
-                        </div>
+                <div class="custom-radio">
+                    <div class="radio-item">
+                    <input type="radio" id="private" value="private" v-model="form_login.customer_type">
+                    <label for="private">Privatkunde</label>
                     </div>
+                    
+                    <div class="radio-item">
+                    <input type="radio" id="business" value="business" v-model="form_login.customer_type">
+                    <label for="business">Händler</label>
+                    </div>
+                </div>
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
@@ -134,13 +134,29 @@ input[type="text"], input[type="password"] {
 .custom-radio {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .radio-item {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.radio-label {
+    flex-grow: 1;
+    width: 15px;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 8px;
+}
+
+.radio-item label {
+    margin: 0;
+    padding: 0;
 }
 
 .login-btn, .register-btn {
@@ -163,6 +179,7 @@ input[type="text"], input[type="password"] {
 
 .register-btn {
     background-color: #28a745;
+    margin-top: 10px;
 }
 
 .register-btn:hover {
@@ -170,7 +187,7 @@ input[type="text"], input[type="password"] {
 }
 
 .login-container i {
-    margin-right: 8px;
+margin-right: 8px;  
 }
 
 .error {
