@@ -44,28 +44,34 @@
                 </router-link>
                 <post_login ref="post_login" :form_login="form_login" @response="handleResponse"/>
                 <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+                <get_user v-if="user_id && form_login.customer_type"
+                    :user_id="user_id"
+                    :customer_type="form.customer_type"></get_user>
             </form>
         </div>
     </body>
+
     </html>
 </template>
   
 <script>
 import post_login from '@/components/post_login.vue';
+import get_user from '@/components/get_user.vue';
 
 export default {
     name: "LoginPage",
     components: {
-        post_login
+        post_login,
+        get_user
     },
   data() {
     return {
         form_login: {
-      email: '',
-      entered_password: '',
-      customer_type: '',
-
-      }
+        email: '',
+        entered_password: '',
+        customer_type: '',
+      },
+      user_id: null,
     };
   },
   methods: {
@@ -75,9 +81,12 @@ export default {
     handleResponse(response) {
         console.log(response)
         if (response.success && response.success.success === true) {
+
             const verkaeufer_id = response.success.data.verkaeufer_id
+            this.user_id = response.success.data.verkaeufer_id;
             console.log(verkaeufer_id)
-            // api callen und user name etc abfragen 
+
+            // api callen und user name etc abfragen
             // dann alles in cookie statt localstorage
             sessionStorage.setItem("verkaeufer_id", verkaeufer_id)
             
