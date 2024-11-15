@@ -30,15 +30,15 @@
                     <div class="payment-options">
                         <h3>Bezahlen mit</h3>
                         <div class="payment-option">
-                            <input type="radio" id="credit-card" name="payment-method" value="credit-card" checked>
+                            <input type="radio" id="credit-card" name="payment-method" value="credit-card" v-model="selectedPaymentMethod" checked>
                             <label for="credit-card">Keditkarte</label>
                         </div>
                         <div class="payment-option">
-                            <input type="radio" id="paypal" name="payment-method" value="paypal">
+                            <input type="radio" id="paypal" name="payment-method" value="paypal" v-model="selectedPaymentMethod">
                             <label for="paypal">PayPal</label>
                         </div>
                         <div class="payment-option">
-                            <input type="radio" id="cash-on-delivery" name="payment-method" value="cash-on-delivery">
+                            <input type="radio" id="cash-on-delivery" name="payment-method" value="cash-on-delivery" v-model="selectedPaymentMethod">
                             <label for="cash-on-delivery">Nachnahme</label>
                         </div>
                     </div>
@@ -72,7 +72,8 @@
                     <button class="buy-button">Jetzt kaufen</button>
                     <p>Zwischensumme {{ totalItems }} Arikel: <strong>{{ totalAmount.toFixed(2) }} €</strong></p>
                     <p>Versandkosten: <strong>0.00 €</strong></p>
-                    <p>Gesamtbetrag: <strong>{{ totalAmount.toFixed(2) }} €</strong></p>
+                    <p>Zusatzkosten: <strong>{{ paymentFee.toFixed(2) }} €</strong></p>
+                    <p>Gesamtbetrag: <strong>{{ totalWithFees.toFixed(2) }} €</strong></p>
                 </div>
             </div>
         </div>
@@ -82,7 +83,7 @@
 
 <script>
 import { useCartStore } from '@/stores/cart';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export default {
     name: 'ShoppingCart',
@@ -119,6 +120,22 @@ export default {
             return groupedCartItems.value.reduce((total, item) => total + item.preis * item.anzahl, 0);
         });
 
+        const selectedPaymentMethod = ref('credit-card');
+        const paymentFeePercentage = computed(() => {
+            if (selectedPaymentMethod.value === 'credit-card') return 0.03;
+            if (selectedPaymentMethod.value === 'paypal') return 0.05;
+            if (selectedPaymentMethod.value === 'cash-on-delivery') return 0.10;
+            return 0;
+        });
+
+        const paymentFee = computed(() => {
+            return totalAmount.value * paymentFeePercentage.value;
+        });
+
+        const totalWithFees = computed(() => {
+            return totalAmount.value + paymentFee.value;
+        })
+
         // Entferne einen Artikel aus dem Warenkorb,
         function removeFromCart(item) {
             const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
@@ -151,7 +168,10 @@ export default {
             totalAmount,
             removeFromCart,
             gridStyle,
-            updateQuantity
+            updateQuantity,
+            paymentFee,
+            totalWithFees,
+            selectedPaymentMethod
         };
     }
 };
