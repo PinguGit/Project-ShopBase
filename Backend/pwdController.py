@@ -35,7 +35,7 @@ def loginUser():
     customer_type = data.get('customer_type') 
 
     result = db_create.login_user(email, entered_password, customer_type)
-    return jsonify({'success': result})
+    return jsonify({'success': result, 'customer_type' : customer_type})
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -86,9 +86,23 @@ export default {
             console.log("if1")
             alert("Login successfull")
             // link to login page
+            const customerType = response.customer_type;
+            const kundenId = response.success.kunden_id;
+
+           
+            const expirationTime = new Date();
+            expirationTime.setMinutes(expirationTime.getMinutes() + 10);
+            document.cookie = `customer_type=${customerType}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
+            document.cookie = `kunden_id=${kundenId}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
+
+            // Debugging: Cookies überprüfen
+            console.log("Cookies gesetzt:", document.cookie);
+
+        // Weiterleitung zur Benutzerseite
             this.$router.push('/user-page');
-            this.user_id = response.succes.kunden_id;
-            this.
+    
+            
+
         }
         else if (response.success.error === "Email already exists") {
             console.log("if2")

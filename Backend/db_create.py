@@ -101,14 +101,14 @@ def login_user(email, entered_password, isCustomer):
     if isCustomer == 'private':
     # get user data if customer
         query = """
-            SELECT k.kunden_id, p.password 
+            SELECT k.kunden_id AS id, p.password 
             FROM kunde k 
             JOIN passwort p ON k.password_id = p.password_id 
             WHERE k.email = %s
         """
     elif isCustomer == 'business':
         query = """
-            SELECT v.verkaeufer_id, p.password
+            SELECT v.verkaeufer_id AS id, p.password
             FROM verkaeufer v 
             JOIN passwort p ON v.password_id = p.password_id 
             WHERE v.email = %s
@@ -127,12 +127,12 @@ def login_user(email, entered_password, isCustomer):
 
     # Verify password
     if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
-        if isCustomer == 'private' and 'kunden_id' in result:
+        if isCustomer == 'private':
             print("Login successful as customer.")
-            return {'success': True, 'kunden_id': result['kunden_id']}
-        elif isCustomer == 'business' and 'verkaeufer_id' in result:
+            return {'success': True, 'kunden_id': result['id']}
+        elif isCustomer == 'business':
             print("Login successful as vendor.")
-            return {'success': True, 'verkaeufer_id': result['verkaeufer_id']}
+            return {'success': True, 'verkaeufer_id': result['id']}
         else:
             print("Login failed: mismatched user type.")
             return {'success': False, 'error': 'Mismatched user type'}

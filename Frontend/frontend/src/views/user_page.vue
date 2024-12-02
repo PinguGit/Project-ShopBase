@@ -57,7 +57,7 @@
                     </tbody>
                 </table>
                 <div v-else>Noch keine Bestellungen gefunden.</div>
-
+                <h1>Orders</h1>
                 <p class="price">Gesamtpreis: ...</p>
                 <p class="vendor">Verkäufer: ...</p>
             </div>
