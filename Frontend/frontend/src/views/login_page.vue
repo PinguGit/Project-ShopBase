@@ -19,17 +19,17 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" v-model="form_login.entered_password" placeholder="Password" required>
                 </div>
-                    <div class="custom-radio">
-                        <div class="radio-item">
-                        <input type="radio" id="private" value="private" v-model="form_login.customer_type" style="margin-bottom: 5px;">
-                        <label for="private">Privatkunde</label>
-                        </div>
-                        
-                        <div class="radio-item">
-                        <input type="radio" id="business" value="business" v-model="form_login.customer_type" style="margin-bottom: 5px;">
-                        <label for="business">Händler</label>
-                        </div>
+                <div class="custom-radio">
+                    <div class="radio-item">
+                    <input type="radio" id="private" value="private" v-model="form_login.customer_type">
+                    <label for="private">Privatkunde</label>
                     </div>
+                    
+                    <div class="radio-item">
+                    <input type="radio" id="business" value="business" v-model="form_login.customer_type">
+                    <label for="business">Händler</label>
+                    </div>
+                </div>
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
@@ -44,28 +44,34 @@
                 </router-link>
                 <post_login ref="post_login" :form_login="form_login" @response="handleResponse"/>
                 <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+                <get_user v-if="user_id && form_login.customer_type"
+                    :user_id="user_id"
+                    :customer_type="form.customer_type"></get_user>
             </form>
         </div>
     </body>
+
     </html>
 </template>
   
 <script>
 import post_login from '@/components/post_login.vue';
+import get_user from '@/components/get_user.vue';
 
 export default {
     name: "LoginPage",
     components: {
-        post_login
+        post_login,
+        get_user
     },
   data() {
     return {
         form_login: {
-      email: '',
-      entered_password: '',
-      customer_type: '',
-
-      }
+        email: '',
+        entered_password: '',
+        customer_type: '',
+      },
+      user_id: null,
     };
   },
   methods: {
@@ -75,11 +81,24 @@ export default {
     handleResponse(response) {
         console.log("response")
         console.log(response)
+<<<<<<< HEAD
         if (response.success.success) {
             console.log("if1")
             alert("Login successfull")
+=======
+        if (response.success && response.success.success === true) {
+
+            const verkaeufer_id = response.success.data.verkaeufer_id
+            this.user_id = response.success.data.verkaeufer_id;
+            console.log(verkaeufer_id)
+
+            // api callen und user name etc abfragen
+            // dann alles in cookie statt localstorage
+            sessionStorage.setItem("verkaeufer_id", verkaeufer_id)
+            
+>>>>>>> b3a4d14a98837343cecce768925501d35b3b88de
             // link to login page
-            this.$router.push('/login-page');
+            this.$router.push('/user-page');
         }
         else if (response.success.error === "Email already exists") {
             console.log("if2")
@@ -133,13 +152,29 @@ input[type="text"], input[type="password"] {
 .custom-radio {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .radio-item {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.radio-label {
+    flex-grow: 1;
+    width: 15px;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 8px;
+}
+
+.radio-item label {
+    margin: 0;
+    padding: 0;
 }
 
 .login-btn, .register-btn {
@@ -162,6 +197,7 @@ input[type="text"], input[type="password"] {
 
 .register-btn {
     background-color: #28a745;
+    margin-top: 10px;
 }
 
 .register-btn:hover {
@@ -169,7 +205,7 @@ input[type="text"], input[type="password"] {
 }
 
 .login-container i {
-    margin-right: 8px;
+margin-right: 8px;  
 }
 
 .error {

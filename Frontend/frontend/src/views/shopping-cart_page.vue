@@ -48,7 +48,7 @@
                                     <input 
                                         id="quantity" 
                                         type="number" 
-                                        v-model.number="item.quantity"
+                                        v-model.number="item.anzahl"
                                         min="1"
                                         @change="updateQuantity(item)"
                                     >
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <div class="item-price">
-                                <p>{{ (item.preis * item.quantity).toFixed(2) }} €</p>
+                                <p>{{ (item.preis * item.anzahl).toFixed(2) }} €</p>
                             </div>
                         </div>
                     </div>
@@ -97,9 +97,9 @@ export default {
                     (uniqueItem) => uniqueItem.produkt_name === item.produkt_name
                 );
                 if (existingItem) {
-                    existingItem.quantity += 1;
+                    existingItem.quantity += item.anzahl || 1;
                 } else {
-                    uniqueItems.push({ ...item, quantity: 1});
+                    uniqueItems.push({ ...item, quantity: item.anzahl || 1});
                 }
             });
             return uniqueItems;
@@ -107,12 +107,12 @@ export default {
 
         // Berechne die Gesamtanzahl der Artikel im Warenkorb
         const totalItems = computed(() => {
-            return groupedCartItems.value.reduce((total, item) => total + item.quantity, 0);
+            return groupedCartItems.value.reduce((total, item) => total + item.anzahl, 0);
         });
 
         // Berechne den Gesamtpreis aller Artikel im Warenkorb
         const totalAmount = computed(() => {
-            return groupedCartItems.value.reduce((total, item) => total + item.preis * item.quantity, 0);
+            return groupedCartItems.value.reduce((total, item) => total + item.preis * item.anzahl, 0);
         });
 
         // Entferne einen Artikel aus dem Warenkorb,
@@ -125,10 +125,10 @@ export default {
 
         // Aktualisiere die Menge im Warenkorb, wenn Benutzer die ändert
         function updateQuantity(item) {
-            const quantity = Math.max(item.quantity, 1);
+            const NewQuantity = Math.max(item.anzahl, 1);
             const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
             if (index > -1){
-                cartStore.updateItemQuantity(index, quantity);
+                cartStore.updateItemQuantity(index, NewQuantity);
             }
         }
 
@@ -356,6 +356,12 @@ body {
     align-items: flex-start;
     font-size: 18px;
     font-weight: bold;
+    width: 100px;
+}
+
+.item-price p {
+    text-align: right;
+    width: 100%;
 }
 
 .payment-section {

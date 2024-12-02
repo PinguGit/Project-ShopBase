@@ -7,7 +7,18 @@ export const useCartStore = defineStore('cart', {
     }),
     actions: {
         addToCart(product) {
-            this.activ_products_shoppingcart.push(product);
+            // Check if the product is already in the cart
+            const existingProduct = this.activ_products_shoppingcart.find(
+                item => item.produkt_id === product.produkt_id
+            );
+
+            if (existingProduct) {
+                // If found, increase its quantity
+                existingProduct.anzahl += 1;
+            } else {
+                // If not found, add it with an initial quantity of 1
+                this.activ_products_shoppingcart.push({ ...product, anzahl: 1 });
+            }
         },
         removeFromCart(index) {
             this.activ_products_shoppingcart.splice(index, 1);
@@ -16,8 +27,9 @@ export const useCartStore = defineStore('cart', {
         updateItemQuantity(index, quantity) {
         // Sicherstellen, dass das Produkt existiert und die Menge >= 1 ist
         if (this.activ_products_shoppingcart[index]) {
-            this.activ_products_shoppingcart[index].quantity = Math.max(quantity, 1); // Menge nicht kleiner als 1
+            this.activ_products_shoppingcart[index].anzahl = Math.max(quantity, 1); // Menge nicht kleiner als 1
         }
       }
     }
 });
+
