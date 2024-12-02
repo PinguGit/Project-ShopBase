@@ -45,13 +45,10 @@
                     <div v-for="(item, index) in groupedCartItems" :key="index">
                         <div class="cart-item">
                             <div class="item-image">
-                                <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
+                                <img :src="item.url_link" alt="Artikelbild">
                             </div>
                             <div class="item-details">
                                 <p class="item-title">{{ item.produkt_name}}</p>
-                                <p class="item-availability">Auf Lager</p>
-                                <p class="item-size">Größe: 27W / 32L</p>
-                                <p class="item-color">Farbe: Schwarz</p>
                                 <div class="item-actions">
                                     <label for="quantity">Menge: </label>
                                     <p> {{ item.anzahl }}</p>
@@ -69,7 +66,7 @@
 
                 <!-- Zahlungsbereich -->
                 <div class="payment-section">
-                    <button class="buy-button">Jetzt kaufen</button>
+                    <post-order :cartItems="groupedCartItems" :totalAmount="totalWithFees" @orderPlaced="handleOrderPlaced" />
                     <p>Zwischensumme {{ totalItems }} Arikel: <strong>{{ totalAmount.toFixed(2) }} €</strong></p>
                     <p>Versandkosten: <strong>0.00 €</strong></p>
                     <p>Zusatzkosten: <strong>{{ paymentFee.toFixed(2) }} €</strong></p>
@@ -83,12 +80,18 @@
 
 <script>
 import { useCartStore } from '@/stores/cart';
-import { computed, ref } from 'vue';
+import { useCustomerStore } from '@/stores/customer';
+import PostOrder from '../components/post_order.vue';
+import { computed, ref, onMounted, getCurrentInstance, nextTick } from 'vue';
 
 export default {
     name: 'ShoppingCart',
+    components: {
+        PostOrder
+    },
     setup() {
         const cartStore = useCartStore();
+        const customerStore = useCustomerStore();
 
         // Greife auf die aktiven Produkte im Warenkorb zu
         const cartItems = computed(() => cartStore.activ_products_shoppingcart);
@@ -153,6 +156,31 @@ export default {
             }
         }
 
+        // Warte, bis die Instanz geladen ist und hole die Kunden-ID
+        onMounted(async () => {
+        const instance = getCurrentInstance();
+
+        if (instance) {
+            await nextTick(); // Warte, bis der DOM-Tree vollständig gerendert ist
+            console.log("SubTree nach vollständigem Rendering:", instance.subTree);
+        } else {
+            console.error("Aktuelle Instanz konnte nicht abgerufen werden.");
+        }
+
+        customerStore.getCustomerIdFromCookie();
+
+        if (!customerStore.customerId) {
+            console.error("Kunden-ID konnte nicht aus dem Cookie gelesen werden.");
+        }
+        });
+
+        // Callback wenn Bestellung erfolgreich platziert wurde
+        const handleOrderPlaced = (responseData) => {
+        console.log('Bestellung erfolgreich:', responseData);
+        alert('Bestellung erfolgreich aufgegeben!');
+        };
+
+
 
         // grid-template-row Berechnung anhand der Anzahl im groupedCartItems
         const gridStyle = computed(() => {
@@ -171,7 +199,8 @@ export default {
             updateQuantity,
             paymentFee,
             totalWithFees,
-            selectedPaymentMethod
+            selectedPaymentMethod,
+            handleOrderPlaced
         };
     }
 };
@@ -291,10 +320,20 @@ body {
     padding-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
 }
+.item-image {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-left: 20px;
+    width: 200px;
+    height: 178px;
+}
+
 .item-image img {
-    width: 100px;
-    height: 100px;
-    margin-right: 20px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    margin: 0; 
 }
 .item-details {
     flex: 1;

@@ -36,13 +36,10 @@
                     <div v-for="(item, index) in groupedCartItems" :key="index">
                         <div class="cart-item">
                             <div class="item-image">
-                                <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
+                                <img :src="item.url_link" alt="Artikelbild">
                             </div>
                             <div class="item-details">
                                 <p class="item-title">{{ item.produkt_name}}</p>
-                                <p class="item-availability">Auf Lager</p>
-                                <p class="item-size">Größe: 27W / 32L</p>
-                                <p class="item-color">Farbe: Schwarz</p>
                                 <div class="item-actions">
                                     <label for="quantity">Menge: </label>
                                     <input 
@@ -293,18 +290,18 @@ body {
 
 .item-image {
     display: flex;
-    justify-content: center; /* Horizontales Zentrieren */
-    align-items: center; /* Vertikales Zentrieren */
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+    justify-content: center;
+    align-items: center; 
     margin-left: 20px;
     width: 200px;
+    height: 178px;
 }
 
 .item-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* Bildverhältnis beibehalten */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    margin: 0; 
 }
 
 

@@ -14,13 +14,19 @@ CORS(app)
 create_blueprint = Blueprint('create_blueprint', __name__)
 
 #returns a specific object from any table
-@create_blueprint.route('/create_bestellung/<kunden_id>', methods=['PUT'])
+@create_blueprint.route('/create_bestellung/<kunden_id>', methods=['POST'])
 def createBestellung(kunden_id):
-    data = request.json
+    data = request.get_json()
     products = data.get('products', [])
 
-    create_bestellungen(kunden_id, products)
-    return jsonify({'success'})
+    if not products:
+        return jsonify({'error': 'Keine Produkte übermittelt'}), 400
+    
+    try:
+        create_bestellungen(kunden_id, products)
+        return jsonify({'success': True, 'message': 'Bestellung erfolgreich erstellt'}), 201
+    except Exception as e:
+        return jsonify({'error': f'Fehler bei der Bestellung: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

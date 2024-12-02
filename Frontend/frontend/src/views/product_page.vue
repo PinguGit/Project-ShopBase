@@ -54,7 +54,7 @@
             <div class="product-list">
                 <div class="product" v-for="product in this.filteredProducts" :key="product.produkt_name">
                     <div class="product-image">
-                        <img src="../assets/logo.png" alt="Produkt Bild">
+                        <img :src="product.url_link" alt="Produkt Bild"> 
                     </div>
                     <h3 class="product-title">{{ product.produkt_name }}</h3>
                     <p class="product-price">Preis: {{ product.preis }}€</p>
@@ -280,12 +280,15 @@ body {
     display: flex;  /* Flexbox verwenden */
     justify-content: center;  /* Zentriert horizontal */
     align-items: center;  /* Zentriert vertikal */
+    max-width: 100%;
+    width: 100%;
 }
 
 .product-image img {
     max-width: 100%;
-    height: auto;
+    max-height: 100%;
     border-radius: 10px;
+    object-fit: contain;
 }
 
 .product-title {
