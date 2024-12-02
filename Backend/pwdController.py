@@ -40,7 +40,7 @@ def loginUser():
     if result:
         session_token = str(uuid.uuid4())
         db_create.save_session_token(email, session_token)
-        return jsonify({'success': True, 'token': session_token})
+        return jsonify({'success': True, 'token': session_token, 'customer_type': customer_type, 'id':result['id']})
     else:
         return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
 

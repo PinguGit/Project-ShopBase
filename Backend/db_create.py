@@ -102,14 +102,14 @@ def login_user(email, entered_password, isCustomer):
     if isCustomer == 'private':
     # get user data if customer
         query = """
-            SELECT k.kunden_id, p.password 
+            SELECT k.kunden_id AS id, p.password 
             FROM kunde k 
             JOIN passwort p ON k.password_id = p.password_id 
             WHERE k.email = %s
         """
     elif isCustomer == 'business':
         query = """
-            SELECT v.verkaeufer_id, p.password
+            SELECT v.verkaeufer_id AS id, p.password
             FROM verkaeufer v 
             JOIN passwort p ON v.password_id = p.password_id 
             WHERE v.email = %s
