@@ -31,7 +31,8 @@ def getProducts(listOfDictionarys):
             'preis': row['preis'],
             'hersteller': manufacturer_info['hersteller_name'] if manufacturer_info else None,
             'herstellerland': db_get.getCountryById(manufacturer_info['laender_id']) if manufacturer_info else None,
-            'verkaeufer': vendors_list
+            'verkaeufer': vendors_list,
+            'url_link': row['url_link']
         }
     return products_dict
 
