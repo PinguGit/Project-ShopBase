@@ -32,34 +32,39 @@
 
             <div class="cart-container">
                 <!-- Artikelbereich -->
-                <div class="cart-content">
-                    <div v-for="(item, index) in cartItems" :key="index">
+                <div class="cart-content" :style="gridStyle">
+                    <div v-for="(item, index) in groupedCartItems" :key="index">
                         <div class="cart-item">
                             <div class="item-image">
                                 <img src="../assets/LogoReal.png" alt="Artikelbild" width="100px" height="100px">
                             </div>
                             <div class="item-details">
                                 <p class="item-title">{{ item.produkt_name}}</p>
-                                <p class="item-subtitle">Bestseller Nr. 1 - Bequeme Schwarze Hose Herren</p>
                                 <p class="item-availability">Auf Lager</p>
                                 <p class="item-size">Größe: 27W / 32L</p>
                                 <p class="item-color">Farbe: Schwarz</p>
                                 <div class="item-actions">
                                     <label for="quantity">Menge: </label>
-                                    <input id="quantity" type="number" value="1" min="1">
-                                    <button>Löschen</button>
+                                    <input 
+                                        id="quantity" 
+                                        type="number" 
+                                        v-model.number="item.quantity"
+                                        min="1"
+                                        @change="updateQuantity(item)"
+                                    >
+                                    <button @click="removeFromCart(item)" style="width: 50px;">Löschen</button>
                                 </div>
                             </div>
                             <div class="item-price">
-                                <p>{{ item.preis }}</p>
+                                <p>{{ (item.preis * item.quantity).toFixed(2) }} €</p>
                             </div>
                         </div>
                     </div>
                 
                     <!-- Zahlungsbereich -->
                     <div class="payment-section">
-                        <p>Zwischensumme {{  cartItems.length }} Artikel: 
-                            <strong>{{  cartItems.reduce((total, item) => total + item.preis, 0) }}</strong></p>
+                        <p>Zwischensumme {{  totalItems }} Artikel: <br>
+                            <strong>{{  totalAmount.toFixed(2) }} €</strong></p>
                         <router-link to="/checkout-page">
                         <button class="checkout-button">Zur Kasse gehen</button>
                         </router-link>
@@ -80,14 +85,69 @@ export default {
     setup() {
         const cartStore = useCartStore();
 
+        // Greife auf die aktiven Produkte im Warenkorb zu
         const cartItems = computed(() => cartStore.activ_products_shoppingcart);
 
-        function removeFromCart(index) {
-            cartStore.removeFromCart(index); // Entferne Produkt aus dem Store
+
+        // Gruppiere die Produkte und zähke die Menge pro Produkt
+        const groupedCartItems = computed(() => {
+            const uniqueItems = [];
+            cartItems.value.forEach((item) => {
+                const existingItem = uniqueItems.find(
+                    (uniqueItem) => uniqueItem.produkt_name === item.produkt_name
+                );
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    uniqueItems.push({ ...item, quantity: 1});
+                }
+            });
+            return uniqueItems;
+        });
+
+        // Berechne die Gesamtanzahl der Artikel im Warenkorb
+        const totalItems = computed(() => {
+            return groupedCartItems.value.reduce((total, item) => total + item.quantity, 0);
+        });
+
+        // Berechne den Gesamtpreis aller Artikel im Warenkorb
+        const totalAmount = computed(() => {
+            return groupedCartItems.value.reduce((total, item) => total + item.preis * item.quantity, 0);
+        });
+
+        // Entferne einen Artikel aus dem Warenkorb,
+        function removeFromCart(item) {
+            const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
+            if (index > -1){
+                cartStore.removeFromCart(index); // Entferne Produkt aus dem Store   
+            }
         }
+
+        // Aktualisiere die Menge im Warenkorb, wenn Benutzer die ändert
+        function updateQuantity(item) {
+            const quantity = Math.max(item.quantity, 1);
+            const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
+            if (index > -1){
+                cartStore.updateItemQuantity(index, quantity);
+            }
+        }
+
+
+        // grid-template-row Berechnung anhand der Anzahl im groupedCartItems
+        const gridStyle = computed(() => {
+            const rows = groupedCartItems.value.length > 0 ? `repeat(${groupedCartItems.value.length}, 200px)` : '200px';
+            return {
+                'grid-template-rows': rows
+            };
+        });
+
         return {
-            cartItems,
-            removeFromCart
+            groupedCartItems,
+            totalItems,
+            totalAmount,
+            removeFromCart,
+            gridStyle,
+            updateQuantity
         };
     }
 };
@@ -193,19 +253,13 @@ body {
 
 .cart-container {
     grid-area: cart-container; /* Richtig gestellt von cart-contain zu cart-container */
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    grid-template-rows: auto;
-    grid-template-areas:
-        "article buy";
+    display: flex;
+    width: 100%;
     margin: 0 auto; /* Zentriert den Container */
     background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
-    display: flex; /* Flexbox hinzufügen */
-    gap: 20px; /* Abstand zwischen Artikelbereich und Zahlungsbereich */
-    width: 100%;
 }
 
 .cart-header {
@@ -218,11 +272,20 @@ body {
     padding-bottom: 10px;
 }
 
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-areas: 
+        "items payment";
+    grid-column-gap: 40px;
+    width: 100%;
+}
+
 .cart-item {
-    grid-area: article;
-    display: flex; /* Flex-Layout für Artikel */
-    gap: 15px; /* Abstand zwischen Bild und Details */
-    border-bottom: 1px solid #dee2e6; /* Trennlinie zwischen den Artikeln */
+    grid-area: items;
+    display: flex; 
+    gap: 15px; 
+    border-bottom: 1px solid #dee2e6;
     border-top: 1px solid #dee2e6;
     padding: 10px 0; /* Vertikaler Abstand */
     height: 200px;
@@ -296,12 +359,14 @@ body {
 }
 
 .payment-section {
-    grid-area: buy;
+    grid-area: payment;
+    grid-row: 1/3;
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 5px;
     border: 1px solid #e0e0e0;
-    width: 280px; /* Feste Breite für den Zahlungsbereich */
+    width: 300px;
+    align-self: flex-start;
 }
 
 .payment-section p {
