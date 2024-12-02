@@ -34,17 +34,17 @@
             </router-link>
 
             <div class="filter">
-                <h4>Filter Products</h4>
+                <h4>Produkt Filter</h4>
                 <form id="filter-form">
                     <!-- Filter by Product Name -->
             
                     <!-- Filter by Price -->
-                    <label for="price">Price:</label>
-                    <input type="number" id="price-filter" v-model="filters.price">
+                    <label for="price">Preis:</label>
+                    <input type="number" id="price-filter" v-model="filters.price" placeholder="Nach Max Preis...">
             
                     <!-- Filter by Seller -->
-                    <label for="seller">Seller:</label>
-                    <input type="text" id="seller" v-model="filters.seller" placeholder="Enter seller">
+                    <label for="seller">Verkäufer:</label>
+                    <input type="text" id="seller" v-model="filters.seller" placeholder="Nach Verkäufer...">
             
                 </form>
             </div>
@@ -96,7 +96,9 @@ export default {
             return products.value.filter(product => {
                 const namematch = product.produkt_name.toLowerCase().includes(filters.productName.toLowerCase());
                 const pricematch = filters.price === '' || product.preis <= filters.price;
-                const sellermatch = product.hersteller.toLowerCase().includes(filters.seller.toLowerCase());
+                const sellermatch = product.verkaeufer.some(v => 
+                    v.verkaeufer_name.toLowerCase().trim().includes(filters.seller.toLowerCase().trim())
+                );
                 return namematch && pricematch && sellermatch;
             });
         });
@@ -268,7 +270,7 @@ body {
 }
 
 .product:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 

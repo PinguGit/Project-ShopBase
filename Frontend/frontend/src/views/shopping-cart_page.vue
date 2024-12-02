@@ -356,6 +356,12 @@ body {
     align-items: flex-start;
     font-size: 18px;
     font-weight: bold;
+    width: 100px;
+}
+
+.item-price p {
+    text-align: right;
+    width: 100%;
 }
 
 .payment-section {
