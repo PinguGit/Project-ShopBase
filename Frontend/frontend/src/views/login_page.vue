@@ -72,6 +72,7 @@ export default {
         customer_type: '',
       },
       user_id: null,
+      customer_typ: null, 
     };
   },
   methods: {
@@ -81,24 +82,13 @@ export default {
     handleResponse(response) {
         console.log("response")
         console.log(response)
-<<<<<<< HEAD
-        if (response.success.success) {
+        if (response.success) {
             console.log("if1")
             alert("Login successfull")
-=======
-        if (response.success && response.success.success === true) {
-
-            const verkaeufer_id = response.success.data.verkaeufer_id
-            this.user_id = response.success.data.verkaeufer_id;
-            console.log(verkaeufer_id)
-
-            // api callen und user name etc abfragen
-            // dann alles in cookie statt localstorage
-            sessionStorage.setItem("verkaeufer_id", verkaeufer_id)
-            
->>>>>>> b3a4d14a98837343cecce768925501d35b3b88de
             // link to login page
             this.$router.push('/user-page');
+            this.user_id = response.succes.kunden_id;
+            this.
         }
         else if (response.success.error === "Email already exists") {
             console.log("if2")
