@@ -1,32 +1,46 @@
-from db_create import create_bestellungen
-from db_get import getAllObjects, getObjectById
-import db_get
-from flask import Blueprint, Flask, jsonify, request
-import getControllerCommand
-import getCommand
+from flask import Flask, jsonify, request, Blueprint
 from flask_cors import CORS
-from flask import Flask, jsonify
+from db_create import create_bestellungen
 
+# Flask App Setup
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-
+# Blueprint Setup
 create_blueprint = Blueprint('create_blueprint', __name__)
 
-#returns a specific object from any table
-@create_blueprint.route('/create_bestellung/<kunden_id>', methods=['POST'])
+@create_blueprint.route('/create_bestellung/<kunden_id>', methods=['POST', 'OPTIONS'])
 def createBestellung(kunden_id):
-    data = request.get_json()
-    products = data.get('products', [])
+    # OPTIONS Handler für CORS Preflight-Anfrage
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'CORS Preflight erfolgreich'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        return response, 204
 
-    if not products:
-        return jsonify({'error': 'Keine Produkte übermittelt'}), 400
-    
+    # POST-Anfrage zur Erstellung einer Bestellung
     try:
+        # JSON-Daten validieren
+        data = request.get_json()
+        if not data or 'products' not in data:
+            return jsonify({'error': 'Ungültige Anfrage. "products" ist erforderlich.'}), 400
+
+        # Produkte aus der Anfrage extrahieren
+        products = data['products']
+        if not isinstance(products, list) or len(products) == 0:
+            return jsonify({'error': 'Keine Produkte übermittelt oder falsches Format'}), 400
+
+        # Bestellung erstellen
         create_bestellungen(kunden_id, products)
         return jsonify({'success': True, 'message': 'Bestellung erfolgreich erstellt'}), 201
+
     except Exception as e:
+        # Fehlerbehandlung mit vollständiger Ausgabe für Debugging
         return jsonify({'error': f'Fehler bei der Bestellung: {str(e)}'}), 500
+
+# Blueprint registrieren
+app.register_blueprint(create_blueprint)
 
 if __name__ == '__main__':
     app.run(debug=True)

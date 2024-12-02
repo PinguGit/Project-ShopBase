@@ -168,55 +168,59 @@ def get_or_create_location(location_id, location):
 def create_bestellungen(kunden_id, products):
     conn = db_connect()
     cursor = conn.cursor(dictionary=True)
-    
+
     try:
         bestell_ids = []
         
+
         for product in products:
-            produkt_id = product['produkt_id']  # Erwarte produkt_id statt verkaeufer_produkt_id
+            
+            produkt_id = product['produkt_id']
             anzahl = product['anzahl']
             gesamtpreis = product['gesamtpreis']
-            
-            # `verkaeufer_produkt_id` basierend auf `produkt_id` abrufen
+
+            # Prüfen, ob Produkt in der Datenbank existiert
             cursor.execute("""
                 SELECT verkaeufer_produkt_id FROM verkaeufer_produkte WHERE produkt_id = %s
             """, (produkt_id,))
             result = cursor.fetchone()
             
+
             if result:
-                verkaeufer_produkt_id = result[0]
-                
-                # Eintrag in die Tabelle `bestellung`
+                verkaeufer_produkt_id = result['verkaeufer_produkt_id']
+
+                # Eintrag in die Tabelle bestellung
                 cursor.execute("""
-                    INSERT INTO bestellung (verkaufer_produkt_id, anzahl, gesamtpreis)
+                    INSERT INTO bestellung (verkaeufer_produkt_id, anzahl, gesamtpreis)
                     VALUES (%s, %s, %s)
                 """, (verkaeufer_produkt_id, anzahl, gesamtpreis))
-                
-                # get bestell_id for new kundenbestellungen
+                print(f"Bestellung hinzugefügt: Produkt {produkt_id}, Anzahl {anzahl}, Gesamtpreis {gesamtpreis}")  # Debugging
+
+                # Neue Bestell-ID speichern
                 bestell_id = cursor.lastrowid
                 bestell_ids.append(bestell_id)
-                
-                # create entry in kundenbestellungen
+
+                # Kundenbestellung verknüpfen
                 cursor.execute("""
                     INSERT INTO kundenbestellungen (kunden_id, bestell_id)
                     VALUES (%s, %s)
                 """, (kunden_id, bestell_id))
+                print(f"Kundenbestellung hinzugefügt: Kunden-ID {kunden_id}, Bestell-ID {bestell_id}")  # Debugging
             else:
-                # if no produkt_id was found
                 raise ValueError(f"Produkt-ID {produkt_id} nicht in verkaeufer_produkte gefunden.")
-        
-        # complete transaktion
+
         conn.commit()
+        
         return {'success': True, 'bestell_ids': bestell_ids}
 
-    # undo changes
-    except (mysql.connector.Error, ValueError) as err:
+    except Exception as e:
         conn.rollback()
-        return {'success': False, 'error': str(err)}
+        print(f"Fehler in create_bestellungen: {str(e)}")  
+        return {'success': False, 'error': str(e)}
 
     finally:
         cursor.close()
-        conn.close()
+        conn.close()  
 
 
 
