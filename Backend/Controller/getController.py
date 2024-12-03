@@ -15,7 +15,6 @@ get_blueprint = Blueprint('get_blueprint', __name__)
 
 #returns a specific object from any table
 @get_blueprint.route('/get_object/<table>/<objectId>', methods=['GET'])
-@auth_utils.token_required
 def getObject(objectId, table):
     dictionary = db_get.getObjectById(table, objectId)
     return jsonify(dictionary)
@@ -29,7 +28,6 @@ def getOrdersById(customerId):
 
 #returns all products of a vendor
 @get_blueprint.route('/get_products/<vendorId>', methods=['GET'])
-@auth_utils.token_required
 def getVendorProducts(vendorId):
     dictionary = db_get.getVendorProducts(vendorId)
     return jsonify(dictionary)
@@ -44,7 +42,6 @@ def getVendorOrdersById(vendorId):
 #returns all entries from following tables:
     #product, kunde, verkauefer, hersteller
 @get_blueprint.route('/get_all_objects/<table>', methods=['GET'])
-@auth_utils.token_required
 def getAllObjects(table):
     dictionary = db_get.getAllObjects(table)
     json = getControllerCommand.getType(table, dictionary)
