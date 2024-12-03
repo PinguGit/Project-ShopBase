@@ -1,8 +1,8 @@
 from Backend.Repository.db_get import getAllObjects, getObjectById
-import Backend.Repository.db_get as db_get
+import Repository.db_get as db_get
 from flask import Blueprint, Flask, jsonify
-import Backend.Commands.getControllerCommand as getControllerCommand
-import Backend.Commands.getCommand as getCommand
+import Command.getControllerCommand as getControllerCommand
+import Command.getCommand as getCommand
 import auth_utils
 from flask_cors import CORS
 from flask import Flask, jsonify

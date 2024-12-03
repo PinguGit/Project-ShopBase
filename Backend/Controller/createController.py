@@ -1,6 +1,6 @@
-from Backend.Repository.db_create import create_bestellungen
-from Backend.Repository.db_get import getAllObjects, getObjectById
-import Backend.Repository.db_get as db_get
+from Repository.db_create import create_bestellungen
+from Repository.db_get import getAllObjects, getObjectById
+import Repository.db_get as db_get
 from flask import Blueprint, Flask, jsonify, request
 import auth_utils
 from flask_cors import CORS

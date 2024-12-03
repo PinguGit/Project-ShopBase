@@ -2,9 +2,9 @@ from flask import Flask
 from flask_cors import CORS
 
 # Importiere die beiden Blueprints
-from Backend.Controller.getController import get_blueprint
-from Backend.Controller.pwdController import pwd_blueprint
-from Backend.Controller.createController import create_blueprint
+from Controller.getController import get_blueprint
+from Controller.pwdController import pwd_blueprint
+from Controller.createController import create_blueprint
 
 app = Flask(__name__)
 CORS(app)
