@@ -11,8 +11,8 @@ import { useCustomerStore } from '@/stores/customer';
 export default {
   name: 'PostOrder',
   props: {
-    cartItems: Array,  // Warenkorbartikel, die an die Komponente übergeben werden
-    totalAmount: Number // Gesamtbetrag mit Gebühren
+    cartItems: Array,  // Warenkorbartikel
+    totalAmount: Number // Gesamtbetrag inkl. Gebühren
   },
   setup(props, { emit }) {
     const customerStore = useCustomerStore();
@@ -21,37 +21,41 @@ export default {
       try {
         const customerId = customerStore.customerId;
 
-        if (!customerId) {
-          throw new Error('Kunden-ID nicht gefunden.');
-        }
-
-        // Bereite die Produktdaten vor
+        // Produkte mit den nötigen Daten vorbereiten
         const products = props.cartItems.map(item => ({
           produkt_id: item.produkt_id,
-          anzahl: item.anzahl,
-          gesamtpreis: (item.preis * item.anzahl).toFixed(2)
+          anzahl: item.quantity,
+          gesamtbetrag: props.totalAmount.toFixed(2),
         }));
 
-        // Sende Bestellung an das Backend
+        console.log('Request Body:', products);
+
+        // Fetch-Aufruf
         const response = await fetch(`http://localhost:5000/create_bestellung/${customerId}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // Header korrekt setzen
           },
-          body: JSON.stringify({ products })
+          body: JSON.stringify({
+            products: [
+              { produkt_id: 1, anzahl: 2, gesamtpreis: '19.99' }
+            ],
+          }),
         });
 
-        const responseData = await response.json();
+        console.log("Response:", response);
 
-        if (response.ok && responseData.success) {
-          console.log('Bestellungen erstellt:', responseData.bestell_ids);
-          emit('orderPlaced', responseData); // Bestell-ID an die Eltern-Komponente weitergeben
-        } else {
-          throw new Error('Fehler bei der Bestellung.');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Fehler beim Absenden der Bestellung.');
         }
+
+        // Erfolgshandling
+        const responseData = await response.json();
+        emit('orderPlaced', responseData);
       } catch (error) {
-        console.error('Fehler:', error);
-        alert('Es gab ein Problem bei der Bestellung.');
+        console.error('Fehler:', error.message);
+        emit('orderError', error.message);
       }
     };
 
@@ -61,3 +65,4 @@ export default {
   }
 };
 </script>
+
