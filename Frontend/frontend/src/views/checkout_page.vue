@@ -375,21 +375,4 @@ body {
     width: 30%;
     padding: 20px;
 }
-
-.buy-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.buy-button:hover {
-    background-color: #0053ac;
-}
 </style>

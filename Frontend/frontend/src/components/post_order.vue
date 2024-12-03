@@ -1,12 +1,14 @@
 <template>
   <div>
     <!-- Button zum Abschicken der Bestellung -->
-    <button @click="handleCheckout">Bestellung abschicken</button>
+    <button @click="handleCheckout" class="buy-button">Bestellung abschicken</button>
   </div>
 </template>
 
 <script>
+import { useCartStore } from '@/stores/cart';
 import { useCustomerStore } from '@/stores/customer';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'PostOrder',
@@ -16,6 +18,8 @@ export default {
   },
   setup(props, { emit }) {
     const customerStore = useCustomerStore();
+    const router = useRouter();
+    const cartStore = useCartStore();
 
     const handleCheckout = async () => {
       try {
@@ -53,6 +57,12 @@ export default {
         // Erfolgshandling
         const responseData = await response.json();
         emit('orderPlaced', responseData);
+
+        // Warenkorb leeren
+        cartStore.clearCart();
+
+        // Weiterleitung zur Startseite
+        router.push('/');
       } catch (error) {
         console.error('Fehler:', error.message);
         emit('orderError', error.message);
@@ -65,4 +75,24 @@ export default {
   }
 };
 </script>
+
+<style>
+.buy-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.buy-button:hover {
+    background-color: #0053ac;
+}
+</style>
 

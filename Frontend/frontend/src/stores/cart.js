@@ -29,7 +29,12 @@ export const useCartStore = defineStore('cart', {
         if (this.activ_products_shoppingcart[index]) {
             this.activ_products_shoppingcart[index].anzahl = Math.max(quantity, 1); // Menge nicht kleiner als 1
         }
+        },
+        // Warenkorb komplett leeren
+        clearCart() {
+            this.activ_products_shoppingcart = [];
+        }
       }
     }
-});
+);
 
