@@ -36,8 +36,6 @@ export default {
           products: products,
         };
 
-        console.log('Request Body:', requestBody);
-
         // Fetch-Aufruf
         const response = await fetch(`http://127.0.0.1:5000/api/create_bestellung/${customerId}`, {
           method: 'POST',
@@ -47,7 +45,6 @@ export default {
           body: JSON.stringify(requestBody),
         });
 
-        console.log("Response:", response);
 
         if (!response.ok) {
           const errorData = await response.json();

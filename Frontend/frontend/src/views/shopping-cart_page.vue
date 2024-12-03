@@ -160,11 +160,9 @@ export default {
 
         function getCookieExpiryDate() {
             const cookies = document.cookie.split("; ");
-            console.log("Cookie: ", cookies);
 
             // Suche nach dem Cookie mit dem Ablaufdatum
             const expiryCookie = cookies.find(row => row.startsWith("customer_type_expiry="));
-            console.log("expiryCookie: ", expiryCookie);
 
             // Wenn das Ablaufdatum-Cookie existiert, gibt es das Datum zurück
             if (expiryCookie) {

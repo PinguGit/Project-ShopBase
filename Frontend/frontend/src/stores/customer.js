@@ -35,7 +35,6 @@ export const useCustomerStore = defineStore('customer', {
                 }
                 const data = await response.json();
                 this.orders = data;
-                console.log("Bestellungen erfolgreich abgerufen:", this.orders);
             } catch (error) {
                 console.error('Fehler beim Abrufen der Bestellungen:', error.message);
             }

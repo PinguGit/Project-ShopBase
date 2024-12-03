@@ -162,7 +162,6 @@ export default {
 
         if (instance) {
             await nextTick(); // Warte, bis der DOM-Tree vollständig gerendert ist
-            console.log("SubTree nach vollständigem Rendering:", instance.subTree);
         } else {
             console.error("Aktuelle Instanz konnte nicht abgerufen werden.");
         }
@@ -175,8 +174,7 @@ export default {
         });
 
         // Callback wenn Bestellung erfolgreich platziert wurde
-        const handleOrderPlaced = (responseData) => {
-        console.log('Bestellung erfolgreich:', responseData);
+        const handleOrderPlaced = () => {
         alert('Bestellung erfolgreich aufgegeben!');
         };
 

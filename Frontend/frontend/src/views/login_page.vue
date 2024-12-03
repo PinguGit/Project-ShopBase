@@ -80,10 +80,7 @@ export default {
         this.$refs.post_login.post_login_user();
     },
     handleResponse(response) {
-        console.log("response")
-        console.log(response)
         if (response.success) {
-            console.log("if1")
             alert("Login successfull")
             // link to login page
             const customerType = response.customer_type;
@@ -97,7 +94,6 @@ export default {
             document.cookie = `customer_type_expiry=${expirationTime.toUTCString()}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
 
             // Debugging: Cookies überprüfen
-            console.log("Cookies gesetzt:", document.cookie);
 
         // Weiterleitung zur Benutzerseite
             this.$router.push('/user-page');
@@ -106,11 +102,9 @@ export default {
 
         }
         else if (response.success.error === "Email already exists") {
-            console.log("if2")
             alert("User already exists")
         }
         else if(response.success.error === true){
-            console.log("if3")
             alert("Failure by regestration")
         }
     }

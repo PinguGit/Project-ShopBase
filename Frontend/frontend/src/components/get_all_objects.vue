@@ -30,7 +30,6 @@
         }
       }
     this.$emit('objectsLoaded', this.objects); // Emitiere die geladenen Objekte
-    console.log(this.objects)
     }
   }
 };
