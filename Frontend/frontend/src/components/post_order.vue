@@ -21,6 +21,16 @@ export default {
     const router = useRouter();
     const cartStore = useCartStore();
 
+    // Hilfsfunktion, um die Cookie-Expiration-Zeit abzurufen
+    const getCookieExpiryDate = () => {
+      const cookies = document.cookie.split('; ');
+      const expiryCookie = cookies.find(row => row.startsWith('customer_type_expiry='));
+      if (expiryCookie) {
+        return new Date(expiryCookie.split('=')[1]); // Rückgabe als Date-Objekt
+      }
+      return null;
+    };
+
     const handleCheckout = async () => {
       try {
         const customerId = customerStore.customerId;
@@ -45,7 +55,6 @@ export default {
           body: JSON.stringify(requestBody),
         });
 
-
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Fehler beim Absenden der Bestellung.');
@@ -55,8 +64,17 @@ export default {
         const responseData = await response.json();
         emit('orderPlaced', responseData);
 
-        // Warenkorb leeren
-        cartStore.clearCart();
+        // Cookie-Expiration prüfen
+        const expiryDate = getCookieExpiryDate();
+        const currentDate = new Date();
+
+        if (expiryDate && expiryDate > currentDate) {
+          // Warenkorb leeren nur, wenn die Cookie-Zeit gültig ist
+          cartStore.clearCart();
+        } else {
+          // Warnung, falls die Zeit abgelaufen ist
+          console.warn('Nicht angemeldet. Der Warenkorb wurde nicht geleert.');
+        }
 
         // Weiterleitung zur Startseite
         router.push('/');
@@ -71,6 +89,7 @@ export default {
     };
   }
 };
+
 </script>
 
 <style>

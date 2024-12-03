@@ -64,7 +64,6 @@
 <script>
 // Importiere die Komponente, um sie in dieser Ansicht zu verwenden
 import get_orders_by_customerid from '@/components/get_orders_by_customerid.vue';
-import { useRouter } from 'vue-router';
 
 export default {
   name: 'user-page',
@@ -87,7 +86,6 @@ export default {
 
     // Funktion, die beim Klick auf das Profil ausgeführt wird
     handleProfileClick() {
-      const router = useRouter();
       const ablaufDatum = this.getCookieExpiryDate();
       if (ablaufDatum) {
         const currentDate = new Date();
@@ -95,13 +93,13 @@ export default {
 
         // Vergleiche das Ablaufdatum mit der aktuellen Zeit
         if (expiryDate > currentDate) {
-          router.push('/user-page');
+          this.$router.push('/user-page');
         } else {
-          router.push('/login-page');
+            this.$router.push('/login-page');
         }
       } else {
         console.error("Kein Ablaufdatum im Cookie gefunden");
-        router.push('/login-page');
+        this.$router.push('/login-page');
       }
     },
 

@@ -96,8 +96,7 @@ export default {
         // Greife auf die aktiven Produkte im Warenkorb zu
         const cartItems = computed(() => cartStore.activ_products_shoppingcart);
 
-
-        // Gruppiere die Produkte und zähke die Menge pro Produkt
+        // Gruppiere die Produkte und zähle die Menge pro Produkt
         const groupedCartItems = computed(() => {
             const uniqueItems = [];
             cartItems.value.forEach((item) => {
@@ -137,9 +136,9 @@ export default {
 
         const totalWithFees = computed(() => {
             return totalAmount.value + paymentFee.value;
-        })
+        });
 
-        // Entferne einen Artikel aus dem Warenkorb,
+        // Entferne einen Artikel aus dem Warenkorb
         function removeFromCart(item) {
             const index = cartItems.value.findIndex(cartItem => cartItem.produkt_name === item.produkt_name);
             if (index > -1){
@@ -158,27 +157,55 @@ export default {
 
         // Warte, bis die Instanz geladen ist und hole die Kunden-ID
         onMounted(async () => {
-        const instance = getCurrentInstance();
+            const instance = getCurrentInstance();
 
-        if (instance) {
-            await nextTick(); // Warte, bis der DOM-Tree vollständig gerendert ist
-        } else {
-            console.error("Aktuelle Instanz konnte nicht abgerufen werden.");
-        }
+            if (instance) {
+                await nextTick(); // Warte, bis der DOM-Tree vollständig gerendert ist
+            } else {
+                console.error("Aktuelle Instanz konnte nicht abgerufen werden.");
+            }
 
-        customerStore.getCustomerIdFromCookie();
+            customerStore.getCustomerIdFromCookie();
 
-        if (!customerStore.customerId) {
-            console.error("Kunden-ID konnte nicht aus dem Cookie gelesen werden.");
-        }
+            if (!customerStore.customerId) {
+                console.error("Kunden-ID konnte nicht aus dem Cookie gelesen werden.");
+            }
         });
 
-        // Callback wenn Bestellung erfolgreich platziert wurde
+        // Hilfsfunktion zum Abrufen des Ablaufdatums aus dem Cookie
+        function getCookieExpiryDate() {
+            const cookies = document.cookie.split('; ');
+            const expiryCookie = cookies.find(row => row.startsWith('customer_type_expiry='));
+            if (expiryCookie) {
+                return expiryCookie.split('=')[1];
+            }
+            return null;
+        }
+
+        // Callback, wenn Bestellung erfolgreich platziert wurde
         const handleOrderPlaced = () => {
-        alert('Bestellung erfolgreich aufgegeben!');
+            const expiryDate = getCookieExpiryDate(); // Hole das Ablaufdatum aus dem Cookie
+
+            if (expiryDate) {
+                const currentDate = new Date();
+                const expiryDateObj = new Date(expiryDate);
+
+                if (expiryDateObj > currentDate) {
+                    // Ablaufdatum ist in der Zukunft -> Bestellung kann aufgegeben werden
+                    alert('Bestellung erfolgreich aufgegeben!');
+                    cartStore.clearCart(); // Optional: Warenkorb leeren nach erfolgreicher Bestellung
+                } else {
+                    // Ablaufdatum ist überschritten -> Session abgelaufen
+                    alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+                    // Weiterleitung zur Login-Seite
+                    window.location.href = '/login-page';
+                }
+            } else {
+                // Kein Ablaufdatum gefunden -> Fehler und Weiterleitung
+                alert(' Bitte melden Sie sich erneut an.');
+                window.location.href = '/login-page';
+            }
         };
-
-
 
         // grid-template-row Berechnung anhand der Anzahl im groupedCartItems
         const gridStyle = computed(() => {
