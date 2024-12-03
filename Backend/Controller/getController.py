@@ -1,4 +1,4 @@
-from Backend.Repository.db_get import getAllObjects, getObjectById
+from Repository.db_get import getAllObjects, getObjectById
 import Repository.db_get as db_get
 from flask import Blueprint, Flask, jsonify
 import Command.getControllerCommand as getControllerCommand

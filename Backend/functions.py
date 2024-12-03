@@ -5,7 +5,7 @@ def db_connect():
     return mysql.connector.connect(        
         #host="172.16.182.178",
 
-        host ="172.16.182.181",
+        host ="172.16.182.201",
         user="power_user",
         password="adrian_stinkt",
         database="shopsystem"
