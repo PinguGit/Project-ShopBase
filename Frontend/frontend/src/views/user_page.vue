@@ -21,7 +21,6 @@
                 <input type="text" placeholder="Suche nach Produkten...">
             </div>
             
-            <p>{{ object }}</p>
             <div class="profile" @click="handleProfileClick">
                 <i class="fa-solid fa-user"> Profil</i>
             </div>
@@ -33,11 +32,11 @@
             </router-link>
         
             <div class="orders">
+                <h1 class="orders_header">Bestellungen</h1>
                 <table v-if="orders.length > 0">
                     <thead>
                         <tr>
                             <th>Bestellnr.</th>
-                            <th>Verkäufer</th>
                             <th>Produkt</th>
                             <th>Hersteller</th>
                             <th>Preis</th>
@@ -45,10 +44,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="order in orders" :key="order.bestell_id">
-                            <td>1</td>
-                            <td>test</td>
-                            <td>{{ order.produkt.name }}</td>
+                        <tr v-for="(order, index) in orders" :key="index">
+                            <td>{{ order.bestellnr }}</td>
+                            <td>{{ order.produkt_name }}</td>
                             <td>{{ order.hersteller_name }}</td>
                             <td>{{ order.gesamtpreis }}</td>
                             <td>{{ order.anzahl }}</td>
@@ -56,7 +54,6 @@
                     </tbody>
                 </table>
                 <div v-else>Noch keine Bestellungen gefunden.</div>
-                <p> {{ orders }}</p>
             </div>
 
         </div>
@@ -67,6 +64,7 @@
 <script>
 // Importiere die Komponente, um sie in dieser Ansicht zu verwenden
 import get_orders_by_customerid from '@/components/get_orders_by_customerid.vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'user-page',
@@ -81,11 +79,52 @@ export default {
   methods: {
     // Methode zum Setzen der Bestellungen, wenn sie von der Kindkomponente übergeben werden
     handleObjectsLoaded(objects) {
-        this.orders = objects; 
+      this.orders = Object.entries(objects).map(([key, value]) => ({
+        bestellnr: key,
+        ...value,
+      }));
+      console.log('Orders updated:', this.orders);
+    },
+
+    // Funktion, die beim Klick auf das Profil ausgeführt wird
+    handleProfileClick() {
+      const router = useRouter();
+      const ablaufDatum = this.getCookieExpiryDate();
+      if (ablaufDatum) {
+        const currentDate = new Date();
+        const expiryDate = new Date(ablaufDatum);
+
+        // Vergleiche das Ablaufdatum mit der aktuellen Zeit
+        if (expiryDate > currentDate) {
+          router.push('/user-page');
+        } else {
+          router.push('/login-page');
+        }
+      } else {
+        console.error("Kein Ablaufdatum im Cookie gefunden");
+        router.push('/login-page');
+      }
+    },
+
+    // Hilfsfunktion zum Abrufen des Ablaufdatums aus dem Cookie
+    getCookieExpiryDate() {
+      const cookies = document.cookie.split("; ");
+      console.log("Cookie: ", cookies);
+
+      // Suche nach dem Cookie mit dem Ablaufdatum
+      const expiryCookie = cookies.find(row => row.startsWith("customer_type_expiry="));
+      console.log("expiryCookie: ", expiryCookie);
+
+      // Wenn das Ablaufdatum-Cookie existiert, gibt es das Datum zurück
+      if (expiryCookie) {
+        return expiryCookie.split("=")[1];
+      }
+      return null;
     },
   },
 };
 </script>
+
 
 
 <style scoped>
@@ -186,8 +225,21 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.orders {
+    margin-top: 50px;
+    grid-area: tables;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.orders_header {
+    margin-bottom: 20px;
+}
+
 table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     margin: 20px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
