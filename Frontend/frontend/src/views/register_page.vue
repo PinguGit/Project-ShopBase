@@ -88,7 +88,7 @@
             </router-link>
             
             <!-- Set reference to the function to call it in methods -->
-            <post_register_user ref="postRegisterComponent" :form="form" @response="handleResponse()"/>
+            <post_register_user ref="postRegisterComponent" :form="form" @response="handleResponse"/>
         </form>
         </div>
     </body>
@@ -320,11 +320,10 @@
       this.$refs.postRegisterComponent.post_register_user();
     },
     handleResponse(response) {
-        if (response.success === true) {
+        if (response.success.success === true) {
             alert("Login successfull")
             // link to login page
             this.$router.push('/login-page');
-            window.location.reload();
         }
         else if (response.success.error === "Email already exists") {
             alert("User already exists")
