@@ -13,11 +13,12 @@ create_blueprint = Blueprint('create_blueprint', __name__)
 def createBestellung(kunden_id):
     # OPTIONS Handler für CORS Preflight-Anfrage
     if request.method == 'OPTIONS':
-        response = jsonify({'message': 'CORS Preflight erfolgreich'})
+        response = Flask.response_class()
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
         return response, 204
+
 
     # POST-Anfrage zur Erstellung einer Bestellung
     try:

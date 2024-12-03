@@ -31,7 +31,7 @@ export default {
         console.log('Request Body:', products);
 
         // Fetch-Aufruf
-        const response = await fetch(`http://localhost:5000/create_bestellung/${customerId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/api/create_bestellung/${customerId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json', // Header korrekt setzen
