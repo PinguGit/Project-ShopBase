@@ -1,7 +1,7 @@
 import uuid
 from flask_cors import CORS
 from flask import Blueprint, Flask, jsonify, request
-import db_create
+import Backend.Repository.db_create as db_create
 
 app = Flask(__name__)
 CORS(app)

@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request, jsonify
-import db_get  # Für die Token-Überprüfung (angepasst an dein Setup)
+import Backend.Repository.db_get as db_get  # Für die Token-Überprüfung (angepasst an dein Setup)
 
 def token_required(f):
     @wraps(f)

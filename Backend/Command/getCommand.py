@@ -1,6 +1,6 @@
 from flask import Flask
 import mysql.connector
-import db_get
+import Backend.Repository.db_get as db_get
 import classes
 from functions import db_connect
 

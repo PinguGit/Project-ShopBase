@@ -1,4 +1,4 @@
-import getCommand
+import Backend.Commands.getCommand as getCommand
 
 def getType(table, dictionary):
     match table:
