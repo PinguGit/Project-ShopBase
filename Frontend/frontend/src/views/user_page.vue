@@ -20,12 +20,11 @@
             <div class="search-bar">
                 <input type="text" placeholder="Suche nach Produkten...">
             </div>
-
-            <router-link style="text-decoration: none; color: black;" to="/login-page">
-                <div class="profile">
-                    <i class="fa-solid fa-user"> Profil</i>
-                </div>
-            </router-link>
+            
+            <p>{{ object }}</p>
+            <div class="profile" @click="handleProfileClick">
+                <i class="fa-solid fa-user"> Profil</i>
+            </div>
 
             <router-link style="text-decoration: none; color: black;" to="/shopping-cart">
                 <div class="basket">
@@ -34,7 +33,7 @@
             </router-link>
         
             <div class="orders">
-                <table v-if="objects.length > 0">
+                <table v-if="orders.length > 0">
                     <thead>
                         <tr>
                             <th>Bestellnr.</th>
@@ -46,20 +45,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="order in objects" :key="order.bestell_id">
-                            <td>{{ order.bestell_id }}</td>
-                            <td>{{ order.verkaeufer ? order.verkaeufer.name : 'Unbekannt' }}</td>
-                            <td>{{ order.produkt ? order.produkt.name : 'Unbekannt' }}</td>
-                            <td>{{ order.produkt ? order.produkt.hersteller : 'Unbekannt' }}</td>
+                        <tr v-for="order in orders" :key="order.bestell_id">
+                            <td>1</td>
+                            <td>test</td>
+                            <td>{{ order.produkt.name }}</td>
+                            <td>{{ order.hersteller_name }}</td>
                             <td>{{ order.gesamtpreis }}</td>
                             <td>{{ order.anzahl }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <div v-else>Noch keine Bestellungen gefunden.</div>
-                <h1>Orders</h1>
-                <p class="price">Gesamtpreis: ...</p>
-                <p class="vendor">Verkäufer: ...</p>
+                <p> {{ orders }}</p>
             </div>
 
         </div>
@@ -68,77 +65,27 @@
 </template>
   
 <script>
-// Importiere die get_orders_by_customerid-Komponente
+// Importiere die Komponente, um sie in dieser Ansicht zu verwenden
 import get_orders_by_customerid from '@/components/get_orders_by_customerid.vue';
 
 export default {
+  name: 'user-page',
   components: {
-    get_orders_by_customerid
+    get_orders_by_customerid, // Registrierung der Komponente
   },
   data() {
     return {
-      objects: [],
-      orders: [], // Hier werden die Bestellungen gespeichert
-      verkaeufer: {}, // Verkäuferdaten
-      produkte: {}, // Produktdaten
+      orders: [] // Speichert die Bestellungsdaten
     };
   },
-  mounted() {
-    console.log('Komponente gemountet, simuliere das Laden von Objekten');
-
-    // Beispielhafte manuelle Simulation von geladenen Daten
-    this.handleObjectsLoaded({
-      orders: [
-        { bestell_id: 1, verkaeufer_id: 101, produkt_id: 201, anzahl: 3, gesamtpreis: 100 },
-        { bestell_id: 2, verkaeufer_id: 102, produkt_id: 202, anzahl: 1, gesamtpreis: 50 }
-      ],
-      verkaeufer: [
-        { verkaeufer_id: 101, name: 'Verkäufer 1' },
-        { verkaeufer_id: 102, name: 'Verkäufer 2' }
-      ],
-      produkte: [
-        { produkt_id: 201, name: 'Produkt A', hersteller: 'Hersteller A' },
-        { produkt_id: 202, name: 'Produkt B', hersteller: 'Hersteller B' }
-      ]
-    });
-},
   methods: {
+    // Methode zum Setzen der Bestellungen, wenn sie von der Kindkomponente übergeben werden
     handleObjectsLoaded(objects) {
-      // Überprüfe, was du von der Komponente zurückbekommst
-      console.log('Objekte empfangen:', objects);
-
-      // Empfange die geladenen Objekte und ordne sie den entsprechenden Variablen zu
-      this.orders = objects.orders || []; // Bestell-Daten
-      this.verkaeufer = objects.verkaeufer || []; // Verkäufer-Daten
-      this.produkte = objects.produkte || []; // Produkt-Daten
-
-      // Logge die geladenen Daten
-      console.log('Bestellungen:', this.orders);
-      console.log('Verkäufer:', this.verkaeufer);
-      console.log('Produkte:', this.produkte);
-
-      // Optional: Verarbeitung der Bestellungen
-      this.processOrders();
+        this.orders = objects; 
     },
-    processOrders() {
-      // Gehe durch die Bestellungen und verknüpfe die entsprechenden Verkäufer und Produkte
-      console.log('Verarbeite Bestellungen...');
-      this.orders.forEach(order => {
-        const verkaeuferId = order.verkaeufer_id;
-        const produktId = order.produkt_id;
-
-        // Finde den Verkäufer und das Produkt basierend auf den IDs
-        order.verkaeufer = this.verkaeufer.find(v => v.verkaeufer_id === verkaeuferId) || {};
-        order.produkt = this.produkte.find(p => p.produkt_id === produktId) || {};
-
-        // Logge, wie das Order-Objekt nach der Verarbeitung aussieht
-        console.log('Verarbeitete Bestellung:', order);
-      });
-    }
-  }
+  },
 };
 </script>
-
 
 
 <style scoped>

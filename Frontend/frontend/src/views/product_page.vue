@@ -21,11 +21,9 @@
                 <input type="text" placeholder="Suche nach Produkten..." v-model="filters.productName">
             </div>
 
-            <router-link style="text-decoration: none; color: black;" to="/login-page">
-                <div class="profile">
-                    <i class="fa-solid fa-user"> Profil</i>
-                </div>
-            </router-link>
+            <div class="profile" @click="handleProfileClick">
+                <i class="fa-solid fa-user"> Profil</i>
+            </div>
 
             <router-link style="text-decoration: none; color: black;" to="/shopping-cart">
                 <div class="basket">
@@ -52,7 +50,7 @@
             <!-- Product List -->
 
             <div class="product-list">
-                <div class="product" v-for="product in this.filteredProducts" :key="product.produkt_name">
+                <div class="product" v-for="product in filteredProducts" :key="product.produkt_name">
                     <div class="product-image">
                         <img :src="product.url_link" alt="Produkt Bild"> 
                     </div>
@@ -73,6 +71,7 @@
 import get_all_objects from '@/components/get_all_objects.vue';
 import { useCartStore } from '@/stores/cart';
 import { ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'ProductPage',
@@ -82,6 +81,8 @@ export default {
     setup() {
         // Pinia Store für den Warenkorb
         const cartStore = useCartStore();
+
+        const router = useRouter();
 
         // Reaktive Daten für Produkte und Filter
         const products = ref([]);  // Dies speichert die Produktliste von `get_all_objects`
@@ -114,11 +115,47 @@ export default {
             products.value = Object.values(objects.product); 
         }
 
+        // Funktion, die beim Klick auf das Profil ausgeführt wird
+        function handleProfileClick() {
+            const ablaufDatum = getCookieExpiryDate();
+            if (ablaufDatum) {
+                const currentDate = new Date();
+                const expiryDate = new Date(ablaufDatum);
+
+                // Vergleiche das Ablaufdatum mit der aktuellen Zeit
+                if (expiryDate > currentDate){
+                    router.push('/user-page');
+                } else {
+                    router.push('/login-page');
+                }
+            } else {
+                console.error("Kein Ablaufdatum im Cookie gefunden");
+                router.push('/login-page');
+            }
+        }
+
+        function getCookieExpiryDate() {
+            const cookies = document.cookie.split("; ");
+            console.log("Cookie: ", cookies);
+
+            // Suche nach dem Cookie mit dem Ablaufdatum
+            const expiryCookie = cookies.find(row => row.startsWith("customer_type_expiry="));
+            console.log("expiryCookie: ", expiryCookie);
+
+            // Wenn das Ablaufdatum-Cookie existiert, gibt es das Datum zurück
+            if (expiryCookie) {
+                return expiryCookie.split("=")[1];
+            }
+            return null;
+        }
+
+
         return {
             filters,
             filteredProducts,
             addtoshoppingcart,
-            handleObjectsLoaded
+            handleObjectsLoaded,
+            handleProfileClick
         };
     }
 };

@@ -18,11 +18,9 @@
                 <input type="text" placeholder="Suche nach Produkten...">
             </div>
 
-            <router-link style="text-decoration: none; color: black;" to="/login-page">
-                <div class="profile">
-                    <i class="fa-solid fa-user"> Profil</i>
-                </div>
-            </router-link>
+            <div class="profile" @click="handleProfileClick">
+                <i class="fa-solid fa-user"> Profil</i>
+            </div>
 
             <router-link style="text-decoration: none; color: black;" to="/shopping-cart">
                 <div class="basket">
@@ -76,11 +74,14 @@
 <script>
 import { useCartStore } from '@/stores/cart';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'ShoppingCart',
     setup() {
         const cartStore = useCartStore();
+
+        const router = useRouter();
 
         // Greife auf die aktiven Produkte im Warenkorb zu
         const cartItems = computed(() => cartStore.activ_products_shoppingcart);
@@ -138,13 +139,48 @@ export default {
             };
         });
 
+        // Funktion, die beim Klick auf das Profil ausgeführt wird
+        function handleProfileClick() {
+            const ablaufDatum = getCookieExpiryDate();
+            if (ablaufDatum) {
+                const currentDate = new Date();
+                const expiryDate = new Date(ablaufDatum);
+
+                // Vergleiche das Ablaufdatum mit der aktuellen Zeit
+                if (expiryDate > currentDate){
+                    router.push('/user-page');
+                } else {
+                    router.push('/login-page');
+                }
+            } else {
+                console.error("Kein Ablaufdatum im Cookie gefunden");
+                router.push('/login-page');
+            }
+        }
+
+        function getCookieExpiryDate() {
+            const cookies = document.cookie.split("; ");
+            console.log("Cookie: ", cookies);
+
+            // Suche nach dem Cookie mit dem Ablaufdatum
+            const expiryCookie = cookies.find(row => row.startsWith("customer_type_expiry="));
+            console.log("expiryCookie: ", expiryCookie);
+
+            // Wenn das Ablaufdatum-Cookie existiert, gibt es das Datum zurück
+            if (expiryCookie) {
+                return expiryCookie.split("=")[1];
+            }
+            return null;
+        }
+
         return {
             groupedCartItems,
             totalItems,
             totalAmount,
             removeFromCart,
             gridStyle,
-            updateQuantity
+            updateQuantity,
+            handleProfileClick
         };
     }
 };

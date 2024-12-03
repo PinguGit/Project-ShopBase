@@ -91,9 +91,10 @@ export default {
 
            
             const expirationTime = new Date();
-            expirationTime.setMinutes(expirationTime.getMinutes() + 10);
+            expirationTime.setMinutes(expirationTime.getMinutes() + 31);
             document.cookie = `customer_type=${customerType}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
             document.cookie = `kunden_id=${kundenId}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
+            document.cookie = `customer_type_expiry=${expirationTime.toUTCString()}; expires=${expirationTime.toUTCString()}; path=/; SameSite=Strict`;
 
             // Debugging: Cookies überprüfen
             console.log("Cookies gesetzt:", document.cookie);

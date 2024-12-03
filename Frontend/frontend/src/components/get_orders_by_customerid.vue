@@ -41,6 +41,7 @@ export default {
                 }
                 const data = await response.json();
                 this.objects = data;
+                this.$emit('objectsLoaded', this.objects); // Sende das Ergebnis an die Elternkomponente
                 console.log("Bestellungen erfolgreich abgerufen:", this.objects);
             } catch (error) {
                 console.error('Fehler beim Abrufen der Bestellungen:', error.message);
