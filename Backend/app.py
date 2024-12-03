@@ -8,7 +8,7 @@ from createController import create_blueprint
 
 app = Flask(__name__)
 CORS(app)
-
+CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}}, supports_credentials=True)
 # Registriere die Blueprints
 app.register_blueprint(get_blueprint, url_prefix='/api')
 app.register_blueprint(pwd_blueprint, url_prefix='/api')
