@@ -321,7 +321,7 @@
     },
     handleResponse(response) {
         if (response.success.success === true) {
-            alert("Login successfull")
+            alert("Register successfull")
             // link to login page
             this.$router.push('/login-page');
         }
