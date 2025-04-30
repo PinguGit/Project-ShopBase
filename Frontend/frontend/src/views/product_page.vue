@@ -1,0 +1,375 @@
+<template>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <!-- get_all_objects Komponente wird hier eingebunden -->
+        <get_all_objects @objectsLoaded="handleObjectsLoaded" />
+
+        <div class="container">
+            <router-link to="/">
+                <div class="logo">
+                    <img src="../assets/LogoReal.png" alt="Logo" height="100px" width="125px">
+                </div>
+            </router-link>
+            <div class="search-bar">
+                <input type="text" placeholder="Suche nach Produkten..." v-model="filters.productName">
+            </div>
+
+            <div class="profile" @click="handleProfileClick">
+                <i class="fa-solid fa-user"> Profil</i>
+            </div>
+
+            <router-link style="text-decoration: none; color: black;" to="/shopping-cart">
+                <div class="basket">
+                    <i class="fas fa-shopping-cart"> Warenkorb</i>
+                </div>
+            </router-link>
+
+            <div class="filter">
+                <h4>Produkt Filter</h4>
+                <form id="filter-form">
+                    <!-- Filter by Product Name -->
+            
+                    <!-- Filter by Price -->
+                    <label for="price">Preis:</label>
+                    <input type="number" id="price-filter" v-model="filters.price" placeholder="Nach Max Preis...">
+            
+                    <!-- Filter by Seller -->
+                    <label for="seller">Verkäufer:</label>
+                    <input type="text" id="seller" v-model="filters.seller" placeholder="Nach Verkäufer...">
+            
+                </form>
+            </div>
+        
+            <!-- Product List -->
+
+            <div class="product-list">
+                <div class="product" v-for="product in filteredProducts" :key="product.produkt_name">
+                    <div class="product-image">
+                        <img :src="product.url_link" alt="Produkt Bild"> 
+                    </div>
+                    <h3 class="product-title">{{ product.produkt_name }}</h3>
+                    <p class="product-price">Preis: {{ product.preis }}€</p>
+                    <p class="product-vendor">Verkäufer: {{ product.verkaeufer[0].verkaeufer_name }}</p>
+                    <p class="product-producer">Hersteller: {{ product.hersteller }}</p>
+                    <button class="add-to-cart" @click="addtoshoppingcart(product)"> In den Warenkorb hinzufügen</button>
+                </div>
+            </div>
+
+        </div>
+    </body>
+    </html>
+</template>
+  
+<script>
+import get_all_objects from '@/components/get_all_objects.vue';
+import { useCartStore } from '@/stores/cart';
+import { ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+export default {
+    name: 'ProductPage',
+    components: {
+        get_all_objects 
+    },
+    setup() {
+        // Pinia Store für den Warenkorb
+        const cartStore = useCartStore();
+
+        const router = useRouter();
+
+        // Reaktive Daten für Produkte und Filter
+        const products = ref([]);  // Dies speichert die Produktliste von `get_all_objects`
+        const filters = reactive({
+            productName: '',
+            price: '',
+            seller: ''
+        });
+
+        // Funktion für gefilterte Produkte
+        const filteredProducts = computed(() => {
+            return products.value.filter(product => {
+                const namematch = product.produkt_name.toLowerCase().includes(filters.productName.toLowerCase());
+                const pricematch = filters.price === '' || product.preis <= filters.price;
+                const sellermatch = product.verkaeufer.some(v => 
+                    v.verkaeufer_name.toLowerCase().trim().includes(filters.seller.toLowerCase().trim())
+                );
+                return namematch && pricematch && sellermatch;
+            });
+        });
+
+        // Funktion zum Hinzufügen eines Produkts zum Warenkorb
+        function addtoshoppingcart(product) {
+            cartStore.addToCart(product);
+        }
+
+        // Funktion, die beim Laden der Produktdaten aufgerufen wird
+        function handleObjectsLoaded(objects) {
+            products.value = Object.values(objects.product); 
+        }
+
+        // Funktion, die beim Klick auf das Profil ausgeführt wird
+        function handleProfileClick() {
+            const ablaufDatum = getCookieExpiryDate();
+            if (ablaufDatum) {
+                const currentDate = new Date();
+                const expiryDate = new Date(ablaufDatum);
+
+                // Vergleiche das Ablaufdatum mit der aktuellen Zeit
+                if (expiryDate > currentDate){
+                    router.push('/user-page');
+                } else {
+                    router.push('/login-page');
+                }
+            } else {
+                console.error("Kein Ablaufdatum im Cookie gefunden");
+                router.push('/login-page');
+            }
+        }
+
+        function getCookieExpiryDate() {
+            const cookies = document.cookie.split("; ");
+
+            // Suche nach dem Cookie mit dem Ablaufdatum
+            const expiryCookie = cookies.find(row => row.startsWith("customer_type_expiry="));
+
+            // Wenn das Ablaufdatum-Cookie existiert, gibt es das Datum zurück
+            if (expiryCookie) {
+                return expiryCookie.split("=")[1];
+            }
+            return null;
+        }
+
+
+        return {
+            filters,
+            filteredProducts,
+            addtoshoppingcart,
+            handleObjectsLoaded,
+            handleProfileClick
+        };
+    }
+};
+</script>
+
+<style scoped>
+/* Importieren Sie Ihr CSS oder fügen Sie es direkt ein */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* Light background for contrast */
+    color: #343a40; /* Dark text for readability */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 200px 1fr 150px 150px;
+    grid-template-rows: 100px 1fr;
+    grid-template-areas:
+        "logo search-bar basket profile"
+        "filter product-list product-list product-list";
+    gap: 15px;
+    height: 100vh;
+    padding: 10px 20px 20px 20px;
+}
+
+.logo {
+    grid-area: logo;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #495057; /* Dark background */
+    border-radius: 50%;
+    padding: 10px;
+    width: 200px;
+    height: 100px;
+}
+
+.search-bar {
+    grid-area: search-bar;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 25px; /* More rounded corners */
+    border: 1px solid #6c757d;
+    background-color: #fff;
+    color: #495057;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.basket, .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding: 10px;
+    height: 60px;
+    margin-top: 15px;
+}
+
+.basket:hover, .profile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.basket i, .profile i {
+    color: #007bff;
+    font-size: 12px;
+}
+
+.basket, .profile {
+    font-size: 14px;
+    color: #343a40;
+}
+
+.filter {
+    grid-area: filter;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #6c757d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.filter h4 {
+    margin-bottom: 15px;
+    color: #007bff;
+}
+
+.filter input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+}
+
+.search-bar input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+.product-list {
+    grid-area: product-list;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.product {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.product:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    display: flex;  /* Flexbox verwenden */
+    justify-content: center;  /* Zentriert horizontal */
+    align-items: center;  /* Zentriert vertikal */
+    max-width: 100%;
+    width: 100%;
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.product-title {
+    grid-column: 2 / 6;
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+.product-price {
+    grid-column: 2 / 3;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.product-vendor {
+    grid-column: 3 / 4;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.product-producer {
+    grid-column: 4 / 5;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.add-to-cart {
+    grid-column: 6 / 7;
+    grid-row: 1 / -1;
+    display: flex;  /* Flexbox verwenden */
+    justify-content: center;  /* Zentriert horizontal */
+    align-items: center;  /* Zentriert vertikal */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    justify-self: center;
+}
+
+.add-to-cart:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+
+
+</style>

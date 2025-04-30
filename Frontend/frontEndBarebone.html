@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="css/barebone.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Logo</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Bar">
+        </div>
+        <div class="profile">
+            <i class="fa-solid fa-user"> Benutzer</i>
+        </div>
+        <div class="basket">
+            <i class="fas fa-shopping-cart"> Shopping Cart</i>
+        </div>
+        <div class="filter">
+            <h4>Filter Products</h4>
+            <form id="filter-form">
+                <!-- Filter by Product Name -->
+                <label for="product-name">Product Name:</label>
+                <input type="text" id="product-name" placeholder="Enter product name">
+        
+                <!-- Filter by Price -->
+                <label for="price">Price:</label>
+                <select id="price-filter">
+                    <option value="all">All Prices</option>
+                    <option value="below">Below 50</option>
+                    <option value="between">Between 50 and 100</option>
+                    <option value="above">Above 100</option>
+                </select>
+                
+                <!-- Filter by Stock -->
+                <label for="stock">Stock:</label>
+                <select id="stock-filter">
+                    <option value="all">All Stock</option>
+                    <option value="below">Below 50</option>
+                    <option value="between">Between 50 and 100</option>
+                    <option value="above">Above 100</option>
+                </select>
+        
+                <!-- Filter by Seller -->
+                <label for="seller">Seller:</label>
+                <input type="text" id="seller" placeholder="Enter seller">
+        
+                <!-- Filter by Delivery Date -->
+                <label for="delivery-date">Delivery Date (yyyy-mm-dd):</label>
+                <input type="date" id="delivery-date">
+        
+                <button type="button" onclick="filterProducts()">Apply Filter</button>
+            </form>
+        </div>
+        
+
+        <!-- Product List -->
+        <div class="product-list">
+            <!-- Product Box -->
+            <div class="product-box">
+                <div class="image-section">
+                    <div class="image">Picture</div>
+                </div>
+                <div class="info-section">
+                    <h3>Product 1</h3>
+                    <div class="price-section">
+                        <span class="price">40</span>
+                    </div>
+                    <span class="seller">Seller A</span>
+                    <span class="delivery-date">2024-10-07</span>
+                    <div class="stock">
+                        <p>In Stock:</p>
+                        <span class="stock-num">40</span> <!-- Stock value -->
+                    </div>
+                    <div class="actions">
+                        <button class="add-to-basket">Add to basket
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                        <button class="buy-now">Buy instantly</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-box">
+                <div class="image-section">
+                    <div class="image">Picture</div>
+                </div>
+                <div class="info-section">
+                    <h3>Product 2</h3>
+                    <div class="price-section">
+                        <span class="price">80</span>
+                    </div>
+                    <span class="seller">Seller B</span>
+                    <span class="delivery-date">2024-10-10</span>
+                    <div class="stock">
+                        <p>In Stock:</p>
+                        <span class="stock-num">60</span> <!-- Stock value -->
+                    </div>
+                    <div class="actions">
+                        <button class="add-to-basket">Add to basket
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                        <button class="buy-now">Buy instantly</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
